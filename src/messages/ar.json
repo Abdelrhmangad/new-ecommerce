@@ -1,10 +1,12 @@
 {
 	"Navbar": {
-		"title": "المتجر البسيط",
-		"switchLocale": "English"
+		"brand": "المتجر",
+		"products": "المنتجات",
+		"cart": "السلة"
 	},
-	"Hero": {
-		"heading": "متجر إلكتروني بسيط",
-		"subheading": "واجهة مستخدم بسيطة، نظيفة، وفعالة."
+	"Products": {
+		"title": "المنتجات",
+		"addToCart": "أضف للسلة",
+		"price": "{price} ج.م"
 	}
 }
