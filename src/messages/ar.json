@@ -1,0 +1,10 @@
+{
+	"Navbar": {
+		"title": "المتجر البسيط",
+		"switchLocale": "English"
+	},
+	"Hero": {
+		"heading": "متجر إلكتروني بسيط",
+		"subheading": "واجهة مستخدم بسيطة، نظيفة، وفعالة."
+	}
+}

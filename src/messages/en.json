@@ -1,0 +1,10 @@
+{
+	"Navbar": {
+		"title": "MinimalStore",
+		"switchLocale": "عربي"
+	},
+	"Hero": {
+		"heading": "Minimalist E-Commerce",
+		"subheading": "Simple, clean, and functional UI."
+	}
+}
