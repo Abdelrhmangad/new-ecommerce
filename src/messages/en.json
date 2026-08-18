@@ -1,78 +1,79 @@
 {
-	"Navbar": {
-		"brand": "MiniStore",
-		"products": "Products",
-		"features": "Features",
-		"cart": "Cart",
-		"log_in": "Login",
-		"get_started": "Get Started",
-		"home": "Home"
-	},
-	"Cart": {
-		"title": "Your Shopping Cart",
-		"description": "Review your items before proceeding to checkout.",
-		"empty_cart": "Your cart is currently empty.",
-		"checkout": "Proceed to Checkout"
-	},
-	"Products": {
-		"title": "Catalog",
-		"addToCart": "Add to Cart",
-		"price": "${price}",
-		"new": "New",
-		"sale": "Sale",
-		"bestsellers": "Best Sellers",
-		"color": "Color",
-		"selectSize": "Select Size",
-		"size": "Size",
-		"selectColor": "Select Color"
-	},
-	"ProductsBanner": {
-		"wilderness": {
-			"title": "Explore the Wilderness",
-			"description": "Experience untouched nature and peaceful landscapes away from city noise.",
-			"button": "Discover More"
-		},
-		"architectural": {
-			"title": "Modern Architectural Wonders",
-			"description": "Discover clean designs and futuristic structures in the heart of the modern world.",
-			"button": "View Gallery"
-		},
-		"ocean": {
-			"title": "Serene Ocean Horizons",
-			"description": "Relax with breath-taking views of clear waters and warm golden sunsets.",
-			"button": "Book Vacation"
-		}
-	},
-	"Categories": {
-		"new": "New Arrivals",
-		"popular": "Popular",
-		"sale": "Sale",
-		"bestsellers": "Best Sellers",
-		"fashion": "Fashion",
-		"viewAll": "View All"
-	},
-	"Newsletter": {
-		"badge": "Exclusive Offers",
-		"title": "Unlock 15% Off Your First Order",
-		"description": "Subscribe to receive early access to seasonal sales, limited releases, and exclusive discounts directly in your inbox.",
-		"placeholder": "Enter your email address",
-		"button": "Subscribe",
-		"submitting": "Joining...",
-		"disclaimer": "By subscribing, you agree to our Terms of Service and Privacy Policy.",
-		"successMessage": "You're on the list! Check your inbox for your 15% discount code."
-	},
-	"Footer": {
-		"about": "Curated collections crafted with minimal design and sustainable quality.",
-		"shop": "Shop",
-		"allProducts": "All Products",
-		"newArrivals": "New Arrivals",
-		"sale": "Sale & Offers",
-		"help": "Help & Support",
-		"faq": "FAQs",
-		"shipping": "Shipping & Returns",
-		"contact": "Contact Us",
-		"privacy": "Privacy Policy",
-		"terms": "Terms of Service",
-		"rights": "All rights reserved."
-	}
+    "Navbar": {
+        "brand": "MiniStore",
+        "products": "Products",
+        "features": "Features",
+        "cart": "Cart",
+        "log_in": "Login",
+        "get_started": "Get Started",
+        "home": "Home"
+    },
+    "Cart": {
+        "title": "Your Shopping Cart",
+        "description": "Review your items before proceeding to checkout.",
+        "empty_cart": "Your cart is currently empty.",
+        "checkout": "Proceed to Checkout"
+    },
+    "Products": {
+        "title": "Catalog",
+        "addToCart": "Add to Cart",
+        "price": "${price}",
+        "new": "New",
+        "sale": "Sale",
+        "bestsellers": "Best Sellers",
+        "color": "Color",
+        "selectSize": "Select Size",
+        "size": "Size",
+        "selectColor": "Select Color",
+        "youMightAlsoLike": "You Might Also Like"
+    },
+    "ProductsBanner": {
+        "wilderness": {
+            "title": "Explore the Wilderness",
+            "description": "Experience untouched nature and peaceful landscapes away from city noise.",
+            "button": "Discover More"
+        },
+        "architectural": {
+            "title": "Modern Architectural Wonders",
+            "description": "Discover clean designs and futuristic structures in the heart of the modern world.",
+            "button": "View Gallery"
+        },
+        "ocean": {
+            "title": "Serene Ocean Horizons",
+            "description": "Relax with breath-taking views of clear waters and warm golden sunsets.",
+            "button": "Book Vacation"
+        }
+    },
+    "Categories": {
+        "new": "New Arrivals",
+        "popular": "Popular",
+        "sale": "Sale",
+        "bestsellers": "Best Sellers",
+        "fashion": "Fashion",
+        "viewAll": "View All"
+    },
+    "Newsletter": {
+        "badge": "Exclusive Offers",
+        "title": "Unlock 15% Off Your First Order",
+        "description": "Subscribe to receive early access to seasonal sales, limited releases, and exclusive discounts directly in your inbox.",
+        "placeholder": "Enter your email address",
+        "button": "Subscribe",
+        "submitting": "Joining...",
+        "disclaimer": "By subscribing, you agree to our Terms of Service and Privacy Policy.",
+        "successMessage": "You're on the list! Check your inbox for your 15% discount code."
+    },
+    "Footer": {
+        "about": "Curated collections crafted with minimal design and sustainable quality.",
+        "shop": "Shop",
+        "allProducts": "All Products",
+        "newArrivals": "New Arrivals",
+        "sale": "Sale & Offers",
+        "help": "Help & Support",
+        "faq": "FAQs",
+        "shipping": "Shipping & Returns",
+        "contact": "Contact Us",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "rights": "All rights reserved."
+    }
 }

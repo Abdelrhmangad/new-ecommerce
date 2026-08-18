@@ -12,6 +12,8 @@ import {
 	AccordionTrigger
 } from "@/components/ui/accordion";
 import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
+import ProductCard from "@/shared/components/productCard";
+import { ProductPropType } from "@/shared/types/Product.types";
 
 export default function SingleProductPage({
 	params
@@ -218,6 +220,14 @@ export default function SingleProductPage({
 							</Badge>
 						)}
 					</div>
+				</div>
+			</div>
+			<div className="mt-16">
+				<h2 className="font-bold text-xl">{t("youMightAlsoLike")}</h2>
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4 mt-4">
+					{DUMMY_PRODUCTS.map((product: ProductPropType) => (
+						<ProductCard key={product.id} product={product} />
+					))}
 				</div>
 			</div>
 		</main>
