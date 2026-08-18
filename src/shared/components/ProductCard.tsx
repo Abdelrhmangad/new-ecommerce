@@ -44,7 +44,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 						product.compareAtPrice > product.price && (
 							<Badge
 								variant="destructive"
-								className="text-xs rounded-sm"
+								className="text-sm font-bold px-1 py-1 bg-red-100 rounded-xs shadow-md animate-pulse"
 							>
 								{t("sale")}
 							</Badge>
