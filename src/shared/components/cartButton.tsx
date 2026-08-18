@@ -23,9 +23,9 @@ export function CartDrawer() {
 					<Button
 						variant="outline"
 						size="icon"
-						className="relative cursor-pointer"
+						className="p-4 leading-0 relative cursor-pointer"
 					>
-						<ShoppingCart className="h-5 w-5" />
+						<ShoppingCart className="inline-block h-4 w-4" />
 						<span className="sr-only">Open cart</span>
 						{/* Optional item counter badge */}
 						<span className="absolute -inset-s-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">

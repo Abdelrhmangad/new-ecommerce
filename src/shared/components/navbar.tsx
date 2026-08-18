@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Menu, X, Rocket } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CartDrawer } from "./cartButton";
+import LocaleSwitcher from "./localeSwitcher";
 
 export default function Navbar() {
 	const [open, setOpen] = useState(false);
@@ -48,6 +49,7 @@ export default function Navbar() {
 						{t("log_in")}
 					</button>
 					<CartDrawer />
+					<LocaleSwitcher />
 				</div>
 
 				{/* Mobile menu button */}
@@ -82,11 +84,14 @@ export default function Navbar() {
 							{link.label}
 						</a>
 					))}
-					<div className="mt-2 flex flex-col gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
+					<div className="mt-2 flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
 						<button className="rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
 							{t("log_in")}
 						</button>
-						<CartDrawer />
+						<div className="flex items-center gap-2 ms-auto">
+							<CartDrawer />
+							<LocaleSwitcher />
+						</div>
 					</div>
 				</nav>
 			</div>
