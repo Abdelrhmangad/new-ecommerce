@@ -17,7 +17,10 @@
 	"Products": {
 		"title": "Catalog",
 		"addToCart": "Add to Cart",
-		"price": "${price}"
+		"price": "${price}",
+		"new": "New",
+		"sale": "Sale",
+		"bestsellers": "Best Sellers"
 	},
 	"ProductsBanner": {
 		"wilderness": {

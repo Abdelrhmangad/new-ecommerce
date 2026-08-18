@@ -17,7 +17,10 @@
 	"Products": {
 		"title": "المنتجات",
 		"addToCart": "أضف للسلة",
-		"price": "{price} ج.م"
+		"price": "{price} ج.م",
+		"new": "جديد",
+		"sale": "تخفيضات",
+		"bestsellers": "الأكثر مبيعاً"
 	},
 	"ProductsBanner": {
 		"wilderness": {
