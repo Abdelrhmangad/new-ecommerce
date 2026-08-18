@@ -56,5 +56,19 @@
 		"submitting": "Joining...",
 		"disclaimer": "By subscribing, you agree to our Terms of Service and Privacy Policy.",
 		"successMessage": "You're on the list! Check your inbox for your 15% discount code."
+	},
+	"Footer": {
+		"about": "Curated collections crafted with minimal design and sustainable quality.",
+		"shop": "Shop",
+		"allProducts": "All Products",
+		"newArrivals": "New Arrivals",
+		"sale": "Sale & Offers",
+		"help": "Help & Support",
+		"faq": "FAQs",
+		"shipping": "Shipping & Returns",
+		"contact": "Contact Us",
+		"privacy": "Privacy Policy",
+		"terms": "Terms of Service",
+		"rights": "All rights reserved."
 	}
 }

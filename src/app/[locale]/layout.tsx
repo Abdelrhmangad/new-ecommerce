@@ -2,6 +2,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Roboto, Cairo } from "next/font/google";
 import "@/app/globals.css";
+import Navbar from "@/shared/components/navbar";
+import Footer from "@/shared/components/footer";
 
 const roboto = Roboto({
 	weight: ["400", "500", "700"],
@@ -36,7 +38,9 @@ export default async function LocaleLayout({
 				className={`${activeFontClass} ${roboto.variable} ${cairo.variable} min-h-screen bg-background antialiased`}
 			>
 				<NextIntlClientProvider messages={messages}>
+					<Navbar />
 					{children}
+					<Footer />
 				</NextIntlClientProvider>
 			</body>
 		</html>

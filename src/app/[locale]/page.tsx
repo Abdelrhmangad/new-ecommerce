@@ -1,5 +1,4 @@
 import CategoriesPills from "@/shared/components/categoriesPills";
-import Navbar from "@/shared/components/navbar";
 import Newsletter from "@/shared/components/newsLetter";
 import { BannerItem, ProductsBanner } from "@/shared/components/productsBanner";
 import { useTranslations } from "next-intl";
@@ -37,7 +36,6 @@ export default function HomePage() {
 	];
 	return (
 		<main className="">
-			<Navbar />
 			<ProductsBanner items={BANNER_SLIDES} />
 			<CategoriesPills />
 			<Newsletter />

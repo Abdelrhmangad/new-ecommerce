@@ -27,7 +27,7 @@ export default function Newsletter() {
 	};
 
 	return (
-		<section className="w-full bg-gray-100 py-16 text-zinc-800 md:py-20 my-10">
+		<section className="w-full bg-gray-100 py-16 text-zinc-800 md:py-20 mt-10">
 			<div className="container mx-auto px-4 md:px-6">
 				<div className="mx-auto max-w-xl text-center">
 					<h2 className="text-2xl font-light tracking-wide uppercase text-zinc-900 sm:text-3xl">
