@@ -18,5 +18,22 @@
 		"title": "Catalog",
 		"addToCart": "Add to Cart",
 		"price": "${price}"
+	},
+	"ProductsBanner": {
+		"wilderness": {
+			"title": "Explore the Wilderness",
+			"description": "Experience untouched nature and peaceful landscapes away from city noise.",
+			"button": "Discover More"
+		},
+		"architectural": {
+			"title": "Modern Architectural Wonders",
+			"description": "Discover clean designs and futuristic structures in the heart of the modern world.",
+			"button": "View Gallery"
+		},
+		"ocean": {
+			"title": "Serene Ocean Horizons",
+			"description": "Relax with breath-taking views of clear waters and warm golden sunsets.",
+			"button": "Book Vacation"
+		}
 	}
 }
