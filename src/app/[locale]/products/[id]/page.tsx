@@ -72,14 +72,8 @@ export default function SingleProductPage({
 							priority
 							className="object-cover"
 						/>
-						{product.isNew && (
-							<Badge className="absolute top-3 inset-s-3 bg-primary text-xs">
-								New
-							</Badge>
-						)}
 					</div>
 				</div>
-
 				{/* 2. Purchase & Details Column */}
 				<div className="flex flex-col">
 					{/* Category & Title */}
@@ -208,6 +202,22 @@ export default function SingleProductPage({
 							</AccordionContent>
 						</AccordionItem>
 					</Accordion>
+					<div className="flex mt-4 gap-1">
+						{product.compareAtPrice &&
+							product.compareAtPrice > product.price && (
+								<Badge
+									variant="destructive"
+									className="text-sm px-2 py-2 bg-red-100 rounded-xs shadow-md animate-pulse"
+								>
+									{t("sale")}
+								</Badge>
+							)}
+						{product.isNew && (
+							<Badge className="bg-primary text-sm px-2 py-2 rounded-xs">
+								{t("new")}
+							</Badge>
+						)}
+					</div>
 				</div>
 			</div>
 		</main>
