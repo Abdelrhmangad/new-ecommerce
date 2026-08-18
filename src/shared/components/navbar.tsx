@@ -1,16 +1,20 @@
+"use client";
 import { useState } from "react";
 import { Menu, X, Rocket } from "lucide-react";
-
-const NAV_LINKS = [
-	{ label: "Product", href: "#product" },
-	{ label: "Features", href: "#features" },
-	{ label: "Pricing", href: "#pricing" },
-	{ label: "Docs", href: "#docs" }
-];
+import { useTranslations } from "next-intl";
+import { CartDrawer } from "./cartButton";
 
 export default function Navbar() {
 	const [open, setOpen] = useState(false);
 
+	const t = useTranslations("Navbar");
+
+	const NAV_LINKS = [
+		{ label: t("home"), href: "/" },
+		{ label: t("products"), href: "#products" },
+		{ label: t("features"), href: "#features" },
+		{ label: t("cart"), href: "#cart" }
+	];
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-slate-800 dark:bg-slate-950/80">
 			<div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -41,11 +45,9 @@ export default function Navbar() {
 				{/* Desktop actions */}
 				<div className="hidden md:flex md:items-center md:gap-3">
 					<button className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
-						Log in
+						{t("log_in")}
 					</button>
-					<button className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-300">
-						Get started
-					</button>
+					<CartDrawer />
 				</div>
 
 				{/* Mobile menu button */}
@@ -82,11 +84,9 @@ export default function Navbar() {
 					))}
 					<div className="mt-2 flex flex-col gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
 						<button className="rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
-							Log in
+							{t("log_in")}
 						</button>
-						<button className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-300">
-							Get started
-						</button>
+						<CartDrawer />
 					</div>
 				</nav>
 			</div>

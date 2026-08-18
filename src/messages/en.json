@@ -2,7 +2,17 @@
 	"Navbar": {
 		"brand": "MiniStore",
 		"products": "Products",
-		"cart": "Cart"
+		"features": "Features",
+		"cart": "Cart",
+		"log_in": "Login",
+		"get_started": "Get Started",
+		"home": "Home"
+	},
+	"Cart": {
+		"title": "Your Shopping Cart",
+		"description": "Review your items before proceeding to checkout.",
+		"empty_cart": "Your cart is currently empty.",
+		"checkout": "Proceed to Checkout"
 	},
 	"Products": {
 		"title": "Catalog",

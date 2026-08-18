@@ -1,7 +1,20 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-// import { routing } from "@/i18n/routing";
+import { Roboto, Cairo } from "next/font/google";
 import "@/app/globals.css";
+
+const roboto = Roboto({
+	weight: ["400", "500", "700"],
+	subsets: ["latin"],
+	display: "swap",
+	variable: "--font-roboto"
+});
+
+const cairo = Cairo({
+	subsets: ["arabic", "latin"],
+	display: "swap",
+	variable: "--font-cairo"
+});
 
 export default async function LocaleLayout({
 	children,
@@ -12,16 +25,16 @@ export default async function LocaleLayout({
 }) {
 	const { locale } = await params;
 
-	// if (!routing.locales.includes(locale as "ar" | "en")) {
-	// 	notFound();
-	// }
-
 	const messages = await getMessages();
 	const dir = locale === "ar" ? "rtl" : "ltr";
+	const activeFontClass =
+		locale === "ar" ? cairo.className : roboto.className;
 
 	return (
 		<html lang={locale} dir={dir}>
-			<body className="min-h-screen bg-background antialiased">
+			<body
+				className={`${activeFontClass} ${roboto.variable} ${cairo.variable} min-h-screen bg-background antialiased`}
+			>
 				<NextIntlClientProvider messages={messages}>
 					{children}
 				</NextIntlClientProvider>
