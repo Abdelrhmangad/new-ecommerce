@@ -50,7 +50,7 @@ export function ProductsBanner({ items }: BannerProps) {
 	if (!items || items.length === 0) return null;
 
 	return (
-		<div className="relative w-full xl:max-w-7xl mx-auto overflow-hidden lg:rounded-xl shadow-lg group">
+		<div className="relative w-full container mx-auto overflow-hidden lg:rounded-xl shadow-lg group">
 			{/* Key prop ensures Swiper updates seamlessly when direction changes */}
 			<Swiper
 				key={dir}

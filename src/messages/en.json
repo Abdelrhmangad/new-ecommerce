@@ -35,5 +35,12 @@
 			"description": "Relax with breath-taking views of clear waters and warm golden sunsets.",
 			"button": "Book Vacation"
 		}
+	},
+	"Categories": {
+		"new": "New Arrivals",
+		"popular": "Popular",
+		"sale": "Sale",
+		"bestsellers": "Best Sellers",
+		"fashion": "Fashion"
 	}
 }
