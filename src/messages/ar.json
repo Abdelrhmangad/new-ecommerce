@@ -20,7 +20,11 @@
 		"price": "{price} ج.م",
 		"new": "جديد",
 		"sale": "تخفيضات",
-		"bestsellers": "الأكثر مبيعاً"
+		"bestsellers": "الأكثر مبيعاً",
+		"color": "اللون",
+		"selectSize": "اختر المقاس",
+		"size": "المقاس",
+		"selectColor": "اختر اللون"
 	},
 	"ProductsBanner": {
 		"wilderness": {

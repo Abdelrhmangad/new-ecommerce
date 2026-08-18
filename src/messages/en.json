@@ -20,7 +20,11 @@
 		"price": "${price}",
 		"new": "New",
 		"sale": "Sale",
-		"bestsellers": "Best Sellers"
+		"bestsellers": "Best Sellers",
+		"color": "Color",
+		"selectSize": "Select Size",
+		"size": "Size",
+		"selectColor": "Select Color"
 	},
 	"ProductsBanner": {
 		"wilderness": {
