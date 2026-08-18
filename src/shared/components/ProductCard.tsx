@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { Badge } from "@/components/ui/badge";
 import { ProductPropType } from "../types/Product.types";
+import AddToCartBtn from "./addToCartBtn";
 
 export default function ProductCard({ product }: { product: ProductPropType }) {
 	const t = useTranslations("Products");
@@ -113,14 +113,11 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 						))}
 					</div>
 
-					<Button
-						size="sm"
-						variant="secondary"
-						className="h-7 text-xs px-2 shrink-0"
-						disabled={!selectedSize}
-					>
-						{t("addToCart")}
-					</Button>
+					<AddToCartBtn
+						selectedSize={selectedSize}
+						quantity={1}
+						className="text-xs max-h-fit max-w-fit py-1"
+					/>
 				</div>
 			</div>
 		</div>

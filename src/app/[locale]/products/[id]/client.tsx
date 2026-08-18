@@ -14,6 +14,7 @@ import {
 import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
 import ProductCard from "@/shared/components/productCard";
 import { ProductPropType } from "@/shared/types/Product.types";
+import AddToCartBtn from "@/shared/components/addToCartBtn";
 
 interface SingleProductClientProps {
 	product: ProductPropType;
@@ -197,18 +198,11 @@ export default function SingleProductClient({
 							</button>
 						</div>
 
-						<Button
-							size="lg"
-							className="flex-1 h-full"
-							disabled={!selectedSize}
-							aria-label={
-								selectedSize
-									? `Add ${quantity} ${product.name[locale]} to cart`
-									: "Please select a size first"
-							}
-						>
-							{selectedSize ? t("addToCart") : t("selectSize")}
-						</Button>
+						<AddToCartBtn
+							selectedSize={selectedSize}
+							quantity={quantity}
+							productName={product.name[locale]}
+						/>
 					</div>
 
 					{/* Collapsible Details */}

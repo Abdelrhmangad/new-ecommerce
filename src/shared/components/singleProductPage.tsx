@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { Metadata } from "next";
 import { useLocale, useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
 	Accordion,
 	AccordionContent,
@@ -15,6 +13,7 @@ import {
 import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
 import ProductCard from "@/shared/components/productCard";
 import { ProductPropType } from "@/shared/types/Product.types";
+import AddToCartBtn from "./addToCartBtn";
 
 export default function SingleProductPage({ id }: { id: string }) {
 	const locale = useLocale() as "en" | "ar";
@@ -166,13 +165,11 @@ export default function SingleProductPage({ id }: { id: string }) {
 							</button>
 						</div>
 
-						<Button
-							size="lg"
-							className="flex-1 h-full"
-							disabled={!selectedSize}
-						>
-							{selectedSize ? t("addToCart") : t("selectSize")}
-						</Button>
+						<AddToCartBtn
+							selectedSize={selectedSize}
+							quantity={quantity}
+							productName={product.name[locale]}
+						/>
 					</div>
 
 					{/* Collapsible Details */}
