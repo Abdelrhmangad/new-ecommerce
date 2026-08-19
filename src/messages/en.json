@@ -31,7 +31,8 @@
         "categories": "Categories",
         "sortBy": "Sort By",
         "priceFromLowToHigh": "Price: Low to High",
-        "priceHighToLow": "Price: High to low"
+        "priceHighToLow": "Price: High to low",
+        "applyFilters": "Apply Filters"
     },
     "ProductsBanner": {
         "wilderness": {

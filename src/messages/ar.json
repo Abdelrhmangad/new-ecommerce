@@ -31,7 +31,8 @@
         "categories": "القسم",
         "sortBy": "ترتيب حسب",
         "priceFromLowToHigh": "من الاقل سعر للأعلى سعرا",
-        "priceHighToLow": "من ألاعلى سعرا للأقل سعرا"
+        "priceHighToLow": "من ألاعلى سعرا للأقل سعرا",
+        "applyFilters": "فرز المنتجات"
     },
     "ProductsBanner": {
         "wilderness": {
