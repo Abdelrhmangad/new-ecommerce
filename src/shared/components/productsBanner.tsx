@@ -50,7 +50,7 @@ export function ProductsBanner({ items }: BannerProps) {
 	if (!items || items.length === 0) return null;
 
 	return (
-		<div className="relative w-full container mx-auto overflow-hidden lg:rounded-xl shadow-lg group">
+		<div className="relative w-full mx-auto overflow-hidden lg:rounded-none shadow-lg group">
 			{/* Key prop ensures Swiper updates seamlessly when direction changes */}
 			<Swiper
 				key={dir}
@@ -92,10 +92,10 @@ export function ProductsBanner({ items }: BannerProps) {
 						/>
 
 						{/* Gradient Overlay for Text Legibility */}
-						<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent dark:from-black/90 dark:via-black/40" />
+						<div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent dark:from-black/90 dark:via-black/40" />
 
 						{/* Slide Content */}
-						<div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 md:p-12 text-white ltr:text-left rtl:text-right">
+						<div className="container absolute inset-0 flex flex-col justify-end p-6 sm:p-10 md:p-12 text-white ltr:text-left rtl:text-right">
 							<div className="max-w-2xl space-y-2 sm:space-y-4">
 								<h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-md">
 									{item.title}

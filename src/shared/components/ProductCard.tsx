@@ -96,7 +96,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 				</div>
 
 				{/* Quick Size Selector on Hover/Focus */}
-				<div className="mt-3 pt-2 border-t flex items-center justify-between sm:gap-1 gap-2 sm:flex-row flex-col">
+				<div className="mt-3 pt-2 border-t flex items-center justify-between sm:gap-1 gap-2">
 					<div className="flex gap-1 overflow-x-auto no-scrollbar">
 						{product.sizes.map((size) => (
 							<button
