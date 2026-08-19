@@ -4,6 +4,7 @@ import { Menu, X, Rocket } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CartDrawer } from "./cartButton";
 import LocaleSwitcher from "./localeSwitcher";
+import { Link } from "@/i18n/routing";
 
 export default function Navbar() {
 	const [open, setOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function Navbar() {
 
 	const NAV_LINKS = [
 		{ label: t("home"), href: "/" },
-		{ label: t("products"), href: "#products" },
+		{ label: t("products"), href: "/products" },
 		{ label: t("features"), href: "#features" },
 		{ label: t("cart"), href: "#cart" }
 	];
@@ -33,13 +34,13 @@ export default function Navbar() {
 				{/* Desktop nav */}
 				<nav className="hidden md:flex md:items-center md:gap-1">
 					{NAV_LINKS.map((link) => (
-						<a
+						<Link
 							key={link.label}
 							href={link.href}
 							className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-50"
 						>
 							{link.label}
-						</a>
+						</Link>
 					))}
 				</nav>
 
