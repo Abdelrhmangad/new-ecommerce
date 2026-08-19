@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Menu, X, Rocket } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CartDrawer } from "./cartButton";
 import LocaleSwitcher from "./localeSwitcher";
 import { Link } from "@/i18n/routing";
+import Image from "next/image";
 
 export default function Navbar() {
 	const [open, setOpen] = useState(false);
@@ -21,15 +22,18 @@ export default function Navbar() {
 		<header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur supports-backdrop-filter:bg-white/60 dark:border-slate-800 dark:bg-slate-950/80">
 			<div className="flex h-16 container mx-auto items-center justify-between">
 				{/* Logo */}
-				<a
-					href="#"
-					className="flex items-center gap-2 font-semibold tracking-tight text-slate-900 dark:text-slate-100"
+				<Link
+					href="/"
+					className="flex items-center justify-center gap-2 font-semibold"
 				>
-					<span className="flex h-8 w-8 items-center justify-center rounded-md bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900">
-						<Rocket className="h-4 w-4" />
-					</span>
-					<span className="text-base">Acme</span>
-				</a>
+					<Image
+						src="/logo.svg"
+						className="h-10 w-auto"
+						width="32"
+						height="32"
+						alt="logo"
+					/>
+				</Link>
 
 				{/* Desktop nav */}
 				<nav className="hidden md:flex md:items-center md:gap-1">

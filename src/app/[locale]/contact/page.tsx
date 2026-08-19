@@ -23,7 +23,7 @@ export default function ContactPage() {
 	};
 
 	return (
-		<main className="container mx-auto max-w-5xl px-4 py-12">
+		<main className="container mx-auto max-w-5xl px-4 py-12 min-h-[70dvh]">
 			<div className="text-center mb-12">
 				<h1 className="text-3xl font-bold tracking-tight">
 					{t("contactUs")}
@@ -33,7 +33,7 @@ export default function ContactPage() {
 				</p>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 				{/* 1. Contact Information & Hours */}
 				<div className="space-y-6">
 					<h2 className="text-xl font-semibold">{t("getInTouch")}</h2>
@@ -62,18 +62,18 @@ export default function ContactPage() {
 				</div>
 
 				{/* 2. Contact Form */}
-				<div className="rounded-xl border bg-card p-6 shadow-sm">
+				<div className="rounded-xl border bg-card p-8 shadow-sm">
 					{submitted ? (
 						<div className="flex flex-col items-center justify-center py-12 text-center">
 							<h3 className="text-lg font-semibold">
 								{t("sentTitle")}
 							</h3>
-							<p className="text-xs text-muted-foreground mt-2">
+							<p className="text-sm text-muted-foreground mt-2">
 								{t("sentDescription")}
 							</p>
 							<Button
 								variant="outline"
-								size="sm"
+								size="lg"
 								className="mt-6"
 								onClick={() => {
 									setSubmitted(false);
@@ -88,13 +88,14 @@ export default function ContactPage() {
 							</Button>
 						</div>
 					) : (
-						<form onSubmit={handleSubmit} className="space-y-4">
+						<form onSubmit={handleSubmit} className="space-y-5">
 							<div>
-								<label className="text-xs font-medium mb-1 block">
+								<label className="text-sm font-medium mb-1.5 block">
 									{t("fullName")}
 								</label>
 								<Input
 									required
+									className="h-11 text-base md:text-sm"
 									placeholder={t("namePlaceholder")}
 									value={formData.name}
 									onChange={(e) =>
@@ -107,12 +108,13 @@ export default function ContactPage() {
 							</div>
 
 							<div>
-								<label className="text-xs font-medium mb-1 block">
+								<label className="text-sm font-medium mb-1.5 block">
 									{t("emailAddress")}
 								</label>
 								<Input
 									required
 									type="email"
+									className="h-11 text-base md:text-sm"
 									placeholder={t("emailPlaceholder")}
 									value={formData.email}
 									onChange={(e) =>
@@ -125,13 +127,13 @@ export default function ContactPage() {
 							</div>
 
 							<div>
-								<label className="text-xs font-medium mb-1 block">
+								<label className="text-sm font-medium mb-1.5 block">
 									{t("message")}
 								</label>
 								<textarea
 									required
-									rows={4}
-									className="w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary border-input"
+									rows={5}
+									className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
 									placeholder={t("messagePlaceholder")}
 									value={formData.message}
 									onChange={(e) =>
@@ -143,7 +145,11 @@ export default function ContactPage() {
 								/>
 							</div>
 
-							<Button type="submit" className="w-full">
+							<Button
+								type="submit"
+								size="lg"
+								className="w-full text-base font-medium"
+							>
 								{t("sendMessage")}
 							</Button>
 						</form>

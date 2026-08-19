@@ -2,6 +2,7 @@
 
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export default function Footer() {
 	const t = useTranslations("Footer");
@@ -13,6 +14,18 @@ export default function Footer() {
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-4">
 					{/* Brand Info */}
 					<div className="md:col-span-2 space-y-3">
+						<Link
+							href="/"
+							className="flex items-center justify-start gap-2 font-semibold"
+						>
+							<Image
+								src="/logo.svg"
+								className="h-10 w-auto"
+								width="80"
+								height="92"
+								alt="logo"
+							/>
+						</Link>
 						<h3 className="text-base font-semibold tracking-wider text-zinc-900 uppercase">
 							Clothing Co.
 						</h3>
