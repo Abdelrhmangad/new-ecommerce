@@ -34,6 +34,7 @@ export default function HomePage() {
 			buttonLink: "#"
 		}
 	];
+
 	return (
 		<main className="">
 			<ProductsBanner items={BANNER_SLIDES} />

@@ -7,6 +7,7 @@ import ProductCard from "./productCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { DUMMY_PRODUCTS } from "../data/products.data";
+import { useProductsCategories } from "../services/categories.queries";
 
 export interface CategoryItem {
 	id: string;
@@ -22,6 +23,8 @@ export default function CategoriesPills() {
 		setActiveCategory(id);
 	};
 
+	const { data } = useProductsCategories();
+	console.log("useProductsCategories", data);
 	const CATEGORIES: CategoryItem[] = [
 		{ id: "new", label: t("new"), icon: Sparkles },
 		{ id: "sale", label: t("sale"), icon: Percent },

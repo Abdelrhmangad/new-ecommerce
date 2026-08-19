@@ -41,10 +41,8 @@ export default function AuthModal() {
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			{/* Trigger Button to place in your Navbar */}
-			<DialogTrigger>
-				<Button variant="default" size="lg">
-					{t("signIn")}
-				</Button>
+			<DialogTrigger render={<Button variant="default" size="lg" />}>
+				{t("signIn")}
 			</DialogTrigger>
 
 			<DialogContent className="sm:max-w-105 p-6">
