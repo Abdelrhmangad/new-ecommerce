@@ -96,7 +96,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 				</div>
 
 				{/* Quick Size Selector on Hover/Focus */}
-				<div className="mt-3 pt-2 border-t flex items-center justify-between gap-1">
+				<div className="mt-3 pt-2 border-t flex items-center justify-between sm:gap-1 gap-2 sm:flex-nowrap flex-wrap">
 					<div className="flex gap-1 overflow-x-auto no-scrollbar">
 						{product.sizes.map((size) => (
 							<button
@@ -116,7 +116,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 					<AddToCartBtn
 						selectedSize={selectedSize}
 						quantity={1}
-						className="text-xs max-h-fit max-w-fit py-1"
+						className="text-xs max-h-fit sm:max-w-fit max-w-full py-1"
 					/>
 				</div>
 			</div>

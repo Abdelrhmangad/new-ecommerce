@@ -25,7 +25,13 @@
         "selectSize": "اختر المقاس",
         "size": "المقاس",
         "selectColor": "اختر اللون",
-        "youMightAlsoLike": "قد يعجبك أيضًا"
+        "youMightAlsoLike": "قد يعجبك أيضًا",
+        "filters": "المرشحات",
+        "filterProducts": "تصفية المنتجات",
+        "categories": "القسم",
+        "sortBy": "ترتيب حسب",
+        "priceFromLowToHigh": "من الاقل سعر للأعلى سعرا",
+        "priceHighToLow": "من ألاعلى سعرا للأقل سعرا"
     },
     "ProductsBanner": {
         "wilderness": {

@@ -18,8 +18,8 @@ export default function Navbar() {
 		{ label: t("cart"), href: "#cart" }
 	];
 	return (
-		<header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-slate-800 dark:bg-slate-950/80">
-			<div className="flex h-16 container mx-auto items-center justify-between px-4 sm:px-6 lg:px-8">
+		<header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur supports-backdrop-filter:bg-white/60 dark:border-slate-800 dark:bg-slate-950/80">
+			<div className="flex h-16 container mx-auto items-center justify-between">
 				{/* Logo */}
 				<a
 					href="#"

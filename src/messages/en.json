@@ -25,7 +25,13 @@
         "selectSize": "Select Size",
         "size": "Size",
         "selectColor": "Select Color",
-        "youMightAlsoLike": "You Might Also Like"
+        "youMightAlsoLike": "You Might Also Like",
+        "filters": "Filters",
+        "filterProducts": "Filter Products",
+        "categories": "Categories",
+        "sortBy": "Sort By",
+        "priceFromLowToHigh": "Price: Low to High",
+        "priceHighToLow": "Price: High to low"
     },
     "ProductsBanner": {
         "wilderness": {

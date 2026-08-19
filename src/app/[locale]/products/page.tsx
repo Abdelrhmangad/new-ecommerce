@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Sheet,
+	SheetClose,
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
@@ -59,9 +60,9 @@ export default function ProductsPage() {
 	}, [selectedCategories, selectedSizes, sortBy]);
 
 	return (
-		<main className="container mx-auto max-w-7xl px-4 py-8">
+		<main className="container mx-auto py-8">
 			{/* Header & Controls Bar */}
-			<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6 pb-4 border-b">
+			<div className="flex gap-4 flex-row md:items-center md:justify-between mb-6 pb-4 border-b">
 				<div>
 					<h1 className="text-2xl font-bold tracking-tight">
 						{t("title")}
@@ -71,12 +72,12 @@ export default function ProductsPage() {
 					</p>
 				</div>
 
-				<div className="flex items-center gap-3 justify-between md:justify-end">
+				<div className="flex items-center gap-3 ms-auto justify-end">
 					{/* Mobile Filter Sheet Trigger */}
 					<Sheet>
-						<SheetTrigger className="md:hidden gap-2">
+						<SheetTrigger className="md:hidden flex items-center border py-2 px-3 border-black gap-2">
 							<SlidersHorizontal className="h-4 w-4" />
-							Filters
+							{t("filters")}
 							{(selectedCategories.length > 0 ||
 								selectedSizes.length > 0) && (
 								<Badge className="ms-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
@@ -89,32 +90,16 @@ export default function ProductsPage() {
 							side={locale === "ar" ? "right" : "left"}
 							className="w-80 p-6"
 						>
-							<SheetHeader className="mb-4">
-								<SheetTitle>Filter Products</SheetTitle>
+							<SheetHeader className="mb-4 px-0 pt-0">
+								<SheetTitle className="text-base">
+									{t("filterProducts")}
+								</SheetTitle>
 							</SheetHeader>
 							<ProductsFilterContent
 								clearFilters={clearFilters}
 							/>
 						</SheetContent>
 					</Sheet>
-
-					{/* Sort Dropdown */}
-					<select
-						value={sortBy}
-						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-							setSortBy(
-								e.target.value as
-									| "featured"
-									| "low-high"
-									| "high-low"
-							)
-						}
-						className="h-9 rounded-md border bg-background px-3 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
-					>
-						<option value="featured">Sort by: Featured</option>
-						<option value="low-high">Price: Low to High</option>
-						<option value="high-low">Price: High to Low</option>
-					</select>
 				</div>
 			</div>
 
