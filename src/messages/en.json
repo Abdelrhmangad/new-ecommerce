@@ -100,5 +100,21 @@
 		"message": "Message",
 		"messagePlaceholder": "How can we help you?",
 		"sendMessage": "Send Message"
+	},
+	"Auth": {
+		"signIn": "Sign In",
+		"welcomeBack": "Welcome Back",
+		"createAccountTitle": "Create an Account",
+		"orWithEmail": "or with email",
+		"emailAddress": "Email Address",
+		"usernameOrEmail": "Username or Email",
+		"usernamePlaceholder": "Enter username",
+		"password": "Password",
+		"forgotPassword": "Forgot password?",
+		"createAccount": "Create Account",
+		"noAccount": "Don't have an account?",
+		"signUp": "Sign up",
+		"hasAccount": "Already have an account?",
+		"logIn": "Log in"
 	}
 }

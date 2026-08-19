@@ -100,5 +100,21 @@
 		"message": "الرسالة",
 		"messagePlaceholder": "كيف يمكننا مساعدتك؟",
 		"sendMessage": "إرسال الرسالة"
+	},
+	"Auth": {
+		"signIn": "تسجيل الدخول",
+		"welcomeBack": "تسجيل الدخول",
+		"createAccountTitle": "إنشاء حساب جديد",
+		"orWithEmail": "أو عبر البريد",
+		"emailAddress": "البريد الإلكتروني",
+		"usernameOrEmail": "اسم المستخدم أو البريد",
+		"usernamePlaceholder": "أدخل اسم المستخدم",
+		"password": "كلمة المرور",
+		"forgotPassword": "نسيت كلمة المرور؟",
+		"createAccount": "إنشاء حساب",
+		"noAccount": "ليس لديك حساب؟",
+		"signUp": "أنشئ حساباً الآن",
+		"hasAccount": "لديك حساب بالفعل؟",
+		"logIn": "سجل الدخول"
 	}
 }

@@ -6,6 +6,7 @@ import { CartDrawer } from "./cartButton";
 import LocaleSwitcher from "./localeSwitcher";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
+import AuthModal from "./AuthModal";
 
 export default function Navbar() {
 	const [open, setOpen] = useState(false);
@@ -50,9 +51,7 @@ export default function Navbar() {
 
 				{/* Desktop actions */}
 				<div className="hidden md:flex md:items-center md:gap-3">
-					<button className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
-						{t("log_in")}
-					</button>
+					<AuthModal />
 					<CartDrawer />
 					<LocaleSwitcher />
 				</div>
@@ -90,9 +89,7 @@ export default function Navbar() {
 						</a>
 					))}
 					<div className="mt-2 flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
-						<button className="rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
-							{t("log_in")}
-						</button>
+						<AuthModal />
 						<div className="flex items-center gap-2 ms-auto">
 							<CartDrawer />
 							<LocaleSwitcher />
