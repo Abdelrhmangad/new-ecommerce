@@ -70,14 +70,6 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href="/shipping"
-									className="hover:text-zinc-900 transition-colors"
-								>
-									{t("shipping")}
-								</Link>
-							</li>
-							<li>
-								<Link
 									href="/contact"
 									className="hover:text-zinc-900 transition-colors"
 								>
