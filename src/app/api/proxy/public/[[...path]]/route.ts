@@ -106,7 +106,7 @@ async function handler(req: NextRequest) {
             method: req.method.toLowerCase(),
             url: targetUrl,
             headers: requestHeaders,
-            data: requestBody,
+            ...(requestBody !== null ? { data: requestBody } : {}),
             validateStatus: () => true,
             responseType: 'stream',
             // A hung backend must not hang this request indefinitely.
