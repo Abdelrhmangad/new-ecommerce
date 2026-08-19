@@ -1,22 +1,20 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Sheet,
-	SheetClose,
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger
 } from "@/components/ui/sheet";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import ProductCard from "@/shared/components/productCard";
-import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
 import ProductsFilterContent from "@/shared/components/productsFilterContent";
+import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
 
 export default function ProductsPage() {
 	const locale = useLocale() as "en" | "ar";
@@ -25,16 +23,12 @@ export default function ProductsPage() {
 	// Filter States
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 	const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-	const [sortBy, setSortBy] = useState<"featured" | "low-high" | "high-low">(
-		"featured"
-	);
 
 	const clearFilters = () => {
 		setSelectedCategories([]);
 		setSelectedSizes([]);
 	};
 
-	// Filter & Sort Logic
 	const filteredProducts = useMemo(() => {
 		return DUMMY_PRODUCTS.filter((product) => {
 			// Category Match
@@ -52,17 +46,13 @@ export default function ProductsPage() {
 				return false;
 			}
 			return true;
-		}).sort((a, b) => {
-			if (sortBy === "low-high") return a.price - b.price;
-			if (sortBy === "high-low") return b.price - a.price;
-			return 0;
 		});
-	}, [selectedCategories, selectedSizes, sortBy]);
+	}, [selectedCategories, selectedSizes]);
 
 	return (
 		<main className="container mx-auto py-8">
 			{/* Header & Controls Bar */}
-			<div className="flex gap-4 flex-row md:items-center md:justify-between mb-6 pb-4 border-b">
+			<div className="md:hidden flex gap-4 flex-row md:items-center md:justify-between mb-6 pb-4 border-b">
 				<div>
 					<h1 className="text-2xl font-bold tracking-tight">
 						{t("title")}
@@ -75,7 +65,7 @@ export default function ProductsPage() {
 				<div className="flex items-center gap-3 ms-auto justify-end">
 					{/* Mobile Filter Sheet Trigger */}
 					<Sheet>
-						<SheetTrigger className="md:hidden flex items-center border py-2 px-3 border-black gap-2">
+						<SheetTrigger className="flex items-center border py-2 px-3 border-black gap-2">
 							<SlidersHorizontal className="h-4 w-4" />
 							{t("filters")}
 							{(selectedCategories.length > 0 ||
@@ -107,6 +97,14 @@ export default function ProductsPage() {
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 				{/* Desktop Sidebar (Left) */}
 				<aside className="hidden md:block col-span-1">
+					<div className="mb-6 pb-4 border-b">
+						<h1 className="text-2xl font-bold tracking-tight">
+							{t("title")}
+						</h1>
+						<p className="text-xs text-muted-foreground mt-1">
+							Showing {filteredProducts.length} items
+						</p>
+					</div>
 					<div className="sticky top-20">
 						<ProductsFilterContent clearFilters={clearFilters} />
 					</div>

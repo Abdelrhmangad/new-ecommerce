@@ -122,10 +122,10 @@ export default function ProductsFilterContent({
 				{(selectedCategories.length > 0 ||
 					selectedSizes.length > 0) && (
 					<Button
-						variant="ghost"
-						size="sm"
+						variant="outline"
+						size="lg"
 						onClick={clearFilters}
-						className="w-full text-xs gap-1"
+						className="w-full text-sm gap-1 py-5"
 					>
 						<X className="h-3 w-3" /> Clear Filters
 					</Button>
