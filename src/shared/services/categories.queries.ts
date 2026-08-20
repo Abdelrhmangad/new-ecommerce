@@ -8,7 +8,7 @@ export function useProductsCategories() {
         queryKey: APPLICATION_QUERY_KEYS.CATEGORIES,
         queryFn: async () => {
             const res = await api.get('/public/categories')
-            console.log("API RES", res)
+            console.log("/public/categories RES", res)
             return res.data
         },
     });

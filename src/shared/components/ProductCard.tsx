@@ -2,19 +2,24 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Badge } from "@/components/ui/badge";
-import { ProductPropType } from "../types/Product.types";
+import { ProductColorType, ProductPropType } from "../types/Product.types";
 import AddToCartBtn from "./addToCartBtn";
 
 export default function ProductCard({ product }: { product: ProductPropType }) {
+	const locale = useLocale() as "en" | "ar";
 	const t = useTranslations("Products");
 	const [isHovered, setIsHovered] = useState(false);
 	const [selectedSize, setSelectedSize] = useState<string | null>(null);
-
-	const primaryImage = product.images[0] || "/images/placeholder.jpg";
-	const secondaryImage = product.images[1] || primaryImage;
+	const productImages = product?.colors[0]?.images as {
+		primary: string;
+		secondary: string;
+		gallery: string[];
+	};
+	const primaryImage = productImages.primary || "/images/placeholder.jpg";
+	const secondaryImage = productImages.secondary || primaryImage;
 
 	return (
 		<div className="group relative flex flex-col rounded-lg border bg-card transition-all hover:shadow-sm">
@@ -40,15 +45,14 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 							{t("new")}
 						</Badge>
 					)}
-					{product.compareAtPrice &&
-						product.compareAtPrice > product.price && (
-							<Badge
-								variant="destructive"
-								className="text-xs font-bold px-1 py-1 bg-red-100 rounded-xs shadow-md animate-pulse"
-							>
-								{t("sale")}
-							</Badge>
-						)}
+					{product.isOnSale && (
+						<Badge
+							variant="destructive"
+							className="text-xs font-bold px-1 py-1 bg-red-100 rounded-xs shadow-md animate-pulse"
+						>
+							{t("sale")}
+						</Badge>
+					)}
 				</div>
 			</Link>
 
@@ -56,16 +60,18 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 			<div className="flex flex-1 flex-col p-3">
 				{/* Category & Color Swatches Row */}
 				<div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-					<span>{product.category.en}</span>
+					<span>{product.category?.name[locale]}</span>
 					<div className="flex items-center gap-1">
-						{product.colors.slice(0, 3).map((color) => (
-							<span
-								key={color.name}
-								className="h-2.5 w-2.5 rounded-full border border-border"
-								style={{ backgroundColor: color.hex }}
-								title={color.name}
-							/>
-						))}
+						{product.colors
+							.slice(0, 3)
+							.map((color: ProductColorType) => (
+								<span
+									key={color.name[locale]}
+									className="h-2.5 w-2.5 rounded-full border border-border"
+									style={{ backgroundColor: color.hex }}
+									title={color.name[locale]}
+								/>
+							))}
 						{product.colors.length > 3 && (
 							<span className="text-[10px] text-muted-foreground">
 								+{product.colors.length - 3}
@@ -87,7 +93,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 					<span className="font-semibold text-sm">
 						{t("price", { price: product.price })}
 					</span>
-					{product.compareAtPrice &&
+					{product.discountPercentage > 0 &&
 						product.compareAtPrice > product.price && (
 							<span className="text-xs text-muted-foreground line-through">
 								{t("price", { price: product.compareAtPrice })}

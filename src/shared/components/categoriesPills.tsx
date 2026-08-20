@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LoaderCircle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ProductPropType } from "../types/Product.types";
 import ProductCard from "./productCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
-import { DUMMY_PRODUCTS } from "../data/products.data";
 import { useProductsCategories } from "../services/categories.queries";
 import { IconRenderer } from "./iconRenderer";
 import { SingleCategoryType } from "../types/Categories.types";
@@ -22,17 +21,18 @@ export interface CategoryItem {
 export default function CategoriesPills() {
 	const locale = useLocale();
 	const t = useTranslations("Categories");
-	const { data, isPending } = useProductsCategories();
+	const { data: categoriesData, isPending } = useProductsCategories();
 	const [activeCategory, setActiveCategory] = useState<string>(
-		data && data?.[0]?.slug
+		categoriesData && categoriesData?.[0]?.slug
 	);
-
 	useEffect(() => {
-		if (!isPending && data) {
-			setActiveCategory(data?.[0]?.slug);
+		if (!isPending && categoriesData) {
+			setActiveCategory(categoriesData?.[0]?.slug);
 		}
-	}, [data, isPending]);
-
+	}, [categoriesData, isPending]);
+	const activeCategoryProducts = categoriesData?.find(
+		(cate: SingleCategoryType) => cate.slug === activeCategory
+	);
 	return (
 		<div className="container md:px-0 px-3 mx-auto ">
 			<nav
@@ -41,7 +41,7 @@ export default function CategoriesPills() {
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2 sm:gap-3 min-w-max">
-						{data?.map((cat: SingleCategoryType) => {
+						{categoriesData?.map((cat: SingleCategoryType) => {
 							const isActive = activeCategory === cat.slug;
 
 							return (
@@ -77,9 +77,17 @@ export default function CategoriesPills() {
 				</div>
 			</nav>
 			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4 mt-4">
-				{DUMMY_PRODUCTS.map((product: ProductPropType) => (
-					<ProductCard key={product.id} product={product} />
-				))}
+				{isPending ? (
+					<div className="bg-gray-50 flex items-center justify-center min-h-80 col-span-full">
+						<LoaderCircle className="animate-spin w-7 h-7" />
+					</div>
+				) : (
+					activeCategoryProducts?.products?.map(
+						(product: ProductPropType) => (
+							<ProductCard key={product.id} product={product} />
+						)
+					)
+				)}
 			</div>
 
 			<Link

@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // routes/API/auth-n-users.php and routes/API/FleetBridge/auth.php.
 const ALLOWED_PATHS: string[] = [
     '/categories/*',
+    '/products/*',
     '/auth/ensure-identifier-exists',
     '/auth/reset-password/verification',
     '/auth/reset-password',
