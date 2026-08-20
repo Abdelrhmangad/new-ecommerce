@@ -18,14 +18,14 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 		secondary: string;
 		gallery: string[];
 	};
-	const primaryImage = productImages.primary || "/images/placeholder.jpg";
-	const secondaryImage = productImages.secondary || primaryImage;
+	const primaryImage = productImages?.primary || "/images/placeholder.jpg";
+	const secondaryImage = productImages?.secondary || primaryImage;
 
 	return (
 		<div className="group relative flex flex-col rounded-lg border bg-card transition-all hover:shadow-sm">
 			{/* 1. Image Container with Aspect Ratio tailored for clothing (3:4) */}
 			<Link
-				href={`/products/${product.id}`}
+				href={`/products/${product.slug}`}
 				className="relative aspect-3/4 w-full overflow-hidden rounded-t-lg bg-muted"
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}

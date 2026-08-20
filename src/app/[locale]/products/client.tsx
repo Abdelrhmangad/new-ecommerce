@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,15 +11,25 @@ import {
 	SheetTitle,
 	SheetTrigger
 } from "@/components/ui/sheet";
-import { SlidersHorizontal } from "lucide-react";
+import { LoaderCircle, SlidersHorizontal } from "lucide-react";
 import ProductCard from "@/shared/components/productCard";
 import ProductsFilterContent from "@/shared/components/productsFilterContent";
-import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
+import { useCategoryProducts } from "@/shared/services/products.queries";
+import { ProductPropType } from "@/shared/types/Product.types";
+import Paginator from "@/shared/components/paginator";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductsClient() {
 	const locale = useLocale() as "en" | "ar";
 	const t = useTranslations("Products");
-
+	const params = useSearchParams();
+	console.log("params", params.get("page"));
+	const {
+		data: productsData,
+		isFetching,
+		isPending
+	} = useCategoryProducts({ page: parseInt(params.get("page") || "") || 1 });
+	const products = productsData?.products;
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 	const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
@@ -28,33 +38,15 @@ export default function ProductsClient() {
 		setSelectedSizes([]);
 	};
 
-	const filteredProducts = useMemo(() => {
-		return DUMMY_PRODUCTS.filter((product) => {
-			if (
-				selectedCategories.length > 0 &&
-				!selectedCategories.includes(product.category.en)
-			) {
-				return false;
-			}
-			if (
-				selectedSizes.length > 0 &&
-				!product.sizes.some((size) => selectedSizes.includes(size))
-			) {
-				return false;
-			}
-			return true;
-		});
-	}, [selectedCategories, selectedSizes]);
-
 	return (
-		<main className="container mx-auto py-8">
+		<main className="container mx-auto py-8 min-h-[70dvh]">
 			<div className="md:hidden flex gap-4 flex-row md:items-center md:justify-between mb-6 pb-4 border-b">
 				<div>
 					<h1 className="text-2xl font-bold tracking-tight">
 						{t("title")}
 					</h1>
 					<p className="text-xs text-muted-foreground mt-1">
-						Showing {filteredProducts.length} items
+						Showing {products?.length} items
 					</p>
 				</div>
 
@@ -95,7 +87,7 @@ export default function ProductsClient() {
 							{t("title")}
 						</h1>
 						<p className="text-xs text-muted-foreground mt-1">
-							Showing {filteredProducts.length} items
+							Showing {products?.length} items
 						</p>
 					</div>
 					<div className="sticky top-20">
@@ -103,31 +95,46 @@ export default function ProductsClient() {
 					</div>
 				</aside>
 
-				<section className="col-span-1 md:col-span-3">
-					{filteredProducts.length > 0 ? (
-						<div className="grid min-[500px]:grid-cols-2 lg:grid-cols-3 gap-4">
-							{filteredProducts.map((product) => (
-								<ProductCard
-									key={product.id}
-									product={product}
+				{isPending ? (
+					<section className="col-span-1 md:col-span-3">
+						<div className="flex items-center justify-center gap-2 py-16 border rounded-lg bg-muted/20">
+							<LoaderCircle className="animate-spin stroke-gray-500 w-5 h-5" />
+							<span className="text-gray-500">
+								{t("loadingProducts")}
+							</span>
+						</div>
+					</section>
+				) : (
+					<section className="col-span-1 md:col-span-3">
+						{products?.length > 0 ? (
+							<div className="grid min-[500px]:grid-cols-2 lg:grid-cols-3 gap-4">
+								{products?.map((product: ProductPropType) => (
+									<ProductCard
+										key={product.id}
+										product={product}
+									/>
+								))}
+								<Paginator
+									pages={productsData?.pages}
+									isFetching={isFetching}
 								/>
-							))}
-						</div>
-					) : (
-						<div className="flex flex-col items-center justify-center py-16 border rounded-lg bg-muted/20">
-							<p className="text-muted-foreground text-sm">
-								No products match your filters.
-							</p>
-							<Button
-								variant="link"
-								onClick={clearFilters}
-								className="mt-2 text-xs"
-							>
-								Clear all filters
-							</Button>
-						</div>
-					)}
-				</section>
+							</div>
+						) : (
+							<div className="flex flex-col items-center justify-center py-16 border rounded-lg bg-muted/20">
+								<p className="text-muted-foreground text-sm">
+									{t("noProductsMatchFilters")}
+								</p>
+								<Button
+									variant="link"
+									onClick={clearFilters}
+									className="mt-2 text-xs"
+								>
+									{t("clearFilters")}
+								</Button>
+							</div>
+						)}
+					</section>
+				)}
 			</div>
 		</main>
 	);

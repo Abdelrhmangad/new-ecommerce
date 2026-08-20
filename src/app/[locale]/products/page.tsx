@@ -4,7 +4,10 @@ import ProductsClient from "./client";
 import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
 
 const CATEGORY_LABELS = new Map(
-	DUMMY_PRODUCTS.map((product) => [product.category.en, product.category])
+	DUMMY_PRODUCTS.map((product) => [
+		product?.category?.name?.en,
+		product?.category?.name?.ar
+	])
 );
 const VALID_SIZES = new Set(DUMMY_PRODUCTS.flatMap((product) => product.sizes));
 const VALID_SORTS = new Set(["low-high", "high-low"]);
@@ -29,9 +32,8 @@ export async function generateMetadata({
 			? query.sort
 			: undefined;
 	const categoryText = categories
-		.map(
-			(category) =>
-				CATEGORY_LABELS.get(category)?.[locale === "ar" ? "ar" : "en"]
+		.map((category) =>
+			locale === "ar" ? CATEGORY_LABELS.get(category) : category
 		)
 		.join(locale === "ar" ? "، " : ", ");
 	const filterText = [
