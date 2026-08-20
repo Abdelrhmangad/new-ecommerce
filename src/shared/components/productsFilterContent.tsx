@@ -6,26 +6,19 @@ import { X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-
-const CATEGORIES = [
-	{ id: "T-Shirts", en: "T-Shirts", ar: "تيشيرتات" },
-	{ id: "Outerwear", en: "Outerwear", ar: "ملابس خارجية" },
-	{ id: "Hoodies", en: "Hoodies", ar: "هوديز" },
-	{ id: "Pants", en: "Pants", ar: "بنطلونات" }
-];
+import { useProductsCategories } from "../services/categories.queries";
+import { SingleCategoryType } from "../types/Categories.types";
 
 const SIZES = ["S", "M", "L", "XL", "XXL"];
 
-export default function ProductsFilterContent({
-	clearFilters
-}: {
-	clearFilters: () => void;
-}) {
+export default function ProductsFilterContent() {
 	const t = useTranslations("Products");
 	const locale = useLocale() as "en" | "ar";
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
+
+	const { data: categoriesData, isPending } = useProductsCategories();
 
 	// Derive initial filter values from URL
 	const initialCategories =
@@ -51,7 +44,7 @@ export default function ProductsFilterContent({
 		sort: string
 	) => {
 		const params = new URLSearchParams(searchParams.toString());
-
+		params.set("page", 1);
 		if (categories.length > 0) {
 			params.set("categories", categories.join(","));
 		} else {
@@ -104,7 +97,6 @@ export default function ProductsFilterContent({
 		setSelectedSizes([]);
 		setSortBy("featured");
 		updateUrlFilters([], [], "featured");
-		clearFilters(); // optional parent callback
 	};
 
 	// Check if any filter is active (for button states)
@@ -119,18 +111,28 @@ export default function ProductsFilterContent({
 					{t("categories")}
 				</h3>
 				<div className="space-y-2">
-					{CATEGORIES.map((cat) => (
-						<label
-							key={cat.id}
-							className="flex items-center gap-2 text-sm cursor-pointer"
-						>
-							<Checkbox
-								checked={selectedCategories.includes(cat.id)}
-								onCheckedChange={() => toggleCategory(cat.id)}
-							/>
-							<span>{cat[locale]}</span>
-						</label>
-					))}
+					{isPending ? (
+						<p className="text-sm text-muted-foreground">
+							Loading...
+						</p>
+					) : (
+						categoriesData?.map((category: SingleCategoryType) => (
+							<label
+								key={category._id}
+								className="flex items-center gap-2 text-sm cursor-pointer"
+							>
+								<Checkbox
+									checked={selectedCategories.includes(
+										category.slug
+									)}
+									onCheckedChange={() =>
+										toggleCategory(category.slug)
+									}
+								/>
+								<span>{category.name[locale]}</span>
+							</label>
+						))
+					)}
 				</div>
 			</div>
 

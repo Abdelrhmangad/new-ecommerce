@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
 	Sheet,
 	SheetContent,
@@ -23,27 +21,27 @@ export default function ProductsClient() {
 	const locale = useLocale() as "en" | "ar";
 	const t = useTranslations("Products");
 	const params = useSearchParams();
-	console.log("params", params.get("page"));
+	const page = parseInt(params.get("page") || "");
+	const categories = params.get("categories");
+	const sizes = params.get("sizes");
+
 	const {
 		data: productsData,
 		isFetching,
 		isPending
-	} = useCategoryProducts({ page: parseInt(params.get("page") || "") || 1 });
+	} = useCategoryProducts({
+		page: page || 1,
+		categories: categories || "",
+		size: sizes || ""
+	});
 	const products = productsData?.products;
-	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-	const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-
-	const clearFilters = () => {
-		setSelectedCategories([]);
-		setSelectedSizes([]);
-	};
 
 	return (
 		<main className="container mx-auto py-8 min-h-[70dvh]">
 			<div className="md:hidden flex gap-4 flex-row md:items-center md:justify-between mb-6 pb-4 border-b">
 				<div>
-					<h1 className="text-2xl font-bold tracking-tight">
-						{t("title")}
+					<h1 className="text-2xl font-bold tracking-tight capitalize">
+						{categories ? categories : t("title")}
 					</h1>
 					<p className="text-xs text-muted-foreground mt-1">
 						Showing {products?.length} items
@@ -55,13 +53,6 @@ export default function ProductsClient() {
 						<SheetTrigger className="flex items-center border py-2 px-3 border-black gap-2">
 							<SlidersHorizontal className="h-4 w-4" />
 							{t("filters")}
-							{(selectedCategories.length > 0 ||
-								selectedSizes.length > 0) && (
-								<Badge className="ms-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
-									{selectedCategories.length +
-										selectedSizes.length}
-								</Badge>
-							)}
 						</SheetTrigger>
 						<SheetContent
 							side={locale === "ar" ? "right" : "left"}
@@ -72,9 +63,7 @@ export default function ProductsClient() {
 									{t("filterProducts")}
 								</SheetTitle>
 							</SheetHeader>
-							<ProductsFilterContent
-								clearFilters={clearFilters}
-							/>
+							<ProductsFilterContent />
 						</SheetContent>
 					</Sheet>
 				</div>
@@ -83,15 +72,15 @@ export default function ProductsClient() {
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 				<aside className="hidden md:block col-span-1">
 					<div className="mb-6 pb-4 border-b">
-						<h1 className="text-2xl font-bold tracking-tight">
-							{t("title")}
+						<h1 className="text-2xl font-bold tracking-tight capitalize">
+							{categories ? categories : t("title")}
 						</h1>
 						<p className="text-xs text-muted-foreground mt-1">
 							Showing {products?.length} items
 						</p>
 					</div>
 					<div className="sticky top-20">
-						<ProductsFilterContent clearFilters={clearFilters} />
+						<ProductsFilterContent />
 					</div>
 				</aside>
 
@@ -124,11 +113,7 @@ export default function ProductsClient() {
 								<p className="text-muted-foreground text-sm">
 									{t("noProductsMatchFilters")}
 								</p>
-								<Button
-									variant="link"
-									onClick={clearFilters}
-									className="mt-2 text-xs"
-								>
+								<Button variant="link" className="mt-2 text-xs">
 									{t("clearFilters")}
 								</Button>
 							</div>
