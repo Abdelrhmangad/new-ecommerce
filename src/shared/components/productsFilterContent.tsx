@@ -44,7 +44,7 @@ export default function ProductsFilterContent() {
 		sort: string
 	) => {
 		const params = new URLSearchParams(searchParams.toString());
-		params.set("page", 1);
+		params.set("page", `1`);
 		if (categories.length > 0) {
 			params.set("categories", categories.join(","));
 		} else {

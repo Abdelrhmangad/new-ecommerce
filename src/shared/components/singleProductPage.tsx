@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
@@ -10,25 +11,40 @@ import {
 	AccordionItem,
 	AccordionTrigger
 } from "@/components/ui/accordion";
-import { DUMMY_PRODUCTS } from "@/shared/data/products.data";
 import ProductCard from "@/shared/components/productCard";
-import { ProductPropType } from "@/shared/types/Product.types";
+import {
+	ProductColorType,
+	ProductPropType
+} from "@/shared/types/Product.types";
 import AddToCartBtn from "./addToCartBtn";
 
-export default function SingleProductPage({ id }: { id: string }) {
+export default function SingleProductPage({
+	product
+}: {
+	id: string;
+	product: ProductPropType;
+}) {
 	const locale = useLocale() as "en" | "ar";
 	const t = useTranslations("Products");
 
-	const product =
-		DUMMY_PRODUCTS.find((p) => p.id === id) || DUMMY_PRODUCTS[0];
-
-	const [selectedImage, setSelectedImage] = useState(0);
+	const [selectedImageIdx, setSelectedImageIdx] = useState(0);
 	const [selectedSize, setSelectedSize] = useState<string>("");
-	const [selectedColor, setSelectedColor] = useState(
-		product.colors[0]?.name || ""
+	const [selectedColor, setSelectedColor] = useState<ProductColorType>(
+		product.colors[0]
 	);
+	const [productImages, setProductImages] = useState<string[] | null>(null);
 	const [quantity, setQuantity] = useState(1);
 
+	useEffect(() => {
+		if (!!selectedColor) {
+			const images = [
+				selectedColor?.images.primary,
+				selectedColor?.images.secondary,
+				...selectedColor?.images.gallery
+			];
+			setProductImages(images);
+		}
+	}, [selectedColor]);
 	return (
 		<main className="container mx-auto max-w-6xl px-4 py-8">
 			<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
@@ -36,45 +52,45 @@ export default function SingleProductPage({ id }: { id: string }) {
 				<div className="flex flex-col-reverse gap-4 md:flex-row md:items-start">
 					{/* Thumbnails */}
 					<div className="flex flex-row gap-3 w-fit md:flex-col">
-						{product.images.map((img, idx) => (
-							<button
-								key={idx}
-								onClick={() => setSelectedImage(idx)}
-								className={`relative aspect-3/4 w-16 shrink-0 overflow-hidden rounded-md border-2 transition-all ${
-									selectedImage === idx
-										? "border-primary"
-										: "border-transparent opacity-70"
-								}`}
-							>
-								<Image
-									src={img}
-									alt={product.name[locale]}
-									fill
-									className="object-cover"
-								/>
-							</button>
-						))}
+						{productImages &&
+							productImages.map((img, idx) => (
+								<button
+									key={idx}
+									onClick={() => setSelectedImageIdx(idx)}
+									className={`relative aspect-3/4 w-16 shrink-0 overflow-hidden rounded-md border-2 transition-all ${
+										selectedImageIdx === idx
+											? "border-primary"
+											: "border-transparent opacity-70"
+									}`}
+								>
+									<Image
+										src={img}
+										alt={product.name[locale]}
+										fill
+										className="object-cover"
+									/>
+								</button>
+							))}
 					</div>
 
 					{/* Main Image View */}
 					<div className="relative h-full aspect-3/4 w-full overflow-hidden rounded-lg bg-muted">
-						<Image
-							src={
-								product.images[selectedImage] ||
-								product.images[0]
-							}
-							alt={product.name[locale]}
-							fill
-							priority
-							className="object-cover"
-						/>
+						{productImages && (
+							<Image
+								src={productImages[selectedImageIdx]}
+								alt={product.name[locale]}
+								fill
+								priority
+								className="object-cover"
+							/>
+						)}
 					</div>
 				</div>
 				{/* 2. Purchase & Details Column */}
 				<div className="flex flex-col">
 					{/* Category & Title */}
 					<span className="text-xs uppercase tracking-wider text-muted-foreground">
-						{product.category[locale]}
+						{product.category.name[locale]}
 					</span>
 					<h1 className="mt-1 text-2xl font-bold tracking-tight md:text-3xl">
 						{product.name[locale]}
@@ -99,21 +115,21 @@ export default function SingleProductPage({ id }: { id: string }) {
 						<label className="text-sm font-medium">
 							{t("color")}:{" "}
 							<span className="text-muted-foreground">
-								{selectedColor}
+								{selectedColor?.name[locale]}
 							</span>
 						</label>
 						<div className="flex items-center gap-2 mt-1">
-							{product.colors.map((color) => (
+							{product.colors.map((color, idx) => (
 								<button
-									key={color.name}
-									onClick={() => setSelectedColor(color.name)}
+									key={idx + 2}
+									onClick={() => setSelectedColor(color)}
 									className={`h-7 w-7 rounded-full border-2 transition-transform ${
-										selectedColor === color.name
+										selectedColor?.name === color.name
 											? "scale-110 border-red-200"
 											: "border-transparent"
 									}`}
 									style={{ backgroundColor: color.hex }}
-									title={color.name}
+									title={color.name?.en}
 								/>
 							))}
 						</div>
@@ -214,14 +230,14 @@ export default function SingleProductPage({ id }: { id: string }) {
 					</div>
 				</div>
 			</div>
-			<div className="mt-16">
+			{/* <div className="mt-16">
 				<h2 className="font-bold text-xl">{t("youMightAlsoLike")}</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4 mt-4">
 					{DUMMY_PRODUCTS.map((product: ProductPropType) => (
 						<ProductCard key={product.id} product={product} />
 					))}
 				</div>
-			</div>
+			</div> */}
 		</main>
 	);
 }
