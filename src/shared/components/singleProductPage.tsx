@@ -34,7 +34,6 @@ export default function SingleProductPage({
 	);
 	const [productImages, setProductImages] = useState<string[] | null>(null);
 	const [quantity, setQuantity] = useState(1);
-
 	useEffect(() => {
 		if (!!selectedColor) {
 			const images = [
@@ -185,6 +184,8 @@ export default function SingleProductPage({
 							selectedSize={selectedSize}
 							quantity={quantity}
 							productName={product.name[locale]}
+							productVariants={product.variants}
+							selectedColor={selectedColor?.name.en}
 						/>
 					</div>
 

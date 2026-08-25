@@ -12,6 +12,9 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 	const locale = useLocale() as "en" | "ar";
 	const t = useTranslations("Products");
 	const [isHovered, setIsHovered] = useState(false);
+	const [selectedColor, setSelectedColor] = useState<string>(
+		product?.colors[0]?.name["en"]
+	);
 	const [selectedSize, setSelectedSize] = useState<string | null>(null);
 	const productImages = product?.colors[0]?.images as {
 		primary: string;
@@ -65,10 +68,14 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 						{product.colors
 							.slice(0, 3)
 							.map((color: ProductColorType) => (
-								<span
+								<button
 									key={color.name[locale]}
-									className="h-2.5 w-2.5 rounded-full border border-border"
+									className={`h-3 w-3 rounded-full border ${selectedColor === color.name["en"] ? "transform scale-105 border-black" : "border-border"}`}
 									style={{ backgroundColor: color.hex }}
+									onClick={() =>
+										setSelectedColor(color.name["en"])
+									}
+									type="button"
 									title={color.name[locale]}
 								/>
 							))}
@@ -107,7 +114,13 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 						{product.sizes.map((size) => (
 							<button
 								key={size}
-								onClick={() => setSelectedSize(size)}
+								onClick={() => {
+									setSelectedSize(size);
+									console.log(
+										"HERERE REREER SelectedSize",
+										size
+									);
+								}}
 								className={`h-6 w-6 rounded border text-[10px] font-medium transition-colors ${
 									selectedSize === size
 										? "border-primary bg-primary text-primary-foreground"
@@ -121,8 +134,11 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 
 					<AddToCartBtn
 						selectedSize={selectedSize}
+						selectedColor={selectedColor}
 						quantity={1}
+						productName={product?.name["en"]}
 						className="text-xs max-h-fit sm:max-w-fit max-w-full py-1"
+						productVariants={product?.variants}
 					/>
 				</div>
 			</div>

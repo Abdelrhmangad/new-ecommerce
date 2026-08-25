@@ -35,7 +35,8 @@
         "applyFilters": "Apply Filters",
         "noProductsMatchFilters": "No products match your filters..",
         "clearFilters": "Clear all Filters",
-        "loadingProducts": "Loading products"
+        "loadingProducts": "Loading products",
+        "outOfStock": "Out Of Stock"
     },
     "ProductsBanner": {
         "wilderness": {

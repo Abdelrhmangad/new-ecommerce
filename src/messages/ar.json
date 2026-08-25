@@ -35,7 +35,8 @@
         "applyFilters": "فرز المنتجات",
         "noProductsMatchFilters": "لا توجد منتجات للتصفينات المحدده",
         "clearFilters": "حذف كل التصنيفات",
-        "loadingProducts": "جاري تحميل المنتجات"
+        "loadingProducts": "جاري تحميل المنتجات",
+        "outOfStock": "غير متوفر"
     },
     "ProductsBanner": {
         "wilderness": {

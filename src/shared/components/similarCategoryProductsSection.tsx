@@ -19,7 +19,6 @@ export default function SimilarCategoryProductsSection({
 		categories: categorySlug || "",
 		exclude: slug
 	});
-	console.log("data", data);
 	return (
 		<div className="mt-16">
 			<h2 className="font-bold text-xl">{t("youMightAlsoLike")}</h2>
