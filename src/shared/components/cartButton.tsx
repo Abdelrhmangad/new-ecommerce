@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Sheet,
@@ -13,12 +13,16 @@ import {
 } from "@/components/ui/sheet";
 import { useTranslations } from "next-intl";
 import useStore from "@/store/store";
+import { CartItemRow } from "./cartItem";
 
 export function CartDrawer() {
 	const t = useTranslations("Cart");
-	const isCartShown = useStore((state) => state.cart.showCart);
+	const {
+		showCart: isCartShown,
+		items,
+		total
+	} = useStore((state) => state.cart);
 	const toggleCart = useStore((state) => state.toggleCart);
-	console.log("isCartShown", isCartShown);
 	return (
 		<Sheet
 			open={isCartShown}
@@ -40,7 +44,7 @@ export function CartDrawer() {
 						<span className="sr-only">Open cart</span>
 						{/* Optional item counter badge */}
 						<span className="absolute -inset-s-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
-							0
+							{items?.length || 0}
 						</span>
 					</Button>
 				}
@@ -50,7 +54,7 @@ export function CartDrawer() {
 
 			{/* Slide-over Sidebar Drawer */}
 			<SheetContent
-				className="flex w-full flex-col justify-between sm:max-w-md"
+				className="flex flex-col justify-between sm:max-w-md! max-w-full! w-full!"
 				showCloseButton={false}
 			>
 				<div>
@@ -62,13 +66,32 @@ export function CartDrawer() {
 							{t("description")}
 						</SheetDescription>
 					</SheetHeader>
+					<X
+						className="absolute w-5 h-5 top-4 right-3"
+						onClick={() => toggleCart()}
+					/>
 
-					{/* Cart Body Placeholder */}
-					<div className="flex min-h-64 items-center justify-center border-b border-t my-6 text-muted-foreground text-sm">
-						{t("empty_cart")}
+					<div className="flex items-center justify-center my-6 text-muted-foreground text-sm">
+						{items?.length === 0 ? (
+							<p className="min-h-64 border-b border-t w-full text-center grid place-items-center">
+								{t("empty_cart")}
+							</p>
+						) : (
+							<div className="flex flex-col border-t">
+								{items.map((cartItem) => (
+									<CartItemRow
+										key={cartItem.variantSku}
+										item={cartItem}
+									/>
+								))}
+							</div>
+						)}
 					</div>
 				</div>
-
+				<p className="w-full px-4 text-base text-end">
+					<span>Total: </span>
+					<span className="font-semibold">{total} EGP</span>
+				</p>
 				{/* Footer Actions */}
 				<SheetFooter className="flex-col gap-2 sm:flex-col">
 					<Button className="w-full py-5 text-base">

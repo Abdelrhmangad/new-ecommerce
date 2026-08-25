@@ -5,6 +5,7 @@ import { CartItem } from '@/shared/types/Cart.types'
 type CartState = {
     showCart: boolean;
     items: CartItem[]
+    total: number
 }
 
 type StoreState = {
@@ -15,6 +16,8 @@ type StoreState = {
     removeFromCart: (variantSku: string) => void
     clearCart: () => void
 }
+
+const calculateTotal = (items: CartItem[]) => items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
 const cartStorage: StateStorage = {
     getItem: (name) => {
@@ -38,10 +41,13 @@ const cartStorage: StateStorage = {
                 return storedValue
             }
 
+            const items = Array.isArray(parsedValue.items) ? parsedValue.items : []
+
             return JSON.stringify({
                 state: {
                     cart: {
-                        items: Array.isArray(parsedValue.items) ? parsedValue.items : [],
+                        items,
+                        total: calculateTotal(items),
                     },
                 },
                 version: 0,
@@ -58,6 +64,7 @@ const useStore = create<StoreState>()(persist((set) => ({
     cart: {
         showCart: false,
         items: [],
+        total: 0,
     },
 
     toggleCart: () => set((state) => {
@@ -80,10 +87,15 @@ const useStore = create<StoreState>()(persist((set) => ({
             )
 
             if (!existingItem) {
+                const items = quantity > 0
+                    ? [...state.cart.items, { ...item, quantity }]
+                    : state.cart.items
+
                 return {
                     cart: {
                         ...state.cart,
-                        items: quantity > 0 ? [{ ...item, quantity }] : state.cart.items,
+                        items,
+                        total: calculateTotal(items),
                     },
                 }
             }
@@ -93,14 +105,17 @@ const useStore = create<StoreState>()(persist((set) => ({
                 existingItem.maxStock,
             )
 
+            const items = state.cart.items.map((cartItem) =>
+                cartItem.variantSku === item.variantSku
+                    ? { ...cartItem, quantity: updatedQuantity }
+                    : cartItem,
+            )
+
             return {
                 cart: {
                     ...state.cart,
-                    items: state.cart.items.map((cartItem) =>
-                        cartItem.variantSku === item.variantSku
-                            ? { ...cartItem, quantity: updatedQuantity }
-                            : cartItem,
-                    ),
+                    items,
+                    total: calculateTotal(items),
                 },
             }
         }),
@@ -120,38 +135,46 @@ const useStore = create<StoreState>()(persist((set) => ({
                 item.maxStock,
             )
 
+            const items = updatedQuantity === 0
+                ? state.cart.items.filter(
+                    (cartItem) => cartItem.variantSku !== variantSku,
+                )
+                : state.cart.items.map((cartItem) =>
+                    cartItem.variantSku === variantSku
+                        ? { ...cartItem, quantity: updatedQuantity }
+                        : cartItem,
+                )
+
             return {
                 cart: {
                     ...state.cart,
-                    items:
-                        updatedQuantity === 0
-                            ? state.cart.items.filter(
-                                (cartItem) => cartItem.variantSku !== variantSku,
-                            )
-                            : state.cart.items.map((cartItem) =>
-                                cartItem.variantSku === variantSku
-                                    ? { ...cartItem, quantity: updatedQuantity }
-                                    : cartItem,
-                            ),
+                    items,
+                    total: calculateTotal(items),
                 },
             }
         }),
 
     removeFromCart: (variantSku) =>
-        set((state) => ({
-            cart: {
-                ...state.cart,
-                items: state.cart.items.filter(
-                    (item) => item.variantSku !== variantSku,
-                ),
-            },
-        })),
+        set((state) => {
+            const items = state.cart.items.filter(
+                (item) => item.variantSku !== variantSku,
+            )
+
+            return {
+                cart: {
+                    ...state.cart,
+                    items,
+                    total: calculateTotal(items),
+                },
+            }
+        }),
 
     clearCart: () =>
         set((state) => ({
             cart: {
                 ...state.cart,
                 items: [],
+                total: 0,
             },
         })),
 }), {
@@ -159,13 +182,17 @@ const useStore = create<StoreState>()(persist((set) => ({
     storage: createJSONStorage(() => cartStorage),
     merge: (persistedState, currentState) => {
         const persisted = persistedState as Partial<StoreState>
+        const mergedCart = {
+            ...currentState.cart,
+            ...persisted.cart,
+        }
 
         return {
             ...currentState,
             ...persisted,
             cart: {
-                ...currentState.cart,
-                ...persisted.cart,
+                ...mergedCart,
+                total: calculateTotal(mergedCart.items),
             },
         }
     },
