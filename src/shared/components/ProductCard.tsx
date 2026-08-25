@@ -139,6 +139,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 						productName={product?.name["en"]}
 						className="text-xs max-h-fit sm:max-w-fit max-w-full py-1"
 						productVariants={product?.variants}
+						product={product}
 					/>
 				</div>
 			</div>

@@ -186,6 +186,7 @@ export default function SingleProductPage({
 							productName={product.name[locale]}
 							productVariants={product.variants}
 							selectedColor={selectedColor?.name.en}
+							product={product}
 						/>
 					</div>
 
