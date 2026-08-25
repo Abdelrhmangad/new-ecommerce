@@ -15,7 +15,18 @@
 		"checkout": "Proceed to Checkout",
 		"maxStockReached": "You have already reached the maximum available stock for this item in your cart.",
 		"stockLimitExceeded": "Cannot add {quantity} item(s). Only {remaining} more available.",
-		"successAdded": "Added to cart successfully!"
+		"successAdded": "Added to cart successfully!",
+		"empty_description": "Your cart is waiting",
+		"item_count": "{count, plural, =0 {No items} one {# item} other {# items}}",
+		"empty_subtitle": "Looks like you haven't added anything yet.",
+		"open_cart": "Open cart",
+		"close": "Close cart",
+		"subtotal": "Subtotal",
+		"cart_empty_action": "Cart is empty",
+		"clear_cart": "Clear cart",
+		"remove_item": "Remove item",
+		"increase_quantity": "Increase quantity",
+		"decrease_quantity": "Decrease quantity"
 	},
 	"Products": {
 		"title": "Catalog",

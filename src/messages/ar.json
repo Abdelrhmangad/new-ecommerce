@@ -11,11 +11,22 @@
 	"Cart": {
 		"title": "سلة التسوق",
 		"description": "راجع منتجاتك قبل المتابعة إلى الدفع.",
-		"empty_cart": "سلتك فارغة حالياً.",
-		"checkout": "تابع إلى الدفع",
+		"empty_cart": "سلة التسوق فارغة",
+		"checkout": "إتمام الشراء",
 		"maxStockReached": "لقد وصلت بالفعل إلى الحد الأقصى للكمية المتاحة لهذا المنتج في سلتك.",
 		"stockLimitExceeded": "لا يمكن إضافة {quantity} منتج. المتبقي المتاح فقط هو {remaining}.",
-		"successAdded": "تمت الإضافة إلى السلة بنجاح!"
+		"successAdded": "تمت الإضافة إلى السلة بنجاح!",
+		"empty_description": "سلة التسوق في انتظارك",
+		"item_count": "{count, plural, =0 {لا توجد منتجات} one {# منتج} two {# منتجين} few {# منتجات} many {# منتجًا} other {# منتج}}",
+		"empty_subtitle": "يبدو أنك لم تضف أي منتجات بعد.",
+		"open_cart": "فتح السلة",
+		"close": "إغلاق السلة",
+		"subtotal": "المجموع الفرعي",
+		"cart_empty_action": "السلة فارغة",
+		"clear_cart": "إفراغ السلة",
+		"remove_item": "إزالة المنتج",
+		"increase_quantity": "زيادة الكمية",
+		"decrease_quantity": "تقليل الكمية"
 	},
 	"Products": {
 		"title": "المنتجات",

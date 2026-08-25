@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCart, X } from "lucide-react";
+import { CreditCard, ShoppingCart, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Sheet,
@@ -23,6 +23,9 @@ export function CartDrawer() {
 		total
 	} = useStore((state) => state.cart);
 	const toggleCart = useStore((state) => state.toggleCart);
+	const clearCart = useStore((state) => state.clearCart);
+
+	const isEmpty = items.length === 0;
 	return (
 		<Sheet
 			open={isCartShown}
@@ -67,17 +70,25 @@ export function CartDrawer() {
 						</SheetDescription>
 					</SheetHeader>
 					<X
-						className="absolute w-5 h-5 top-4 right-3"
+						className="absolute w-5 h-5 top-4 right-3 cursor-pointer"
 						onClick={() => toggleCart()}
 					/>
 
 					<div className="flex items-center justify-center my-6 text-muted-foreground text-sm">
 						{items?.length === 0 ? (
-							<p className="min-h-64 border-b border-t w-full text-center grid place-items-center">
-								{t("empty_cart")}
-							</p>
+							<div className="flex flex-col items-center justify-center py-20 text-center">
+								<div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-muted">
+									<ShoppingCart className="h-6 w-6 text-muted-foreground" />
+								</div>
+								<p className="text-base font-medium">
+									{t("empty_cart")}
+								</p>
+								<p className="mt-1 text-sm text-muted-foreground">
+									{t("empty_subtitle")}
+								</p>
+							</div>
 						) : (
-							<div className="flex flex-col border-t">
+							<div className="divide-y divide-border border-b w-full">
 								{items.map((cartItem) => (
 									<CartItemRow
 										key={cartItem.variantSku}
@@ -88,15 +99,39 @@ export function CartDrawer() {
 						)}
 					</div>
 				</div>
-				<p className="w-full px-4 text-base text-end">
-					<span>Total: </span>
-					<span className="font-semibold">{total} EGP</span>
-				</p>
+
 				{/* Footer Actions */}
-				<SheetFooter className="flex-col gap-2 sm:flex-col">
-					<Button className="w-full py-5 text-base">
-						{t("checkout")}
+				<SheetFooter className="flex-col gap-0 border-t bg-background px-6 py-5 sm:flex-col">
+					{!isEmpty && (
+						<div className="mb-4 flex items-center justify-between">
+							<span className="text-sm text-muted-foreground">
+								{t("subtotal")}
+							</span>
+							<span className="text-xl font-medium tabular-nums">
+								{total.toLocaleString()} EGP
+							</span>
+						</div>
+					)}
+
+					<Button
+						className="h-12 w-full gap-2 text-base font-medium"
+						disabled={isEmpty}
+					>
+						<CreditCard className="h-4 w-4" />
+						{isEmpty ? t("cart_empty_action") : t("checkout")}
 					</Button>
+
+					{!isEmpty && (
+						<Button
+							variant="ghost"
+							size="sm"
+							className="mt-2 h-auto py-2 text-xs text-muted-foreground hover:text-destructive"
+							onClick={clearCart}
+						>
+							<Trash2 className="mr-1.5 h-3.5 w-3.5" />
+							{t("clear_cart")}
+						</Button>
+					)}
 				</SheetFooter>
 			</SheetContent>
 		</Sheet>

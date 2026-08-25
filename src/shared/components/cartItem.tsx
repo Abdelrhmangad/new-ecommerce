@@ -44,7 +44,7 @@ export function CartItemRow({ item }: CartItemRowProps) {
 	};
 
 	return (
-		<div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 py-4 px-4 border-b border-border/60 w-full">
+		<div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 py-4 px-4 w-full">
 			{/* Product Image & Basic Info */}
 			<div className="flex items-center gap-4 w-full md:w-auto">
 				<div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md border bg-muted">
