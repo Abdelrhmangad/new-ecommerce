@@ -12,7 +12,7 @@ import {
 import { LoaderCircle, SlidersHorizontal } from "lucide-react";
 import ProductCard from "@/shared/components/productCard";
 import ProductsFilterContent from "@/shared/components/productsFilterContent";
-import { useCategoryProducts } from "@/shared/services/products.queries";
+import { useProducts } from "@/shared/services/products.queries";
 import { ProductPropType } from "@/shared/types/Product.types";
 import Paginator from "@/shared/components/paginator";
 import { useSearchParams } from "next/navigation";
@@ -29,7 +29,7 @@ export default function ProductsClient() {
 		data: productsData,
 		isFetching,
 		isPending
-	} = useCategoryProducts({
+	} = useProducts({
 		page: page || 1,
 		categories: categories || "",
 		size: sizes || ""

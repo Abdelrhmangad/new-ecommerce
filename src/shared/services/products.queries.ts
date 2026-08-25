@@ -3,8 +3,7 @@ import { APPLICATION_QUERY_KEYS } from "../utils/query-keys";
 import api from "../utils/axios.config";
 
 
-export function useCategoryProducts({ categories, page, size }: { categories?: string, page: number, size?: string }) {
-    console.log("FILTERS", { categories, page, size })
+export function useProducts({ categories, page, size }: { categories?: string, page?: number, size?: string }) {
     return useQuery({
         queryKey: [...APPLICATION_QUERY_KEYS.PRODUCTS, categories || "", page || '', size || ""],
         queryFn: async () => {

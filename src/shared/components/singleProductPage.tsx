@@ -11,12 +11,12 @@ import {
 	AccordionItem,
 	AccordionTrigger
 } from "@/components/ui/accordion";
-import ProductCard from "@/shared/components/productCard";
 import {
 	ProductColorType,
 	ProductPropType
 } from "@/shared/types/Product.types";
 import AddToCartBtn from "./addToCartBtn";
+import SimilarCategoryProductsSection from "./similarCategoryProductsSection";
 
 export default function SingleProductPage({
 	product
@@ -230,14 +230,9 @@ export default function SingleProductPage({
 					</div>
 				</div>
 			</div>
-			{/* <div className="mt-16">
-				<h2 className="font-bold text-xl">{t("youMightAlsoLike")}</h2>
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:grid-cols-4 mt-4">
-					{DUMMY_PRODUCTS.map((product: ProductPropType) => (
-						<ProductCard key={product.id} product={product} />
-					))}
-				</div>
-			</div> */}
+			<SimilarCategoryProductsSection
+				categorySlug={product?.category?.slug}
+			/>
 		</main>
 	);
 }
