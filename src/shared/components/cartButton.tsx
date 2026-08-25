@@ -12,11 +12,22 @@ import {
 	SheetFooter
 } from "@/components/ui/sheet";
 import { useTranslations } from "next-intl";
+import useStore from "@/store/store";
 
 export function CartDrawer() {
 	const t = useTranslations("Cart");
+	const isCartShown = useStore((state) => state.cart.showCart);
+	const toggleCart = useStore((state) => state.toggleCart);
+	console.log("isCartShown", isCartShown);
 	return (
-		<Sheet>
+		<Sheet
+			open={isCartShown}
+			onOpenChange={(open) => {
+				if (open !== isCartShown) {
+					toggleCart();
+				}
+			}}
+		>
 			{/* Cart Trigger Button */}
 			<SheetTrigger
 				render={

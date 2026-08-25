@@ -22,6 +22,7 @@ export default function AddToCartBtn({
 	product: ProductPropType;
 }) {
 	const t = useTranslations("Products");
+	const tCart = useTranslations("Cart");
 	const pdtVariant = productVariants?.find(
 		(variant: ProductVariantType) =>
 			variant.colorName === selectedColor && variant.size === selectedSize
@@ -57,12 +58,15 @@ export default function AddToCartBtn({
 			className={`flex-1 py-4.5 text-base ${className || ""}`}
 			disabled={!selectedSize}
 			onClick={() =>
-				addPdtToCart({
-					...product,
-					selectedSku: pdtVariant?.sku || "",
-					quantity: quantity,
-					selectedColorHex: selectedColorObj?.hex || ""
-				})
+				addPdtToCart(
+					{
+						...product,
+						selectedSku: pdtVariant?.sku || "",
+						quantity: quantity,
+						selectedColorHex: selectedColorObj?.hex || ""
+					},
+					tCart
+				)
 			}
 			aria-label={
 				selectedSize

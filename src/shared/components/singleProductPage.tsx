@@ -169,7 +169,7 @@ export default function SingleProductPage({
 							>
 								-
 							</button>
-							<span className="px-3 text-sm font-medium">
+							<span className="inline-block w-9 text-center text-sm font-medium">
 								{quantity}
 							</span>
 							<button

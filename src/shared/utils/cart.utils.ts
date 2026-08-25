@@ -1,39 +1,51 @@
 import toast from "react-hot-toast";
 import { CartItem } from "../types/Cart.types";
 import { ProductPropType } from "../types/Product.types";
+import useStore from "@/store/store";
 
-const LOCALSTORAGE_CART_KEY = "user_cart"
+type CombinedType = ProductPropType & { selectedSku: string; quantity: number; selectedColorHex: string };
 
-type CombinedType = ProductPropType & { selectedSku: string, quantity: number, selectedColorHex: string }
+export function addPdtToCart(pdtData: CombinedType, t: (key: string, values?: Record<string, string>) => string) {
+    void t;
 
-export function addPdtToCart(pdtData: CombinedType) {
-    console.log("addPdtToCart called function called", pdtData)
-    const cart = JSON.parse(localStorage.getItem(LOCALSTORAGE_CART_KEY) ?? '{"items":[]}') as { items: CartItem[] }
-    const existingItem = cart.items.find((item) => item.variantSku === pdtData.selectedSku);
+    // Find stock data for the selected variant
+    const pdtVariantData = pdtData.variants.find(variant => variant.sku === pdtData.selectedSku);
+    const availableStock = pdtVariantData?.quantity ?? 0;
 
-    if (existingItem) {
-        // Update quantity if item already exists in cart
-        existingItem.quantity += pdtData.quantity;
-    } else {
-        const pdtVariantData = pdtData.variants.find(variant => variant.sku === pdtData?.selectedSku)
-        const pdtColorObj = pdtData.colors.find(color => color.hex === pdtData?.selectedColorHex);
-        const primaryImg = pdtColorObj?.images?.primary || pdtColorObj?.images?.secondary
+    const existingItem = useStore.getState().cart.items.find(
+        (item) => item.variantSku === pdtData.selectedSku,
+    );
+    const currentCartQuantity = existingItem ? existingItem.quantity : 0;
+    const requestedTotal = currentCartQuantity + pdtData.quantity;
 
-        const newItem: CartItem = {
-            variantSku: pdtData.selectedSku,
-            productId: pdtData._id ?? pdtData.id,
-            name: pdtData.name,
-            price: pdtData.price,
-            size: pdtVariantData?.size || '',
-            colorName: pdtVariantData?.colorName || "",
-            colorHex: pdtData.selectedColorHex,
-            image: primaryImg || "",
-            quantity: Math.min(pdtData.quantity, pdtVariantData?.quantity || 0),
-            maxStock: pdtVariantData?.quantity || 0,
-        };
-        cart.items.push(newItem);
+    // Check if total requested quantity exceeds stock limit
+    if (requestedTotal > availableStock) {
+        const remainingAllowed = availableStock - currentCartQuantity;
+
+        if (remainingAllowed <= 0) {
+            toast.error("You have already reached the maximum available stock for this item in your cart.");
+        } else {
+            toast.error(`Cannot add ${pdtData.quantity} item(s). Only ${remainingAllowed} more available.`);
+        }
+        return; // Stop execution
     }
 
-    // Save the updated cart back to localStorage
-    localStorage.setItem(LOCALSTORAGE_CART_KEY, JSON.stringify(cart));
-} 
+    const pdtColorObj = pdtData.colors.find(color => color.hex === pdtData?.selectedColorHex);
+    const primaryImg = pdtColorObj?.images?.primary || pdtColorObj?.images?.secondary;
+
+    const newItem: CartItem = {
+        variantSku: pdtData.selectedSku,
+        productId: pdtData._id ?? pdtData.id,
+        name: pdtData.name,
+        price: pdtData.price,
+        size: pdtVariantData?.size || '',
+        colorName: pdtVariantData?.colorName || "",
+        colorHex: pdtData.selectedColorHex,
+        image: primaryImg || "",
+        quantity: pdtData.quantity,
+        maxStock: availableStock,
+    };
+
+    useStore.getState().addToCart(newItem);
+    toast.success("Added to cart successfully!");
+}
