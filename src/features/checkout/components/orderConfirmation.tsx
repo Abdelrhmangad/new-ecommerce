@@ -15,7 +15,7 @@ export function OrderConfirmation({ orderId }: Props) {
 	const router = useRouter();
 
 	return (
-		<div className="flex flex-col items-center py-12 text-center">
+		<div className="flex flex-col items-center py-12 text-center  min-h-[60dvh]">
 			<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-50 text-green-600">
 				<CheckCircle className="h-8 w-8" />
 			</div>
@@ -25,20 +25,22 @@ export function OrderConfirmation({ orderId }: Props) {
 				{t("confirmation_desc")}
 			</p>
 
-			<div className="mt-6 inline-flex items-center gap-2 rounded-lg bg-muted px-4 py-2 font-mono text-sm">
-				<Package className="h-4 w-4 text-muted-foreground" />
+			<div className="mt-6 inline-flex items-center gap-2 rounded-lg bg-muted px-4 py-2 font-mono text-base">
+				<Package className="h-10 w-10 text-muted-foreground" />
 				{orderId}
 			</div>
 
 			<div className="mt-8 flex w-full max-w-xs flex-col gap-3">
 				<Button
 					className="h-11 w-full"
+					size="lg"
 					onClick={() => router.replace("/")}
 				>
 					{t("continue_shopping")}
 				</Button>
 				<Button
 					variant="outline"
+					size="lg"
 					className="h-11 w-full"
 					render={<Link href="/orders">{t("view_orders")}</Link>}
 				></Button>

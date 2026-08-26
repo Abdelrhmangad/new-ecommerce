@@ -4,5 +4,8 @@
         "src/messages"
     ],
     "i18n-ally.keystyle": "nested",
-    "i18n-ally.sourceLanguage": "ar"
+    "i18n-ally.sourceLanguage": "ar",
+    "cSpell.words": [
+        "Governorates"
+    ]
 }

@@ -1,18 +1,19 @@
 "use client";
 
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface Props {
 	current: 1 | 2 | 3;
 }
 
-const steps = [
-	{ id: 1, label: "Shipping" },
-	{ id: 2, label: "Payment" },
-	{ id: 3, label: "Confirm" }
-];
-
 export function CheckoutProgress({ current }: Props) {
+	const t = useTranslations("Checkout");
+	const steps = [
+		{ id: 1, label: t("shipping") },
+		{ id: 2, label: t("payment") },
+		{ id: 3, label: t("confirm") }
+	];
 	return (
 		<div className="mb-8 flex items-center justify-center gap-2">
 			{steps.map((step, idx) => {

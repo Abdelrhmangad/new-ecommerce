@@ -5,6 +5,11 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { EgyptLocationSelector } from "./governoratesSelectInput";
+
+export function isValidEgyptianPhoneNumber(phone: string): boolean {
+	return /^01[0125]\d{8}$/.test(phone.trim());
+}
 
 export interface ShippingData {
 	fullName: string;
@@ -43,7 +48,7 @@ export function ShippingForm({ defaultValues, onSubmit }: Props) {
 		const nextErrors: typeof errors = {};
 		if (!data.fullName.trim()) nextErrors.fullName = t("required");
 		if (!data.phone.trim()) nextErrors.phone = t("required");
-		else if (!/^01[0125]\d{8}$/.test(data.phone.trim()))
+		else if (!isValidEgyptianPhoneNumber(data.phone))
 			nextErrors.phone = t("invalid_phone");
 		if (!data.governorate.trim()) nextErrors.governorate = t("required");
 		if (!data.city.trim()) nextErrors.city = t("required");
@@ -98,36 +103,18 @@ export function ShippingForm({ defaultValues, onSubmit }: Props) {
 				)}
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div className="space-y-1.5">
-					<Label htmlFor="governorate">{t("governorate")}</Label>
-					<Input
-						id="governorate"
-						value={data.governorate}
-						onChange={(e) => update("governorate", e.target.value)}
-						placeholder={t("governorate_placeholder")}
-					/>
-					{errors.governorate && (
-						<p className="text-xs text-destructive">
-							{errors.governorate}
-						</p>
-					)}
-				</div>
-				<div className="space-y-1.5">
-					<Label htmlFor="city">{t("city")}</Label>
-					<Input
-						id="city"
-						value={data.city}
-						onChange={(e) => update("city", e.target.value)}
-						placeholder={t("city_placeholder")}
-					/>
-					{errors.city && (
-						<p className="text-xs text-destructive">
-							{errors.city}
-						</p>
-					)}
-				</div>
-			</div>
+			<EgyptLocationSelector
+				governorateValue={data.governorate}
+				cityValue={data.city}
+				onGovernorateChange={(val) => update("governorate", val)}
+				onCityChange={(val) => update("city", val)}
+				governorateError={errors.governorate}
+				cityError={errors.city}
+				governorateLabel={t("governorate")}
+				cityLabel={t("city")}
+				governoratePlaceholder={t("governorate_placeholder")}
+				cityPlaceholder={t("city_placeholder")}
+			/>
 
 			<div className="space-y-1.5">
 				<Label htmlFor="address">{t("address")}</Label>
