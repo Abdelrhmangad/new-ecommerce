@@ -34,17 +34,13 @@ export default function AddToCartBtn({
 		(color) => color?.name?.en === selectedColor
 	);
 	const isOutOfStock = (pdtVariant?.quantity ?? 0) <= 0;
-	// console.log("PDT details", {
-	// 	name: productName,
-	// 	outOfStock: isOutOfStock,
-	// 	variant: pdtVariant
-	// });
+	const isVariantOutOfStock = Boolean(
+		pdtVariant && quantity > pdtVariant.quantity
+	);
 
-	const showOutOfStockBtn =
-		(selectedSize && isOutOfStock) ||
-		quantity > (pdtVariant?.quantity ?? 0);
+	const showOutOfStockBtn = isOutOfStock || isVariantOutOfStock;
 
-	return showOutOfStockBtn ? (
+	return showOutOfStockBtn && selectedSize ? (
 		<Button
 			size="lg"
 			variant="destructive"
