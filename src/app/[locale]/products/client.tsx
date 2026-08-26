@@ -10,10 +10,10 @@ import {
 	SheetTrigger
 } from "@/components/ui/sheet";
 import { LoaderCircle, SlidersHorizontal } from "lucide-react";
-import ProductCard from "@/shared/components/productCard";
-import ProductsFilterContent from "@/shared/components/productsFilterContent";
+import ProductCard from "@/features/products/components/productCard";
+import ProductsFilterContent from "@/features/products/components/productsFilterContent";
 import { useProducts } from "@/shared/services/products.queries";
-import { ProductPropType } from "@/shared/types/Product.types";
+import { ProductPropType } from "@/features/products/types/Product.types";
 import Paginator from "@/shared/components/paginator";
 import { useSearchParams } from "next/navigation";
 

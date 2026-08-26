@@ -6,8 +6,8 @@ import { X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { useProductsCategories } from "../services/categories.queries";
-import { SingleCategoryType } from "../types/Categories.types";
+import { useProductsCategories } from "../../../shared/services/categories.queries";
+import { SingleCategoryType } from "../../../shared/types/Categories.types";
 
 const SIZES = ["S", "M", "L", "XL", "XXL"];
 

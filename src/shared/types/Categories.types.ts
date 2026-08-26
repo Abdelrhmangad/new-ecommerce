@@ -1,4 +1,4 @@
-import { ProductPropType } from "./Product.types";
+import { ProductPropType } from "../../features/products/types/Product.types";
 
 export type SingleCategoryType = {
     _id: string;

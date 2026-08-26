@@ -14,9 +14,12 @@ import {
 import { useTranslations } from "next-intl";
 import useStore from "@/store/store";
 import { CartItemRow } from "./cartItem";
+import { useRouter } from "@/i18n/routing";
 
 export function CartDrawer() {
 	const t = useTranslations("Cart");
+	const router = useRouter();
+
 	const {
 		showCart: isCartShown,
 		items,
@@ -116,6 +119,10 @@ export function CartDrawer() {
 					<Button
 						className="h-12 w-full gap-2 text-base font-medium"
 						disabled={isEmpty}
+						onClick={() => {
+							toggleCart();
+							router.push("/checkout");
+						}}
 					>
 						<CreditCard className="h-4 w-4" />
 						{isEmpty ? t("cart_empty_action") : t("checkout")}

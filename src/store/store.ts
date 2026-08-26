@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist, StateStorage } from 'zustand/middleware'
-import { CartItem } from '@/shared/types/Cart.types'
+import { CartItem } from '@/features/cart/types/Cart.types'
 
 type CartState = {
     showCart: boolean;

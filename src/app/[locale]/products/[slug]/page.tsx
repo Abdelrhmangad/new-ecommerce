@@ -1,5 +1,5 @@
-import SingleProductPage from "@/shared/components/singleProductPage";
-import { ProductPropType } from "@/shared/types/Product.types";
+import SingleProductPage from "@/features/products/components/singleProductPage";
+import { ProductPropType } from "@/features/products/types/Product.types";
 import axios from "axios";
 import { Metadata } from "next";
 

@@ -1,4 +1,4 @@
-import { ProductPropType } from "../types/Product.types";
+import { ProductPropType } from "../../features/products/types/Product.types";
 
 export const DUMMY_PRODUCTS: ProductPropType[] = [
     {

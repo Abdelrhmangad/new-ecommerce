@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { ProductPropType } from "../types/Product.types";
-import ProductCard from "./productCard";
+import { ProductPropType } from "../../features/products/types/Product.types";
+import ProductCard from "../../features/products/components/productCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
 import { useProductsCategories } from "../services/categories.queries";

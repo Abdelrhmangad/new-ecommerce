@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Badge } from "@/components/ui/badge";
 import { ProductColorType, ProductPropType } from "../types/Product.types";
-import AddToCartBtn from "./addToCartBtn";
+import AddToCartBtn from "../../cart/components/addToCartBtn";
 
 export default function ProductCard({ product }: { product: ProductPropType }) {
 	const locale = useLocale() as "en" | "ar";

@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import React from "react";
 import ProductCard from "./productCard";
 import { ProductPropType } from "../types/Product.types";
-import { useProducts } from "../services/products.queries";
+import { useProducts } from "../../../shared/services/products.queries";
 import { useParams } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 

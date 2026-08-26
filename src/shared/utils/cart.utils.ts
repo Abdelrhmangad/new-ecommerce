@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
-import { CartItem } from "../types/Cart.types";
-import { ProductPropType } from "../types/Product.types";
+import { CartItem } from "../../features/cart/types/Cart.types";
+import { ProductPropType } from "../../features/products/types/Product.types";
 import useStore from "@/store/store";
 
 type CombinedType = ProductPropType & { selectedSku: string; quantity: number; selectedColorHex: string };

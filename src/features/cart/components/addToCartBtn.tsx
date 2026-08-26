@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import React from "react";
-import { ProductPropType, ProductVariantType } from "../types/Product.types";
-import { addPdtToCart } from "../utils/cart.utils";
+import {
+	ProductPropType,
+	ProductVariantType
+} from "../../products/types/Product.types";
+import { addPdtToCart } from "../../../shared/utils/cart.utils";
 
 export default function AddToCartBtn({
 	className,

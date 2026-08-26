@@ -1,6 +1,9 @@
 import CategoriesPills from "@/shared/components/categoriesPills";
 import Newsletter from "@/shared/components/newsLetter";
-import { BannerItem, ProductsBanner } from "@/shared/components/productsBanner";
+import {
+	BannerItem,
+	ProductsBanner
+} from "@/features/products/components/productsBanner";
 import { useTranslations } from "next-intl";
 
 export default function HomePage() {

@@ -1,4 +1,9 @@
 "use client";
+import { CheckoutProgress } from "@/features/checkout/components/checkoutProgress";
+import { OrderConfirmation } from "@/features/checkout/components/orderConfirmation";
+import { OrderSummary } from "@/features/checkout/components/orderSummary";
+import { PaymentForm } from "@/features/checkout/components/paymentForm";
+import { ShippingForm } from "@/features/checkout/components/shippingForm";
 import useStore from "@/store/store";
 import { useLocale } from "next-intl";
 import { redirect } from "next/navigation";
@@ -12,18 +17,18 @@ export default function CheckoutPage() {
 
 	// Guard: empty cart
 	if (items.length === 0) redirect(`/${locale}/shop`);
-
+	const [orderId, setOrderId] = useState("");
 	return (
 		<div className="mx-auto max-w-6xl px-4 py-8">
 			<CheckoutProgress current={step} />
-			{step === 1 && <ShippingForm onNext={() => setStep(2)} />}
+			{step === 1 && <ShippingForm onSubmit={() => setStep(2)} />}
 			{step === 2 && (
 				<PaymentForm
 					onBack={() => setStep(1)}
-					onNext={() => setStep(3)}
+					onPlaceOrder={() => setStep(3)}
 				/>
 			)}
-			{step === 3 && <OrderConfirmation />}
+			{step === 3 && <OrderConfirmation orderId={orderId} />}
 
 			{/* Sticky order summary on desktop */}
 			<OrderSummary items={items} total={total} />

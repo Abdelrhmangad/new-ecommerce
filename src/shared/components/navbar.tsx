@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { CartDrawer } from "./cartButton";
+import { CartDrawer } from "../../features/cart/components/cartButton";
 import LocaleSwitcher from "./localeSwitcher";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";

@@ -14,8 +14,8 @@ import {
 import {
 	ProductColorType,
 	ProductPropType
-} from "@/shared/types/Product.types";
-import AddToCartBtn from "./addToCartBtn";
+} from "@/features/products/types/Product.types";
+import AddToCartBtn from "../../cart/components/addToCartBtn";
 import SimilarCategoryProductsSection from "./similarCategoryProductsSection";
 
 export default function SingleProductPage({
