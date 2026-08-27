@@ -134,7 +134,8 @@
         "signUp": "Sign up",
         "hasAccount": "Already have an account?",
         "logIn": "Log in",
-        "loggedInSuccess": "Logged in successfully.."
+        "loggedInSuccess": "Logged in successfully..",
+        "logout": "Logout"
     },
     "Checkout": {
         "shipping_title": "Shipping details",
@@ -177,5 +178,6 @@
         "order_failed": "Failed to place order. Please try again.",
         "payment": "Payment",
         "confirm": "Confirm"
-    }
+    },
+    "profile": "Profile"
 }

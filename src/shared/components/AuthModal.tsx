@@ -15,10 +15,12 @@ import { Eye, EyeOff, User, Lock, Mail } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
 import api from "../utils/axios.config";
 import toast from "react-hot-toast";
+import useAuthStore from "@/store/user-store";
+import UserAvatarMenu from "./userAvatarMenu";
 
 export default function AuthModal() {
 	const t = useTranslations("Auth");
-
+	const { login, auth } = useAuthStore();
 	const [isOpen, setIsOpen] = useState(false);
 	const [mode, setMode] = useState<"login" | "signup">("login");
 	const [showPassword, setShowPassword] = useState(false);
@@ -35,8 +37,9 @@ export default function AuthModal() {
 		// Later: Connect to Express backend authentication route
 		console.log(`Submitting ${mode}:`, formData);
 	};
-
-	return (
+	return auth?.isAuthenticated ? (
+		<UserAvatarMenu />
+	) : (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			{/* Trigger Button to place in your Navbar */}
 			<DialogTrigger render={<Button variant="default" size="lg" />}>
@@ -64,10 +67,18 @@ export default function AuthModal() {
 							});
 							const data = res.data;
 							if (res.status === 200) {
+								console.log(
+									"data.user returned from login",
+									data
+								);
+								login({
+									id: data.user.id,
+									name: data.user.name,
+									email: data.user.email,
+									picture: data.user.picture
+								});
 								toast.success(t("loggedInSuccess"));
 								setIsOpen(false);
-								console.log("|res login", res);
-								console.log("|data login", data);
 							}
 						}}
 						onError={() => {
