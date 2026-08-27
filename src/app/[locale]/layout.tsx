@@ -35,6 +35,13 @@ export default async function LocaleLayout({
 
 	return (
 		<html lang={locale} dir={dir}>
+			<head>
+				<script
+					src="https://accounts.google.com/gsi/client"
+					async
+					defer
+				></script>
+			</head>
 			<body
 				className={`${activeFontClass} ${roboto.variable} ${cairo.variable} min-h-screen bg-background antialiased`}
 			>

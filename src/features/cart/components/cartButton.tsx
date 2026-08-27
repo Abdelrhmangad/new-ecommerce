@@ -12,7 +12,7 @@ import {
 	SheetFooter
 } from "@/components/ui/sheet";
 import { useTranslations } from "next-intl";
-import useStore from "@/store/store";
+import useStore from "@/store/cart-store";
 import { CartItemRow } from "./cartItem";
 import { useRouter } from "@/i18n/routing";
 

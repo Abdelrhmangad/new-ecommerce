@@ -133,7 +133,8 @@
         "noAccount": "ليس لديك حساب؟",
         "signUp": "أنشئ حساباً الآن",
         "hasAccount": "لديك حساب بالفعل؟",
-        "logIn": "سجل الدخول"
+        "logIn": "سجل الدخول",
+        "loggedInSuccess": "تم تسجيل الدخول بنجاح"
     },
     "Checkout": {
         "shipping_title": "تفاصيل الشحن",

@@ -5,7 +5,7 @@ import { OrderConfirmation } from "@/features/checkout/components/orderConfirmat
 import { OrderSummary } from "@/features/checkout/components/orderSummary";
 import { PaymentForm } from "@/features/checkout/components/paymentForm";
 import { ShippingForm } from "@/features/checkout/components/shippingForm";
-import useStore from "@/store/store";
+import useStore from "@/store/cart-store";
 import { LoaderCircle } from "lucide-react";
 import { useLocale } from "next-intl";
 import { redirect } from "next/navigation";

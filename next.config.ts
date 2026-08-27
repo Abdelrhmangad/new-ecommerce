@@ -3,6 +3,19 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
     /* config options here */
+    async headers() {
+        return [
+            {
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'Cross-Origin-Opener-Policy',
+                        value: 'same-origin-allow-popups',
+                    },
+                ],
+            },
+        ];
+    },
     images: {
         dangerouslyAllowSVG: true,
         contentDispositionType: 'attachment',

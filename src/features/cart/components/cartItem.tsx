@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Plus, Minus, Trash2 } from "lucide-react";
 import { useLocale } from "next-intl";
-import useStore from "@/store/store";
+import useStore from "@/store/cart-store";
 
 export interface CartItem {
 	variantSku: string;

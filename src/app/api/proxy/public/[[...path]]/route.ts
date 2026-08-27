@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const ALLOWED_PATHS: string[] = [
     '/categories/*',
     '/products/*',
+    '/auth/google',
     '/auth/ensure-identifier-exists',
     '/auth/reset-password/verification',
     '/auth/reset-password',
@@ -65,11 +66,11 @@ async function handler(req: NextRequest) {
     // Extract the path from the request URL
     const url = new URL(req.url);
     const proxyPath = url.pathname.replace('/api/proxy/public', '') || '/';
-    console.log("proxyPath", proxyPath)
+    // console.log("proxyPath", proxyPath)
     if (!isPathAllowed(proxyPath)) {
         return new NextResponse(null, { status: 403 });
     }
-    console.log("isPathAllowed", isPathAllowed(proxyPath))
+    // console.log("isPathAllowed", isPathAllowed(proxyPath))
 
 
     const searchParams = url.searchParams.toString();
@@ -99,9 +100,9 @@ async function handler(req: NextRequest) {
             // If body parsing fails, continue with null body
         }
     }
-    console.log(
-        "%c targetUrl %c " + targetUrl,
-    );
+    // console.log(
+    //     "%c targetUrl %c " + targetUrl,
+    // );
     try {
         const backendResponse = await axios({
             method: req.method.toLowerCase(),

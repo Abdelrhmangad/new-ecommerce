@@ -133,7 +133,8 @@
         "noAccount": "Don't have an account?",
         "signUp": "Sign up",
         "hasAccount": "Already have an account?",
-        "logIn": "Log in"
+        "logIn": "Log in",
+        "loggedInSuccess": "Logged in successfully.."
     },
     "Checkout": {
         "shipping_title": "Shipping details",
