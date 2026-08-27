@@ -13,10 +13,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, User, Lock, Mail } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
-import api from "../utils/axios.config";
 import toast from "react-hot-toast";
 import useAuthStore from "@/store/user-store";
 import UserAvatarMenu from "./userAvatarMenu";
+import axios from "axios";
 
 export default function AuthModal() {
 	const t = useTranslations("Auth");
@@ -62,9 +62,12 @@ export default function AuthModal() {
 							const idToken = credentialResponse.credential;
 							if (!idToken) return;
 
-							const res = await api.post("/google-login", {
-								token: idToken
-							});
+							const res = await axios.post(
+								"/api/auth/google-login",
+								{
+									token: idToken
+								}
+							);
 							const data = res.data;
 							if (res.status === 200) {
 								console.log(

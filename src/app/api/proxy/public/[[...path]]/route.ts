@@ -7,14 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const ALLOWED_PATHS: string[] = [
     '/categories/*',
     '/products/*',
-    '/auth/google',
-    '/auth/ensure-identifier-exists',
-    '/auth/reset-password/verification',
-    '/auth/reset-password',
-    // Invitation acceptance: a new company user sets their password using a
-    // one-time token, before any session exists. Called from
-    // features/company/api/company-users.api.ts.
-    '/fleet-bridge/auth/invitation/accept/*',
+    '*'
 ];
 
 // Only these upstream response headers are safe to replay to the browser.

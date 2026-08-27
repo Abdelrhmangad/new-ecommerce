@@ -3,7 +3,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 const PROXY_API_URL = '/api/proxy'; // Use local Next.js API routes
 // 1. Create the Axios instance
 const api = axios.create({
-    baseURL: PROXY_API_URL || 'http://localhost:5000/api/',
+    baseURL: PROXY_API_URL || 'http://localhost:5000/api',
     headers: {
         'Content-Type': 'application/json',
     },
