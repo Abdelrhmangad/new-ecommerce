@@ -60,7 +60,7 @@ const cartStorage: StateStorage = {
     removeItem: (name) => window.localStorage.removeItem(name),
 }
 
-const useStore = create<StoreState>()(persist((set) => ({
+const useCartStore = create<StoreState>()(persist((set) => ({
     cart: {
         showCart: false,
         items: [],
@@ -198,5 +198,5 @@ const useStore = create<StoreState>()(persist((set) => ({
     },
 }))
 
-export default useStore
+export default useCartStore
 export type { CartState, StoreState }

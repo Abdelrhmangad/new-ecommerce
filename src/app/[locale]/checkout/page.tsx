@@ -33,7 +33,7 @@ export default function CheckoutPage() {
 			{step === 2 && <OrderConfirmation orderId={orderId} />}
 
 			{/* Sticky order summary on desktop */}
-			{step !== 3 && <OrderSummary items={items} total={total} />}
+			{step === 1 && <OrderSummary items={items} total={total} />}
 		</div>
 	);
 }

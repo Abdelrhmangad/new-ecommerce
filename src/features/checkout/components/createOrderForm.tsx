@@ -12,6 +12,7 @@ import {
 	CreateOrderPayload,
 	useCreateOrderMutation
 } from "@/features/orders/queries/orders.queries";
+import useCartStore from "@/store/cart-store";
 
 export function isValidEgyptianPhoneNumber(phone: string): boolean {
 	return /^01[0125]\d{8}$/.test(phone.trim());
@@ -39,6 +40,9 @@ type CheckoutFormData = Omit<
 export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 	const t = useTranslations("Checkout");
 	const { auth } = useAuthStore();
+	const { cart } = useCartStore();
+	const cartItems = cart.items;
+
 	const userData = auth.user;
 	const [method, setMethod] = useState<"cod" | "card">("cod");
 
@@ -88,19 +92,18 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 		if (!validate()) return;
 
 		await mutateAsync({
-			items: data.items,
-			shippingAddress: [
-				data.fullName,
-				data.phone,
-				data.governorate,
-				data.city,
-				data.address,
-				data.building,
-				data.floor,
-				data.notes
-			]
-				.filter(Boolean)
-				.join(", "),
+			items: cartItems,
+			shippingAddress: {
+				fullName: data.fullName,
+				phone: data.phone,
+				city: data.city,
+				area: data.governorate,
+				street: data.address,
+				building: data.building,
+				notes: [data.floor && `Floor/Apt: ${data.floor}`, data.notes]
+					.filter(Boolean)
+					.join(", ")
+			},
 			paymentMethodId: method
 		});
 		nextStep();
