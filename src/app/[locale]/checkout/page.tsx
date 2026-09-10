@@ -29,7 +29,7 @@ export default function CheckoutPage() {
 	}, []);
 	if (loading) <LoaderCircle className="animate-spin " />;
 	// Guard: empty cart
-	if (!loading && items.length === 0) redirect(`/${locale}/products`);
+	// if (!loading && items.length === 0) redirect(`/${locale}/products`);
 	const [orderId] = useState(() => generateReadableId());
 	return (
 		<div className="mx-auto max-w-6xl px-4 py-8">

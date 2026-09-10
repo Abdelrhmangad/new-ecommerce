@@ -11,11 +11,13 @@ export interface CreateOrderPayload {
         fullName: string,
         phone: string,
         city: string,
-        area: string,
+        governorate: string,
         street: string,
         building: string,
+        floor: string,
         notes: string,
     };
+    saveAddress: boolean;
     paymentMethodId: string;
 }
 

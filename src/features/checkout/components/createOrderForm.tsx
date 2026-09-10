@@ -13,6 +13,7 @@ import {
 	useCreateOrderMutation
 } from "@/features/orders/queries/orders.queries";
 import useCartStore from "@/store/cart-store";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function isValidEgyptianPhoneNumber(phone: string): boolean {
 	return /^01[0125]\d{8}$/.test(phone.trim());
@@ -25,7 +26,7 @@ interface Props {
 
 type CheckoutFormData = Omit<
 	CreateOrderPayload,
-	"shippingAddress" | "paymentMethodId"
+	"shippingAddress" | "paymentMethodId" | "saveAddress"
 > & {
 	fullName: string;
 	phone: string;
@@ -40,7 +41,7 @@ type CheckoutFormData = Omit<
 export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 	const t = useTranslations("Checkout");
 	const { auth } = useAuthStore();
-	const { cart } = useCartStore();
+	const { cart, clearCart } = useCartStore();
 	const cartItems = cart.items;
 
 	const userData = auth.user;
@@ -64,9 +65,16 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 
 	useEffect(() => {
 		if (userData) {
+			console.log("userData", userData);
+			const lastUserAddress =
+				userData.addresses?.[userData.addresses.length - 1];
+
 			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setData((prev) => ({
 				...prev,
+				...lastUserAddress,
+				address: lastUserAddress?.street || prev.address,
+				phone: userData.phone || prev.phone,
 				fullName: userData.name || prev.fullName
 			}));
 		}
@@ -85,6 +93,7 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 		setErrors(nextErrors);
 		return Object.keys(nextErrors).length === 0;
 	};
+	const [saveAddress, setSaveAddress] = useState(true);
 
 	const { mutateAsync, isPending } = useCreateOrderMutation();
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -97,16 +106,17 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 				fullName: data.fullName,
 				phone: data.phone,
 				city: data.city,
-				area: data.governorate,
+				governorate: data.governorate,
 				street: data.address,
 				building: data.building,
-				notes: [data.floor && `Floor/Apt: ${data.floor}`, data.notes]
-					.filter(Boolean)
-					.join(", ")
+				floor: data.floor,
+				notes: data.notes
 			},
+			saveAddress: saveAddress,
 			paymentMethodId: method
 		});
 		nextStep();
+		clearCart();
 	};
 
 	const update = <K extends keyof CheckoutFormData>(
@@ -116,40 +126,41 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 		setData((prev) => ({ ...prev, [key]: value }));
 		if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
 	};
-
 	return (
 		<>
 			<form onSubmit={handleSubmit} className="space-y-4">
-				<div className="space-y-1.5">
-					<Label htmlFor="fullName">{t("full_name")}</Label>
-					<Input
-						id="fullName"
-						value={data.fullName}
-						onChange={(e) => update("fullName", e.target.value)}
-						placeholder={t("full_name_placeholder")}
-					/>
-					{errors.fullName && (
-						<p className="text-xs text-destructive">
-							{errors.fullName}
-						</p>
-					)}
-				</div>
+				<div className="flex items-center md:flex-row flex-col gap-5 mb-10">
+					<div className="space-y-1.5 w-full">
+						<Label htmlFor="fullName">{t("full_name")}</Label>
+						<Input
+							id="fullName"
+							value={data.fullName}
+							onChange={(e) => update("fullName", e.target.value)}
+							placeholder={t("full_name_placeholder")}
+						/>
+						{errors.fullName && (
+							<p className="text-xs text-destructive">
+								{errors.fullName}
+							</p>
+						)}
+					</div>
 
-				<div className="space-y-1.5">
-					<Label htmlFor="phone">{t("phone")}</Label>
-					<Input
-						id="phone"
-						type="tel"
-						value={data.phone}
-						onChange={(e) => update("phone", e.target.value)}
-						placeholder="01XXXXXXXXX"
-						dir="ltr"
-					/>
-					{errors.phone && (
-						<p className="text-xs text-destructive">
-							{errors.phone}
-						</p>
-					)}
+					<div className="space-y-1.5 w-full">
+						<Label htmlFor="phone">{t("phone")}</Label>
+						<Input
+							id="phone"
+							type="tel"
+							value={data.phone}
+							onChange={(e) => update("phone", e.target.value)}
+							placeholder="01XXXXXXXXX"
+							dir="ltr"
+						/>
+						{errors.phone && (
+							<p className="text-xs text-destructive">
+								{errors.phone}
+							</p>
+						)}
+					</div>
 				</div>
 
 				<EgyptLocationSelector
@@ -209,6 +220,16 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 						onChange={(e) => update("notes", e.target.value)}
 						placeholder={t("notes_placeholder")}
 					/>
+				</div>
+
+				<div className="space-y-1.5 flex items-center gap-2 mb-10">
+					<Checkbox
+						id="saveAddress"
+						className="mb-0 pb-0"
+						checked={saveAddress}
+						onCheckedChange={(checked) => setSaveAddress(checked)}
+					/>
+					<Label htmlFor="saveAddress">{t("saveAddress")}</Label>
 				</div>
 				<div className="space-y-6">
 					<div className="space-y-3">

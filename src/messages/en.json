@@ -177,7 +177,8 @@
         "stock_changed": "Some items in your cart are no longer available. Please review your cart.",
         "order_failed": "Failed to place order. Please try again.",
         "payment": "Payment",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "saveAddress": "Save Address"
     },
     "profile": "Profile"
 }

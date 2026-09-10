@@ -41,6 +41,7 @@ export default async function LocaleLayout({
 					async
 					defer
 				></script>
+				<title>Fabric Society commerce</title>
 			</head>
 			<body
 				className={`${activeFontClass} ${roboto.variable} ${cairo.variable} min-h-screen bg-background antialiased`}

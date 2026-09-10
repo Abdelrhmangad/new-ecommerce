@@ -78,7 +78,9 @@ export default function AuthModal() {
 									id: data.user.id,
 									name: data.user.name,
 									email: data.user.email,
-									picture: data.user.picture
+									picture: data.user.picture,
+									addresses: data.user.addresses,
+									phone: data.user.phone
 								});
 								toast.success(t("loggedInSuccess"));
 								setIsOpen(false);
