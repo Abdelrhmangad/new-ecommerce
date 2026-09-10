@@ -10,6 +10,11 @@ import { useLocale } from "next-intl";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const generateReadableId = () => {
+	const timestamp = Date.now().toString(36).toUpperCase();
+	const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
+	return `ORD-${timestamp}-${randomStr}`;
+};
 // app/[locale]/checkout/page.tsx
 export default function CheckoutPage() {
 	const locale = useLocale();
@@ -25,15 +30,14 @@ export default function CheckoutPage() {
 	if (loading) <LoaderCircle className="animate-spin " />;
 	// Guard: empty cart
 	if (!loading && items.length === 0) redirect(`/${locale}/products`);
-	const [orderId, setOrderId] = useState("");
+	const [orderId] = useState(() => generateReadableId());
 	return (
 		<div className="mx-auto max-w-6xl px-4 py-8">
 			<CheckoutProgress current={step} />
 			{step === 1 && <CreateOrderForm nextStep={() => setStep(2)} />}
-			{step === 2 && <OrderConfirmation orderId={orderId} />}
-
-			{/* Sticky order summary on desktop */}
 			{step === 1 && <OrderSummary items={items} total={total} />}
+
+			{step === 2 && <OrderConfirmation orderId={orderId} />}
 		</div>
 	);
 }
