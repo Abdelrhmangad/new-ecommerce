@@ -5,6 +5,8 @@ type User = {
     id: string
     name: string
     email: string
+    phone?: string
+    addresses?: { street: string }[]
     picture?: string
 }
 

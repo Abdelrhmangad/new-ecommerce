@@ -11,8 +11,7 @@ export function CheckoutProgress({ current }: Props) {
 	const t = useTranslations("Checkout");
 	const steps = [
 		{ id: 1, label: t("shipping") },
-		{ id: 2, label: t("payment") },
-		{ id: 3, label: t("confirm") }
+		{ id: 2, label: t("confirm") }
 	];
 	return (
 		<div className="mb-8 flex items-center justify-center gap-2">
