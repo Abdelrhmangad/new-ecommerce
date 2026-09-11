@@ -239,6 +239,7 @@
         "order_cancelled": "Order cancelled",
         "no_orders": "No orders yet",
         "no_orders_desc": "When you place your first order, it will appear here.",
-        "name": "Full Name"
+        "name": "Full Name",
+        "loading_orders": "Loading orders"
     }
 }

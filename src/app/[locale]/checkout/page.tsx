@@ -6,8 +6,6 @@ import { OrderSummary } from "@/features/checkout/components/orderSummary";
 import { CreateOrderForm } from "@/features/checkout/components/createOrderForm";
 import useStore from "@/store/cart-store";
 import { LoaderCircle } from "lucide-react";
-import { useLocale } from "next-intl";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const generateReadableId = () => {
@@ -17,7 +15,6 @@ const generateReadableId = () => {
 };
 // app/[locale]/checkout/page.tsx
 export default function CheckoutPage() {
-	const locale = useLocale();
 	const [step, setStep] = useState<1 | 2 | 3>(1);
 	const { items, total } = useStore((s) => s.cart);
 	const [loading, setLoading] = useState(true);

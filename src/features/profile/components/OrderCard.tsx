@@ -4,7 +4,8 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Package, RotateCcw, Eye, MapPin } from "lucide-react";
-import { Order, OrderStatus } from "../types/profile.types";
+import { OrderStatus } from "../types/profile.types";
+import { OrderObjectType } from "@/features/orders/types/orders.types";
 
 const statusConfig: Record<
 	OrderStatus,
@@ -33,7 +34,7 @@ const statusConfig: Record<
 };
 
 interface Props {
-	order: Order;
+	order: OrderObjectType;
 	locale: "en" | "ar";
 	onReorder?: (orderId: string) => void;
 	onCancel?: (orderId: string) => void;
@@ -41,7 +42,8 @@ interface Props {
 
 export function OrderCard({ order, locale, onReorder, onCancel }: Props) {
 	const t = useTranslations("Profile");
-	const status = statusConfig[order.status];
+	const statusKey = order.status as OrderStatus;
+	const status = statusConfig[statusKey];
 	const date = new Date(order.createdAt).toLocaleDateString(undefined, {
 		year: "numeric",
 		month: "short",
@@ -54,7 +56,7 @@ export function OrderCard({ order, locale, onReorder, onCancel }: Props) {
 			<div className="flex items-start justify-between gap-3">
 				<div>
 					<p className="font-mono text-sm text-muted-foreground">
-						{order.id}
+						{order._id}
 					</p>
 					<p className="mt-0.5 text-xs text-muted-foreground">
 						{date}
@@ -71,16 +73,18 @@ export function OrderCard({ order, locale, onReorder, onCancel }: Props) {
 			<div className="mt-4 flex gap-2.5">
 				{order.items.map((item) => (
 					<div
-						key={item.variantSku}
+						key={item?.nameSnapshot?.[locale]}
 						className="relative h-12 w-12 overflow-hidden rounded-lg bg-muted sm:h-14 sm:w-14"
 					>
-						<Image
-							src={item.image}
-							alt={item.name[locale]}
-							fill
-							className="object-cover"
-							sizes="56px"
-						/>
+						{item?.images?.length > 0 && (
+							<Image
+								src={item.images[0]}
+								alt={`item.nameSnapshot?.[locale]`}
+								className="object-cover"
+								fill
+								sizes="56px"
+							/>
+						)}
 					</div>
 				))}
 			</div>
@@ -91,7 +95,7 @@ export function OrderCard({ order, locale, onReorder, onCancel }: Props) {
 					{t("items_count", { count: order.items.length })}
 				</span>
 				<span className="text-base font-medium tabular-nums">
-					{order.total.toLocaleString()} EGP
+					{order?.totalAmount.toLocaleString()} EGP
 				</span>
 			</div>
 
@@ -122,7 +126,7 @@ export function OrderCard({ order, locale, onReorder, onCancel }: Props) {
 						variant="ghost"
 						size="sm"
 						className="h-8 gap-1.5 text-xs"
-						onClick={() => onReorder(order.id)}
+						onClick={() => onReorder(order._id)}
 					>
 						<RotateCcw className="h-3.5 w-3.5" />
 						{t("reorder")}
@@ -136,7 +140,7 @@ export function OrderCard({ order, locale, onReorder, onCancel }: Props) {
 							variant="ghost"
 							size="sm"
 							className="h-8 gap-1.5 text-xs text-destructive hover:text-destructive"
-							onClick={() => onCancel(order.id)}
+							onClick={() => onCancel(order._id)}
 						>
 							<Package className="h-3.5 w-3.5" />
 							{t("cancel")}

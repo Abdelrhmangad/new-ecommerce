@@ -117,6 +117,7 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 		});
 		nextStep();
 		clearCart();
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
 	const update = <K extends keyof CheckoutFormData>(

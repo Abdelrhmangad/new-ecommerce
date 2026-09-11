@@ -19,8 +19,6 @@ export function AddressForm({ onSave }: Props) {
 	const { auth } = useAuthStore();
 	const userData = auth.user;
 	const latestAddress = userData?.addresses?.[userData.addresses.length - 1];
-	console.log("latestAddress", latestAddress);
-	console.log("userData?.addresses", userData?.addresses);
 
 	const [form, setForm] = useState({
 		governorate: latestAddress?.governorate ?? "",

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CartItem } from '@/features/cart/components/cartItem';
 import api from '@/shared/utils/axios.config';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { OrderObjectType } from '../types/orders.types';
 
 // Define the payload types for type safety
 export interface CreateOrderPayload {
@@ -52,5 +53,19 @@ export const useCreateOrderMutation = () => {
                 toast.error('Failed to create order');
             }
         },
+    });
+};
+
+
+
+const getOrders = async (): Promise<{ orders: OrderObjectType[], meta: any }> => {
+    const response = await api.get('/orders');
+    return response.data;
+};
+
+export const useUserOrders = () => {
+    return useQuery<{ orders: OrderObjectType[], meta: any }, Error>({
+        queryKey: ['orders'],
+        queryFn: getOrders,
     });
 };
