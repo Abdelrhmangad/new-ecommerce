@@ -3,7 +3,6 @@
 import useAuthStore from "@/store/user-store";
 import { User, LogOut, UserCheck } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { googleLogout } from "@react-oauth/google";
 import {
 	DropdownMenu,
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
 import api from "../utils/axios.config";
+import { Link } from "@/i18n/routing";
 
 export default function UserAvatarMenu() {
 	const t = useTranslations();
