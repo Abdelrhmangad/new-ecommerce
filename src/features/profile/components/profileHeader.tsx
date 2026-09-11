@@ -1,21 +1,29 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Camera, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { UserProfile } from "../types/profile.types";
+import useAuthStore from "@/store/user-store";
 
 interface Props {
-	profile: UserProfile;
 	onAvatarChange: (file: File) => void;
 }
 
-export function ProfileHeader({ profile, onAvatarChange }: Props) {
+export function ProfileHeader({ onAvatarChange }: Props) {
 	const t = useTranslations("Profile");
+	const { auth } = useAuthStore();
+	const userData = auth.user;
 	const inputRef = useRef<HTMLInputElement>(null);
-	const [preview, setPreview] = useState(profile.avatar);
+	const [preview, setPreview] = useState(userData?.picture || null);
+
+	useEffect(() => {
+		if (userData?.picture) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setPreview(userData.picture);
+		}
+	}, [userData?.picture]);
 
 	const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -24,7 +32,7 @@ export function ProfileHeader({ profile, onAvatarChange }: Props) {
 		onAvatarChange(file);
 	};
 
-	const memberSince = new Date(profile.createdAt).toLocaleDateString(
+	const memberSince = new Date(userData?.createdAt || "").toLocaleDateString(
 		undefined,
 		{
 			year: "numeric",
@@ -40,7 +48,7 @@ export function ProfileHeader({ profile, onAvatarChange }: Props) {
 					{preview ? (
 						<Image
 							src={preview}
-							alt={profile.firstName}
+							alt={userData?.name || "User Avatar"}
 							fill
 							className="object-cover"
 							sizes="96px"
@@ -72,14 +80,16 @@ export function ProfileHeader({ profile, onAvatarChange }: Props) {
 			{/* Meta */}
 			<div className="min-w-0">
 				<h1 className="truncate text-xl font-medium sm:text-2xl">
-					{profile.firstName} {profile.lastName}
+					{userData?.name}
 				</h1>
 				<p className="mt-1 truncate text-sm text-muted-foreground">
-					{profile.email} · {profile.phone}
+					{userData?.email} · {userData?.phone}
 				</p>
-				<p className="mt-1.5 text-xs text-muted-foreground">
-					{t("member_since", { date: memberSince })}
-				</p>
+				{memberSince && (
+					<p className="mt-1.5 text-xs text-muted-foreground">
+						{t("member_since", { date: memberSince })}
+					</p>
+				)}
 			</div>
 		</div>
 	);

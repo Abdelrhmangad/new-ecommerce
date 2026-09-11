@@ -74,14 +74,7 @@ export default function AuthModal() {
 									"data.user returned from login",
 									data
 								);
-								login({
-									id: data.user.id,
-									name: data.user.name,
-									email: data.user.email,
-									picture: data.user.picture,
-									addresses: data.user.addresses,
-									phone: data.user.phone
-								});
+								login(data.user);
 								toast.success(t("loggedInSuccess"));
 								setIsOpen(false);
 							}

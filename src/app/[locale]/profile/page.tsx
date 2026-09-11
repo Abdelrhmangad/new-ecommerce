@@ -165,101 +165,99 @@ export default function ProfilePage() {
 	};
 
 	return (
-		<div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-			<ProfileHeader
-				profile={profile}
-				onAvatarChange={handleAvatarChange}
-			/>
+		<div className="mx-auto px-4 py-8 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+			<div className="max-w-3xl mx-auto">
+				<ProfileHeader onAvatarChange={handleAvatarChange} />
 
-			<div className="mt-6">
-				<ProfileStats
-					ordersCount={orders.length}
-					deliveredCount={deliveredCount}
-					totalSpent={totalSpent}
-				/>
-			</div>
-
-			<Tabs defaultValue="orders" className="mt-8">
-				<TabsList className="w-full justify-start rounded-xl bg-transparent p-0">
-					<TabsTrigger
-						value="orders"
-						className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-					>
-						{t("tab_orders")}
-					</TabsTrigger>
-					<TabsTrigger
-						value="profile"
-						className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-					>
-						{t("tab_profile")}
-					</TabsTrigger>
-					<TabsTrigger
-						value="settings"
-						className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-					>
-						{t("tab_settings")}
-					</TabsTrigger>
-				</TabsList>
-
-				{/* Orders */}
-				<TabsContent value="orders" className="mt-6">
-					<OrdersList
-						orders={orders}
-						locale={locale}
-						onReorder={handleReorder}
-						onCancel={handleCancel}
+				<div className="mt-6">
+					<ProfileStats
+						ordersCount={orders.length}
+						deliveredCount={deliveredCount}
+						totalSpent={totalSpent}
 					/>
-				</TabsContent>
+				</div>
 
-				{/* Profile */}
-				<TabsContent value="profile" className="mt-6 space-y-6">
-					<div className="rounded-xl border bg-background p-5 sm:p-6">
-						<h2 className="mb-5 text-base font-medium">
-							{t("personal_info")}
-						</h2>
-						<ProfileForm
-							profile={profile}
-							onSave={handleProfileSave}
-						/>
-					</div>
-
-					<div className="rounded-xl border bg-background p-5 sm:p-6">
-						<h2 className="mb-5 text-base font-medium">
-							{t("default_address")}
-						</h2>
-						<AddressForm
-							address={profile.defaultAddress}
-							onSave={handleAddressSave}
-						/>
-					</div>
-				</TabsContent>
-
-				{/* Settings */}
-				<TabsContent value="settings" className="mt-6 space-y-6">
-					<div className="rounded-xl border bg-background p-5 sm:p-6">
-						<h2 className="mb-5 text-base font-medium">
-							{t("password")}
-						</h2>
-						<PasswordForm onChangePassword={handleChangePassword} />
-					</div>
-
-					<div className="rounded-xl border border-destructive/20 bg-background p-5 sm:p-6">
-						<h2 className="mb-2 text-base font-medium text-destructive">
-							{t("danger_zone")}
-						</h2>
-						<p className="mb-4 text-sm text-muted-foreground">
-							{t("delete_warning")}
-						</p>
-						<Button
-							variant="outline"
-							className="border-destructive/30 text-destructive hover:bg-destructive/5 hover:text-destructive"
-							onClick={handleDeleteAccount}
+				<Tabs defaultValue="orders" className="mt-8">
+					<TabsList className="w-full justify-start rounded-xl bg-transparent p-0">
+						<TabsTrigger
+							value="orders"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
 						>
-							{t("delete_account")}
-						</Button>
-					</div>
-				</TabsContent>
-			</Tabs>
+							{t("tab_orders")}
+						</TabsTrigger>
+						<TabsTrigger
+							value="profile"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+						>
+							{t("tab_profile")}
+						</TabsTrigger>
+						<TabsTrigger
+							value="settings"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+						>
+							{t("tab_settings")}
+						</TabsTrigger>
+					</TabsList>
+
+					{/* Orders */}
+					<TabsContent value="orders" className="mt-6">
+						<OrdersList
+							orders={orders}
+							locale={locale}
+							onReorder={handleReorder}
+							onCancel={handleCancel}
+						/>
+					</TabsContent>
+
+					{/* Profile */}
+					<TabsContent value="profile" className="mt-6 space-y-6">
+						<div className="rounded-xl border bg-background p-5 sm:p-6">
+							<h2 className="mb-5 text-base font-medium">
+								{t("personal_info")}
+							</h2>
+							<ProfileForm onSave={handleProfileSave} />
+						</div>
+
+						<div className="rounded-xl border bg-background p-5 sm:p-6">
+							<h2 className="mb-5 text-base font-medium">
+								{t("default_address")}
+							</h2>
+							<AddressForm
+								address={profile.defaultAddress}
+								onSave={handleAddressSave}
+							/>
+						</div>
+					</TabsContent>
+
+					{/* Settings */}
+					<TabsContent value="settings" className="mt-6 space-y-6">
+						<div className="rounded-xl border bg-background p-5 sm:p-6">
+							<h2 className="mb-5 text-base font-medium">
+								{t("password")}
+							</h2>
+							<PasswordForm
+								onChangePassword={handleChangePassword}
+							/>
+						</div>
+
+						<div className="rounded-xl border border-destructive/20 bg-background p-5 sm:p-6">
+							<h2 className="mb-2 text-base font-medium text-destructive">
+								{t("danger_zone")}
+							</h2>
+							<p className="mb-4 text-sm text-muted-foreground">
+								{t("delete_warning")}
+							</p>
+							<Button
+								variant="outline"
+								className="border-destructive/30 text-destructive hover:bg-destructive/5 hover:text-destructive"
+								onClick={handleDeleteAccount}
+							>
+								{t("delete_account")}
+							</Button>
+						</div>
+					</TabsContent>
+				</Tabs>
+			</div>
 		</div>
 	);
 }

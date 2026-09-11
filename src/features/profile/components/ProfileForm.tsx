@@ -6,19 +6,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserProfile } from "../types/profile.types";
+import useAuthStore from "@/store/user-store";
 
 interface Props {
-	profile: UserProfile;
 	onSave: (data: Partial<UserProfile>) => void;
 }
 
-export function ProfileForm({ profile, onSave }: Props) {
+export function ProfileForm({ onSave }: Props) {
 	const t = useTranslations("Profile");
+	const { auth } = useAuthStore();
+	const userData = auth.user;
+
 	const [form, setForm] = useState({
-		firstName: profile.firstName,
-		lastName: profile.lastName,
-		email: profile.email,
-		phone: profile.phone
+		name: userData?.name || "",
+		email: userData?.email || "",
+		phone: userData?.phone || ""
 	});
 	const [errors, setErrors] = useState<
 		Partial<Record<keyof typeof form, string>>
@@ -31,8 +33,7 @@ export function ProfileForm({ profile, onSave }: Props) {
 
 	const validate = () => {
 		const next: typeof errors = {};
-		if (!form.firstName.trim()) next.firstName = t("required");
-		if (!form.lastName.trim()) next.lastName = t("required");
+		if (!form.name.trim()) next.name = t("required");
 		if (!form.email.trim()) next.email = t("required");
 		else if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(form.email))
 			next.email = t("invalid_email");
@@ -51,33 +52,16 @@ export function ProfileForm({ profile, onSave }: Props) {
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div className="space-y-1.5">
-					<Label htmlFor="firstName">{t("first_name")}</Label>
-					<Input
-						id="firstName"
-						value={form.firstName}
-						onChange={(e) => update("firstName", e.target.value)}
-					/>
-					{errors.firstName && (
-						<p className="text-xs text-destructive">
-							{errors.firstName}
-						</p>
-					)}
-				</div>
-				<div className="space-y-1.5">
-					<Label htmlFor="lastName">{t("last_name")}</Label>
-					<Input
-						id="lastName"
-						value={form.lastName}
-						onChange={(e) => update("lastName", e.target.value)}
-					/>
-					{errors.lastName && (
-						<p className="text-xs text-destructive">
-							{errors.lastName}
-						</p>
-					)}
-				</div>
+			<div className="space-y-1.5">
+				<Label htmlFor="firstName">{t("name")}</Label>
+				<Input
+					id="firstName"
+					value={form.name}
+					onChange={(e) => update("name", e.target.value)}
+				/>
+				{errors.name && (
+					<p className="text-xs text-destructive">{errors.name}</p>
+				)}
 			</div>
 
 			<div className="space-y-1.5">

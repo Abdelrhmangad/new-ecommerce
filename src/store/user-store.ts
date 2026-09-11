@@ -6,8 +6,25 @@ type User = {
     name: string
     email: string
     phone?: string
-    addresses?: { street: string }[]
+    addresses?: addressType[]
     picture?: string
+    createdAt: string
+}
+
+type addressType = {
+    building: string
+    city: string
+    createdAt: string
+    floor: string
+    fullName: string
+    governorate: string
+    isDefault: boolean
+    label: string
+    notes: string
+    phone: string
+    street: string
+    updatedAt: string
+    _id: string
 }
 
 type AuthState = {

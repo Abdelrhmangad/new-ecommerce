@@ -6,26 +6,35 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserProfile } from "../types/profile.types";
+import useAuthStore from "@/store/user-store";
+import { EgyptLocationSelector } from "@/features/checkout/components/governoratesSelectInput";
 
 interface Props {
 	address?: UserProfile["defaultAddress"];
 	onSave: (data: NonNullable<UserProfile["defaultAddress"]>) => void;
 }
 
-export function AddressForm({ address, onSave }: Props) {
+export function AddressForm({ onSave }: Props) {
 	const t = useTranslations("Profile");
+	const { auth } = useAuthStore();
+	const userData = auth.user;
+	const latestAddress = userData?.addresses?.[userData.addresses.length - 1];
+	console.log("latestAddress", latestAddress);
+	console.log("userData?.addresses", userData?.addresses);
+
 	const [form, setForm] = useState({
-		governorate: address?.governorate ?? "",
-		city: address?.city ?? "",
-		address: address?.address ?? "",
-		building: address?.building ?? "",
-		floor: address?.floor ?? ""
+		governorate: latestAddress?.governorate ?? "",
+		city: latestAddress?.city ?? "",
+		address: latestAddress?.street ?? "",
+		building: latestAddress?.building ?? "",
+		floor: latestAddress?.floor ?? ""
 	});
 
 	const update = <K extends keyof typeof form>(key: K, value: string) => {
 		setForm((prev) => ({ ...prev, [key]: value }));
 	};
 
+	const errors: Partial<Record<keyof typeof form, string>> = {};
 	return (
 		<form
 			onSubmit={(e) => {
@@ -34,26 +43,18 @@ export function AddressForm({ address, onSave }: Props) {
 			}}
 			className="space-y-4"
 		>
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div className="space-y-1.5">
-					<Label htmlFor="gov">{t("governorate")}</Label>
-					<Input
-						id="gov"
-						value={form.governorate}
-						onChange={(e) => update("governorate", e.target.value)}
-						placeholder={t("governorate_placeholder")}
-					/>
-				</div>
-				<div className="space-y-1.5">
-					<Label htmlFor="city">{t("city")}</Label>
-					<Input
-						id="city"
-						value={form.city}
-						onChange={(e) => update("city", e.target.value)}
-						placeholder={t("city_placeholder")}
-					/>
-				</div>
-			</div>
+			<EgyptLocationSelector
+				governorateValue={form.governorate}
+				cityValue={form.city}
+				onGovernorateChange={(val) => update("governorate", val)}
+				onCityChange={(val) => update("city", val)}
+				governorateError={errors?.governorate}
+				cityError={errors?.city}
+				governorateLabel={t("governorate")}
+				cityLabel={t("city")}
+				governoratePlaceholder={t("governorate_placeholder")}
+				cityPlaceholder={t("city_placeholder")}
+			/>
 
 			<div className="space-y-1.5">
 				<Label htmlFor="street">{t("street_address")}</Label>
