@@ -28,7 +28,6 @@ export const addAddressToUser = async (payload: AddAddressToUserPayload): Promis
 
 export const refreshUserData = async (): Promise<any> => {
     const response = await axios.get('/api/auth/me');
-    console.log("Refreshed user data:", response.data);
     return response.data;
 }
 
