@@ -20,8 +20,7 @@ import axios from "axios";
 
 export default function AuthModal() {
 	const t = useTranslations("Auth");
-	const { login, auth } = useAuthStore();
-	const [isOpen, setIsOpen] = useState(false);
+	const { login, auth, toggleAuthModal } = useAuthStore();
 	const [mode, setMode] = useState<"login" | "signup">("login");
 	const [showPassword, setShowPassword] = useState(false);
 
@@ -35,12 +34,11 @@ export default function AuthModal() {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		// Later: Connect to Express backend authentication route
-		console.log(`Submitting ${mode}:`, formData);
 	};
 	return auth?.isAuthenticated ? (
 		<UserAvatarMenu />
 	) : (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+		<Dialog open={auth.authModalOpen} onOpenChange={toggleAuthModal}>
 			{/* Trigger Button to place in your Navbar */}
 			<DialogTrigger render={<Button variant="default" size="lg" />}>
 				{t("signIn")}
@@ -70,13 +68,9 @@ export default function AuthModal() {
 							);
 							const data = res.data;
 							if (res.status === 200) {
-								console.log(
-									"data.user returned from login",
-									data
-								);
 								login(data.user);
 								toast.success(t("loggedInSuccess"));
-								setIsOpen(false);
+								toggleAuthModal();
 							}
 						}}
 						onError={() => {

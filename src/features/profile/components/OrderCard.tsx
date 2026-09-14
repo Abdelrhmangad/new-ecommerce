@@ -132,20 +132,6 @@ export function OrderCard({ order, locale, onReorder, onCancel }: Props) {
 						{t("reorder")}
 					</Button>
 				)}
-
-				{(order.status === "pending" ||
-					order.status === "processing") &&
-					onCancel && (
-						<Button
-							variant="ghost"
-							size="sm"
-							className="h-8 gap-1.5 text-xs text-destructive hover:text-destructive"
-							onClick={() => onCancel(order._id)}
-						>
-							<Package className="h-3.5 w-3.5" />
-							{t("cancel")}
-						</Button>
-					)}
 			</div>
 		</div>
 	);

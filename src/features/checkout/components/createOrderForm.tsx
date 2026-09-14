@@ -65,7 +65,6 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 
 	useEffect(() => {
 		if (userData) {
-			console.log("userData", userData);
 			const lastUserAddress =
 				userData.addresses?.[userData.addresses.length - 1];
 

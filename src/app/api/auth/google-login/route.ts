@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
 
         const response = await axios.post(`${apiUrl}/auth/google`, body);
         const data = response.data;
-
-        const token = data?.token;
+        const token = data?.accessToken;
+        const refreshToken = data?.refreshToken;
 
         if (!token) {
             console.error('Token missing in upstream response');
@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
 
         const cookieStore = await cookies();
         cookieStore.set('auth_token', token, httpOnlyOptions);
+        cookieStore.set('refresh_token', refreshToken, httpOnlyOptions);
         cookieStore.set('auth_user', JSON.stringify(user), {
             ...httpOnlyOptions,
             httpOnly: false,

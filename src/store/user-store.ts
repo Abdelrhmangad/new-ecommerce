@@ -30,6 +30,7 @@ type addressType = {
 type AuthState = {
     user: User | null
     isAuthenticated: boolean
+    authModalOpen?: boolean
 }
 
 type AuthStoreState = {
@@ -37,12 +38,14 @@ type AuthStoreState = {
     login: (user: User) => void
     logout: () => void
     updateUser: (updates: Partial<User>) => void
+    toggleAuthModal: () => void
 }
 
 const useAuthStore = create<AuthStoreState>()(persist((set) => ({
     auth: {
         user: null,
         isAuthenticated: false,
+        authModalOpen: false,
     },
 
     login: (user) =>
@@ -77,6 +80,14 @@ const useAuthStore = create<AuthStoreState>()(persist((set) => ({
                 },
             }
         }),
+
+    toggleAuthModal: () =>
+        set((state) => ({
+            auth: {
+                ...state.auth,
+                authModalOpen: !state.auth.authModalOpen,
+            },
+        })),
 }), {
     name: 'user_auth',
     storage: createJSONStorage(() => localStorage),

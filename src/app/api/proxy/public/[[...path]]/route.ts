@@ -115,7 +115,6 @@ async function handler(req: NextRequest) {
             headers: filterResponseHeaders(backendResponse.headers as Record<string, unknown>),
         });
     } catch (error) {
-        console.log("backendResponse errror", error)
         // Handle Axios errors returned from the backend server
         if (axios.isAxiosError(error) && error.response) {
             return NextResponse.json(error.response.data, {

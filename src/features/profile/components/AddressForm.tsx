@@ -10,7 +10,6 @@ import useAuthStore from "@/store/user-store";
 import { EgyptLocationSelector } from "@/features/checkout/components/governoratesSelectInput";
 
 interface Props {
-	address?: UserProfile["defaultAddress"];
 	onSave: (data: NonNullable<UserProfile["defaultAddress"]>) => void;
 }
 
@@ -19,7 +18,6 @@ export function AddressForm({ onSave }: Props) {
 	const { auth } = useAuthStore();
 	const userData = auth.user;
 	const latestAddress = userData?.addresses?.[userData.addresses.length - 1];
-
 	const [form, setForm] = useState({
 		governorate: latestAddress?.governorate ?? "",
 		city: latestAddress?.city ?? "",

@@ -222,10 +222,7 @@ export default function ProfilePage() {
 							<h2 className="mb-5 text-base font-medium">
 								{t("default_address")}
 							</h2>
-							<AddressForm
-								address={profile.defaultAddress}
-								onSave={handleAddressSave}
-							/>
+							<AddressForm onSave={handleAddressSave} />
 						</div>
 					</TabsContent>
 

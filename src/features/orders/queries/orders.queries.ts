@@ -49,7 +49,6 @@ export const useCreateOrderMutation = () => {
             if (error?.response?.data?.message) {
                 toast.error(`Failed to create order: ${error?.response.data.message}`);
             } else {
-                console.log("error", error?.response)
                 toast.error('Failed to create order');
             }
         },
