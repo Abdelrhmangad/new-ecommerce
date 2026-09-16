@@ -6,6 +6,7 @@ import { Camera, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import useAuthStore from "@/store/user-store";
+import { useUpdateUserAvatar } from "@/features/user/queries/user.queries";
 
 interface Props {
 	onAvatarChange: (file: File) => void;
@@ -16,19 +17,22 @@ export function ProfileHeader({ onAvatarChange }: Props) {
 	const { auth } = useAuthStore();
 	const userData = auth.user;
 	const inputRef = useRef<HTMLInputElement>(null);
-	const [preview, setPreview] = useState(userData?.picture || null);
+	const [preview, setPreview] = useState(userData?.picture?.url || null);
 
 	useEffect(() => {
-		if (userData?.picture) {
+		if (userData?.picture?.url) {
 			// eslint-disable-next-line react-hooks/set-state-in-effect
-			setPreview(userData.picture);
+			setPreview(userData.picture.url);
 		}
-	}, [userData?.picture]);
+	}, [userData?.picture?.url]);
 
-	const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const { mutateAsync: updateAvatar } = useUpdateUserAvatar();
+	const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
 		setPreview(URL.createObjectURL(file));
+
+		await updateAvatar(file);
 		onAvatarChange(file);
 	};
 

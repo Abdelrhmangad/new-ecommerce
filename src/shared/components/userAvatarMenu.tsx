@@ -31,10 +31,10 @@ export default function UserAvatarMenu() {
 			<DropdownMenuTrigger
 				render={
 					<button className="focus:outline-none rounded-full cursor-pointer hover:opacity-90 transition-opacity">
-						{auth.user?.picture ? (
+						{auth.user?.picture?.url ? (
 							<div className="bg-gray-50 rounded-full overflow-hidden border border-border size-8 flex items-center justify-center">
 								<Image
-									src={auth.user.picture}
+									src={auth.user.picture?.url}
 									width={32}
 									height={32}
 									alt="user avatar"
