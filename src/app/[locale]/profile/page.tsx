@@ -170,22 +170,22 @@ export default function ProfilePage() {
 				</div>
 
 				<Tabs defaultValue="orders" className="mt-8">
-					<TabsList className="w-full justify-start rounded-xl bg-transparent p-0">
+					<TabsList className="w-full justify-start space-x-1 rounded-xl bg-transparent p-0">
 						<TabsTrigger
 							value="orders"
-							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-gray-100 rounded-md hover:shadow-sm"
 						>
 							{t("tab_orders")}
 						</TabsTrigger>
 						<TabsTrigger
 							value="profile"
-							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-gray-100 rounded-md hover:shadow-sm"
 						>
 							{t("tab_profile")}
 						</TabsTrigger>
 						<TabsTrigger
 							value="settings"
-							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-gray-100 rounded-md hover:shadow-sm"
 						>
 							{t("tab_settings")}
 						</TabsTrigger>

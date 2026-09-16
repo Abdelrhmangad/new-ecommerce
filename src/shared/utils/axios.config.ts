@@ -1,4 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
+import { toast } from 'react-hot-toast';
 
 const PROXY_API_URL = '/api/proxy'; // Use local Next.js API routes
 // 1. Create the Axios instance
@@ -43,6 +44,18 @@ api.interceptors.request.use(
         return config;
     },
     (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        console.log("error.response?.status", error.response?.status);
+        if (error.response?.status === 401) {
+            window.location.reload(); // Force a reload to trigger re-authentication
+        }
+
+        return Promise.reject(error);
+    }
 );
 
 export default api;
