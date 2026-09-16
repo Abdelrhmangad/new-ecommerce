@@ -57,14 +57,15 @@ export const useCreateOrderMutation = () => {
 
 
 
-const getOrders = async (): Promise<{ orders: OrderObjectType[], meta: any }> => {
-    const response = await api.get('/orders');
+const getOrders = async (page: number): Promise<{ orders: OrderObjectType[], meta: any }> => {
+    const response = await api.get(`/orders?page=${page}`);
     return response.data;
 };
 
-export const useUserOrders = () => {
+export const useUserOrders = ({ page = 1 }: { page: number }) => {
     return useQuery<{ orders: OrderObjectType[], meta: any }, Error>({
-        queryKey: ['orders'],
-        queryFn: getOrders,
+        queryKey: ['orders', page],
+        queryFn: () => getOrders(page),
+        staleTime: 20 * 60 * 1000, // 20 minutes
     });
 };

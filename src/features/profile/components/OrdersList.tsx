@@ -1,21 +1,22 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { OrderCard } from "./OrderCard";
 import { Package } from "lucide-react";
 import { Order } from "../types/profile.types";
 import { useUserOrders } from "@/features/orders/queries/orders.queries";
+import { useState } from "react";
+import Paginator, { SimplePaginator } from "@/shared/components/paginator";
 
 interface Props {
-	orders: Order[];
-	locale: "en" | "ar";
 	onReorder?: (orderId: string) => void;
-	onCancel?: (orderId: string) => void;
 }
 
-export function OrdersList({ locale, onReorder, onCancel }: Props) {
+export function OrdersList({ onReorder }: Props) {
+	const locale = useLocale() as "en" | "ar";
 	const t = useTranslations("Profile");
-	const { data, isLoading } = useUserOrders();
+	const [page, setPage] = useState(1);
+	const { data, isLoading } = useUserOrders({ page: page });
 	const orders = data?.orders;
 
 	if (isLoading) {
@@ -51,9 +52,13 @@ export function OrdersList({ locale, onReorder, onCancel }: Props) {
 					order={order}
 					locale={locale}
 					onReorder={onReorder}
-					onCancel={onCancel}
 				/>
 			))}
+			<SimplePaginator
+				totalPages={data?.meta?.totalPages || 1}
+				currentPage={page}
+				onPageChange={setPage}
+			/>
 		</div>
 	);
 }

@@ -129,3 +129,57 @@ export default function Paginator({ pages, isFetching }: PaginatorProps) {
 		</nav>
 	);
 }
+
+// SimplePaginator.tsx
+interface SimplePaginatorProps {
+	totalPages: number;
+	currentPage: number;
+	onPageChange: (page: number) => void;
+}
+
+export function SimplePaginator({
+	totalPages,
+	currentPage,
+	onPageChange
+}: SimplePaginatorProps) {
+	const canGoPrev = currentPage > 1;
+	const canGoNext = currentPage < totalPages && totalPages > 0;
+
+	const goToPrev = () => {
+		if (canGoPrev) {
+			onPageChange(currentPage - 1);
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
+
+	const goToNext = () => {
+		if (canGoNext) {
+			onPageChange(currentPage + 1);
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
+
+	return (
+		<div className="flex items-center justify-center gap-3">
+			<button
+				onClick={goToPrev}
+				disabled={!canGoPrev}
+				className="disabled:opacity-50 disabled:cursor-not-allowed"
+			>
+				Previous
+			</button>
+
+			<span>
+				Page {currentPage} of {totalPages}
+			</span>
+
+			<button
+				onClick={goToNext}
+				disabled={!canGoNext}
+				className="disabled:opacity-50 disabled:cursor-not-allowed"
+			>
+				Next
+			</button>
+		</div>
+	);
+}

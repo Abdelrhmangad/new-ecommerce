@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { UserProfile, Order } from "@/features/profile/types/profile.types";
 import { ProfileHeader } from "@/features/profile/components/profileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useUserOrders } from "@/features/orders/queries/orders.queries";
 
 // ── Mock data ── replace with API calls
 const mockProfile: UserProfile = {
@@ -99,14 +100,8 @@ export default function ProfilePage() {
 	const router = useRouter();
 
 	const [profile, setProfile] = useState<UserProfile>(mockProfile);
-	const [orders, setOrders] = useState<Order[]>(mockOrders);
-
-	const deliveredCount = orders.filter(
-		(o) => o.status === "delivered"
-	).length;
-	const totalSpent = orders
-		.filter((o) => o.status !== "cancelled")
-		.reduce((sum, o) => sum + o.total, 0);
+	const { data, isLoading } = useUserOrders({ page: 1 });
+	const orders = data?.orders;
 
 	const handleAvatarChange = async (file: File) => {
 		// TODO: upload to your storage (S3, Cloudinary, etc.)
@@ -130,21 +125,11 @@ export default function ProfilePage() {
 	};
 
 	const handleReorder = (orderId: string) => {
-		const order = orders.find((o) => o.id === orderId);
+		const order = orders?.find((o) => o._id === orderId);
 		if (!order) return;
 		// TODO: add items to cart via your store
 		toast.success(t("reorder_success"));
 		router.push(`/${locale}/cart`);
-	};
-
-	const handleCancel = async (orderId: string) => {
-		// TODO: POST /api/orders/{id}/cancel
-		setOrders((prev) =>
-			prev.map((o) =>
-				o.id === orderId ? { ...o, status: "cancelled" as const } : o
-			)
-		);
-		toast.success(t("order_cancelled"));
 	};
 
 	const handleChangePassword = async (data: {
@@ -171,9 +156,16 @@ export default function ProfilePage() {
 
 				<div className="mt-6">
 					<ProfileStats
-						ordersCount={orders.length}
-						deliveredCount={deliveredCount}
-						totalSpent={totalSpent}
+						ordersCount={orders?.length || 0}
+						deliveredCount={
+							orders?.filter((o) => o.status === "delivered")
+								.length || 0
+						}
+						totalSpent={
+							orders
+								?.filter((o) => o.status !== "cancelled")
+								.reduce((sum, o) => sum + o.itemsTotal, 0) || 0
+						}
 					/>
 				</div>
 
@@ -201,12 +193,7 @@ export default function ProfilePage() {
 
 					{/* Orders */}
 					<TabsContent value="orders" className="mt-6">
-						<OrdersList
-							orders={orders}
-							locale={locale}
-							onReorder={handleReorder}
-							onCancel={handleCancel}
-						/>
+						<OrdersList onReorder={handleReorder} />
 					</TabsContent>
 
 					{/* Profile */}
