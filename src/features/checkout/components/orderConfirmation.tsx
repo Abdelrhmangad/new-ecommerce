@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, Package } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { useRouter } from "@/i18n/routing";
+import { useUserData } from "@/features/user/queries/user.queries";
 
 interface Props {
 	orderId: string;
 }
 
 export function OrderConfirmation({ orderId }: Props) {
+	const { data } = useUserData();
 	const t = useTranslations("Checkout");
 	const router = useRouter();
 
@@ -42,7 +44,7 @@ export function OrderConfirmation({ orderId }: Props) {
 					variant="outline"
 					size="lg"
 					className="h-11 w-full"
-					render={<Link href="/orders">{t("view_orders")}</Link>}
+					render={<Link href="/profile">{t("view_orders")}</Link>}
 				></Button>
 			</div>
 		</div>

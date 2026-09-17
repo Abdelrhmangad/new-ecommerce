@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import useCartStore from "@/store/cart-store";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { Button } from "@/components/ui/button";
 
 const generateReadableId = () => {
 	const timestamp = Date.now().toString(36).toUpperCase();
@@ -31,19 +32,18 @@ export default function CheckoutPage() {
 	// if (!loading && items.length === 0) redirect(`/${locale}/products`);
 	const [orderId] = useState(() => generateReadableId());
 	if (loading) <LoaderCircle className="animate-spin " />;
-	if (items.length === 0) {
+	if (!loading && items.length === 0 && step !== 2) {
 		return (
 			<div className="flex flex-col items-center justify-center h-screen">
 				<h2 className="text-2xl font-semibold mb-4">
 					{t("empty_cart")}
 				</h2>
 				<p className="text-gray-600 mb-6">{t("empty_subtitle")}</p>
-				<Link
-					href="/products"
-					className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-				>
-					{t("go_to_products")}
-				</Link>
+				<Button
+					className="h-11 w-full max-w-xs"
+					size="lg"
+					render={<Link href="/products">{t("go_to_products")}</Link>}
+				></Button>
 			</div>
 		);
 	}

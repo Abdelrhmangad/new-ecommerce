@@ -66,6 +66,6 @@ export const useUserOrders = ({ page = 1 }: { page: number }) => {
     return useQuery<{ orders: OrderObjectType[], meta: any }, Error>({
         queryKey: ['orders', page],
         queryFn: () => getOrders(page),
-        staleTime: 20 * 60 * 1000, // 20 minutes
+        staleTime: 20 * 60 * 1000, // 20 minutes,
     });
 };

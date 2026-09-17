@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
@@ -12,116 +11,24 @@ import { OrdersList } from "@/features/profile/components/OrdersList";
 import { PasswordForm } from "@/features/profile/components/PasswordForm";
 import { Button } from "@/components/ui/button";
 
-import { UserProfile, Order } from "@/features/profile/types/profile.types";
 import { ProfileHeader } from "@/features/profile/components/profileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserOrders } from "@/features/orders/queries/orders.queries";
-
-// ── Mock data ── replace with API calls
-const mockProfile: UserProfile = {
-	id: "usr_123",
-	firstName: "Ahmed",
-	lastName: "Hassan",
-	email: "ahmed.hassan@email.com",
-	phone: "01012345678",
-	avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop&crop=face",
-	createdAt: "2024-01-15T00:00:00Z",
-	defaultAddress: {
-		governorate: "Cairo",
-		city: "Nasr City",
-		address: "14 Abbas El-Akkad St",
-		building: "7",
-		floor: "3"
-	}
-};
-
-const mockOrders: Order[] = [
-	{
-		id: "ORD-A7X9K2M1",
-		status: "delivered",
-		createdAt: "2026-09-08T10:00:00Z",
-		deliveredAt: "2026-09-10T14:00:00Z",
-		items: [
-			{
-				variantSku: "TSHIRT-BLK-M",
-				name: { en: "Premium Cotton T-Shirt", ar: "تيشيرت قطن فاخر" },
-				price: 850,
-				quantity: 2,
-				image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=200&fit=crop"
-			},
-			{
-				variantSku: "SHIRT-SND-L",
-				name: { en: "Linen Summer Shirt", ar: "قميص صيفي كتان" },
-				price: 1200,
-				quantity: 1,
-				image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=200&h=200&fit=crop"
-			}
-		],
-		total: 4250,
-		shipping: 0
-	},
-	{
-		id: "ORD-B3P7Q9R4",
-		status: "shipped",
-		createdAt: "2026-08-22T08:30:00Z",
-		items: [
-			{
-				variantSku: "JACKET-DNM-XL",
-				name: { en: "Classic Denim Jacket", ar: "جاكيت جينز كلاسيكي" },
-				price: 1350,
-				quantity: 1,
-				image: "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=200&h=200&fit=crop"
-			}
-		],
-		total: 1350,
-		shipping: 0
-	},
-	{
-		id: "ORD-C1M8N2P5",
-		status: "pending",
-		createdAt: "2026-09-11T09:00:00Z",
-		items: [
-			{
-				variantSku: "HOODIE-GRY-M",
-				name: { en: "Essential Hoodie", ar: "هودي أساسي" },
-				price: 950,
-				quantity: 1,
-				image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=200&h=200&fit=crop"
-			}
-		],
-		total: 950,
-		shipping: 0
-	}
-];
 
 export default function ProfilePage() {
 	const t = useTranslations("Profile");
 	const locale = useLocale() as "en" | "ar";
 	const router = useRouter();
 
-	const [profile, setProfile] = useState<UserProfile>(mockProfile);
-	const { data, isLoading } = useUserOrders({ page: 1 });
+	const { data } = useUserOrders({ page: 1 });
 	const orders = data?.orders;
+	const ordersMeta = data?.meta;
 
 	const handleAvatarChange = async (file: File) => {
 		// TODO: upload to your storage (S3, Cloudinary, etc.)
 		const formData = new FormData();
 		formData.append("avatar", file);
 		toast.success(t("avatar_updated"));
-	};
-
-	const handleProfileSave = async (data: Partial<UserProfile>) => {
-		// TODO: PATCH /api/profile
-		setProfile((prev) => ({ ...prev, ...data }));
-		toast.success(t("profile_updated"));
-	};
-
-	const handleAddressSave = async (
-		data: NonNullable<UserProfile["defaultAddress"]>
-	) => {
-		// TODO: PATCH /api/profile/address
-		setProfile((prev) => ({ ...prev, defaultAddress: data }));
-		toast.success(t("address_updated"));
 	};
 
 	const handleReorder = (orderId: string) => {
@@ -156,16 +63,12 @@ export default function ProfilePage() {
 
 				<div className="mt-6">
 					<ProfileStats
-						ordersCount={orders?.length || 0}
+						ordersCount={ordersMeta?.totalOrders || 0}
 						deliveredCount={
 							orders?.filter((o) => o.status === "delivered")
 								.length || 0
 						}
-						totalSpent={
-							orders
-								?.filter((o) => o.status !== "cancelled")
-								.reduce((sum, o) => sum + o.itemsTotal, 0) || 0
-						}
+						totalSpent={ordersMeta?.totalAmountSpent || 0}
 					/>
 				</div>
 
@@ -173,19 +76,19 @@ export default function ProfilePage() {
 					<TabsList className="w-full justify-start space-x-1 rounded-xl bg-transparent p-0">
 						<TabsTrigger
 							value="orders"
-							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-gray-100 rounded-md hover:shadow-sm"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:shadow-sm"
 						>
 							{t("tab_orders")}
 						</TabsTrigger>
 						<TabsTrigger
 							value="profile"
-							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-gray-100 rounded-md hover:shadow-sm"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:shadow-sm"
 						>
 							{t("tab_profile")}
 						</TabsTrigger>
 						<TabsTrigger
 							value="settings"
-							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none border-gray-100 rounded-md hover:shadow-sm"
+							className="rounded-none border-b-2 border-transparent px-4 py-2.5 text-sm data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none hover:shadow-sm"
 						>
 							{t("tab_settings")}
 						</TabsTrigger>
@@ -202,14 +105,14 @@ export default function ProfilePage() {
 							<h2 className="mb-5 text-base font-medium">
 								{t("personal_info")}
 							</h2>
-							<ProfileForm onSave={handleProfileSave} />
+							<ProfileForm />
 						</div>
 
 						<div className="rounded-xl border bg-background p-5 sm:p-6">
 							<h2 className="mb-5 text-base font-medium">
 								{t("default_address")}
 							</h2>
-							<AddressForm onSave={handleAddressSave} />
+							<AddressForm />
 						</div>
 					</TabsContent>
 

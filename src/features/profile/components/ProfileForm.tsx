@@ -5,15 +5,10 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserProfile } from "../types/profile.types";
 import useAuthStore from "@/store/user-store";
 import { useUpdateUserData } from "@/features/user/queries/user.queries";
 
-interface Props {
-	onSave: (data: Partial<UserProfile>) => void;
-}
-
-export function ProfileForm({ onSave }: Props) {
+export function ProfileForm() {
 	const t = useTranslations("Profile");
 	const { auth } = useAuthStore();
 	const userData = auth.user;
@@ -61,7 +56,6 @@ export function ProfileForm({ onSave }: Props) {
 		if (!validate()) return;
 
 		await updateUserProfile(form);
-		onSave(form);
 	};
 
 	return (
