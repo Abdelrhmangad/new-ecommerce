@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { UserProfile } from "../types/profile.types";
 import useAuthStore from "@/store/user-store";
 import { EgyptLocationSelector } from "@/features/checkout/components/governoratesSelectInput";
+import { useUpdateUserData } from "@/features/user/queries/user.queries";
 
 interface Props {
 	onSave: (data: NonNullable<UserProfile["defaultAddress"]>) => void;
@@ -16,29 +17,52 @@ interface Props {
 export function AddressForm({ onSave }: Props) {
 	const t = useTranslations("Profile");
 	const { auth } = useAuthStore();
+
+	const { mutateAsync: updateUserProfile, isPending } = useUpdateUserData();
+
 	const userData = auth.user;
-	const latestAddress = userData?.addresses?.[userData.addresses.length - 1];
-	const [form, setForm] = useState({
-		governorate: latestAddress?.governorate ?? "",
-		city: latestAddress?.city ?? "",
-		address: latestAddress?.street ?? "",
-		building: latestAddress?.building ?? "",
-		floor: latestAddress?.floor ?? ""
-	});
+	const userAddress = userData?.address;
+	const initialForm = {
+		governorate: userAddress?.governorate ?? "",
+		city: userAddress?.city ?? "",
+		address: userAddress?.street ?? "",
+		building: userAddress?.building ?? "",
+		floor: userAddress?.floor ?? ""
+	};
+
+	const [form, setForm] = useState(initialForm);
 
 	const update = <K extends keyof typeof form>(key: K, value: string) => {
 		setForm((prev) => ({ ...prev, [key]: value }));
 	};
 
 	const errors: Partial<Record<keyof typeof form, string>> = {};
+	const isDirty = Object.keys(initialForm).some(
+		(key) =>
+			form[key as keyof typeof form] !==
+			initialForm[key as keyof typeof initialForm]
+	);
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+
+		if (!isDirty) return;
+
+		await updateUserProfile({
+			address: {
+				governorate: form.governorate,
+				city: form.city,
+				street: form.address,
+				building: form.building,
+				floor: form.floor
+			}
+		});
+
+		onSave(form);
+	};
+
 	return (
-		<form
-			onSubmit={(e) => {
-				e.preventDefault();
-				onSave(form);
-			}}
-			className="space-y-4"
-		>
+		<form onSubmit={handleSubmit} className="space-y-4">
 			<EgyptLocationSelector
 				governorateValue={form.governorate}
 				cityValue={form.city}
@@ -81,7 +105,11 @@ export function AddressForm({ onSave }: Props) {
 				</div>
 			</div>
 
-			<Button type="submit" className="mt-2">
+			<Button
+				type="submit"
+				className="mt-2"
+				disabled={isPending || !isDirty}
+			>
 				{t("update_address")}
 			</Button>
 		</form>

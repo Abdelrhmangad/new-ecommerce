@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UserProfile } from "../types/profile.types";
 import useAuthStore from "@/store/user-store";
+import { useUpdateUserData } from "@/features/user/queries/user.queries";
 
 interface Props {
 	onSave: (data: Partial<UserProfile>) => void;
@@ -17,11 +18,15 @@ export function ProfileForm({ onSave }: Props) {
 	const { auth } = useAuthStore();
 	const userData = auth.user;
 
-	const [form, setForm] = useState({
+	const { mutateAsync: updateUserProfile, isPending } = useUpdateUserData();
+
+	const initialForm = {
 		name: userData?.name || "",
 		email: userData?.email || "",
 		phone: userData?.phone || ""
-	});
+	};
+
+	const [form, setForm] = useState(initialForm);
 	const [errors, setErrors] = useState<
 		Partial<Record<keyof typeof form, string>>
 	>({});
@@ -35,19 +40,28 @@ export function ProfileForm({ onSave }: Props) {
 		const next: typeof errors = {};
 		if (!form.name.trim()) next.name = t("required");
 		if (!form.email.trim()) next.email = t("required");
-		else if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(form.email))
+		else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
 			next.email = t("invalid_email");
 		if (!form.phone.trim()) next.phone = t("required");
-		else if (!/^01[0125]\\d{8}$/.test(form.phone.trim()))
+		else if (!/^01[0125]\d{8}$/.test(form.phone.trim()))
 			next.phone = t("invalid_phone");
 
 		setErrors(next);
 		return Object.keys(next).length === 0;
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const isDirty =
+		form.name !== initialForm.name ||
+		form.email !== initialForm.email ||
+		form.phone !== initialForm.phone;
+
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (validate()) onSave(form);
+
+		if (!validate()) return;
+
+		await updateUserProfile(form);
+		onSave(form);
 	};
 
 	return (
@@ -91,7 +105,11 @@ export function ProfileForm({ onSave }: Props) {
 				)}
 			</div>
 
-			<Button type="submit" className="mt-2">
+			<Button
+				type="submit"
+				className="mt-2"
+				disabled={isPending || !isDirty}
+			>
 				{t("save_changes")}
 			</Button>
 		</form>

@@ -70,3 +70,26 @@ export const useUpdateUserAvatar = () => {
         }
     });
 }
+
+export const uploadUserData = async (data: any): Promise<any> => {
+    try {
+        const response = await api.put('/auth/update-user', data);
+        return response.data;
+    } catch (error: any) {
+        throw error;
+    }
+}
+
+export const useUpdateUserData = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: uploadUserData,
+        onSuccess: () => {
+            // Invalidate the user data query to refetch the updated user data
+            queryClient.invalidateQueries({ queryKey: ['User'] });
+        },
+        onError: (error: any) => {
+            console.error('Error uploading user data:', error);
+        }
+    });
+}

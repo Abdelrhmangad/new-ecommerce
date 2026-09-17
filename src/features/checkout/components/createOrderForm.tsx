@@ -65,8 +65,7 @@ export function CreateOrderForm({ defaultValues, nextStep }: Props) {
 
 	useEffect(() => {
 		if (userData) {
-			const lastUserAddress =
-				userData.addresses?.[userData.addresses.length - 1];
+			const lastUserAddress = userData.address;
 
 			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setData((prev) => ({

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/auth/logout/route.ts
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -50,7 +51,7 @@ export async function GET() {
         });
 
         console.log("REFRESH RESPONSE", response.data);
-        return NextResponse.json(data, { status: response.status });
+        return NextResponse.json({ ...data, refreshToken: null }, { status: response.status });
     } catch (error: any) {
         console.error('Backend refresh failed:', error?.response?.data || error.message || error);
         return NextResponse.json(

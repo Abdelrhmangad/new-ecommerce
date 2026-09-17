@@ -47,5 +47,5 @@ export function addPdtToCart(pdtData: CombinedType, t: (key: string, values?: Re
     };
 
     useStore.getState().addToCart(newItem);
-    toast.success("Added to cart successfully!");
+    toast.success(t('successAdded'));
 }

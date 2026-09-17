@@ -6,7 +6,7 @@ type User = {
     name: string
     email: string
     phone?: string
-    addresses?: addressType[]
+    address?: addressType
     picture?: {
         url: string,
         provider: string
