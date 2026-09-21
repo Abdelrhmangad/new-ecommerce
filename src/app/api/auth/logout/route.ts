@@ -8,7 +8,7 @@ export async function POST() {
     const token = cookieStore.get('auth_token')?.value;
     try {
         await axios.post(
-            `http://localhost:5000/api/auth/logout`,
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -17,6 +17,10 @@ export async function POST() {
                 timeout: 5000, // don't let a hung backend block logout
             }
         );
+        console.log("REMOve COOKIES")
+        cookieStore.delete('auth_token')
+        cookieStore.delete('auth_user')
+        cookieStore.delete('refresh_token')
     } catch (error) {
         console.error('Backend logout failed:', error);
     }

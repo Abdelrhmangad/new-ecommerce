@@ -11,8 +11,8 @@ import {
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
-import api from "../utils/axios.config";
 import { Link } from "@/i18n/routing";
+import axios from "axios";
 
 export default function UserAvatarMenu() {
 	const t = useTranslations();
@@ -20,7 +20,7 @@ export default function UserAvatarMenu() {
 
 	async function logoutAndClearSession() {
 		try {
-			await api.post("http://localhost:5000/api/auth/logout");
+			await axios.post("/api/auth/logout");
 		} finally {
 			logout?.();
 			googleLogout();

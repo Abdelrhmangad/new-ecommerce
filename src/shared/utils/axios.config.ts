@@ -51,7 +51,7 @@ api.interceptors.response.use(
     (error) => {
         console.log("error.response?.status", error.response?.status);
         if (error.response?.status === 401) {
-            window.location.reload(); // Force a reload to trigger re-authentication
+            // window.location.reload(); // Force a reload to trigger re-authentication
         }
 
         return Promise.reject(error);

@@ -14,16 +14,28 @@ import { Button } from "@/components/ui/button";
 import { ProfileHeader } from "@/features/profile/components/profileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useUserOrders } from "@/features/orders/queries/orders.queries";
+import useAuthStore from "@/store/user-store";
+import { useEffect } from "react";
+import { redirect } from "@/i18n/routing";
 
 export default function ProfilePage() {
 	const t = useTranslations("Profile");
 	const locale = useLocale() as "en" | "ar";
 	const router = useRouter();
-
+	const { auth } = useAuthStore();
+	useEffect(() => {
+		if (!auth?.isAuthenticated) {
+			console.log(
+				"No user found redirecting to homepage",
+				auth?.isAuthenticated
+			);
+			router.replace("/");
+		}
+	}, [auth?.isAuthenticated, router]);
+	console.log("auth", auth);
 	const { data } = useUserOrders({ page: 1 });
 	const orders = data?.orders;
 	const ordersMeta = data?.meta;
-
 	const handleAvatarChange = async (file: File) => {
 		// TODO: upload to your storage (S3, Cloudinary, etc.)
 		const formData = new FormData();

@@ -3,6 +3,55 @@ import api from '@/shared/utils/axios.config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
+
+
+export const createUserAccount = async (payload: { name: string, email: string, password: string }): Promise<any> => {
+    try {
+        const response = await axios.post('/api/auth/register', payload);
+        return response.data;
+    } catch (error: any) {
+        throw error;
+    }
+};
+
+export const useCreateUserAccount = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: createUserAccount,
+        onSuccess: () => {
+            // Invalidate the user data query to refetch the updated user data
+            queryClient.invalidateQueries({ queryKey: ['User'] });
+        },
+        onError: (error: any) => {
+            console.error('Error creating account:', error);
+        }
+    });
+}
+
+export const loginUser = async (payload: { email: string, password: string }): Promise<any> => {
+    try {
+        const response = await axios.post('/api/auth/register', payload);
+        return response.data;
+    } catch (error: any) {
+        throw error;
+    }
+};
+
+export const useLoginUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: loginUser,
+        onSuccess: () => {
+            // Invalidate the user data query to refetch the updated user data
+            queryClient.invalidateQueries({ queryKey: ['User'] });
+        },
+        onError: (error: any) => {
+            console.error('Error creating account:', error);
+        }
+    });
+}
+
+
 // Define the payload types for type safety
 export interface AddAddressToUserPayload {
     shippingAddress: {
@@ -38,6 +87,7 @@ export const useUserData = () => {
         queryFn: refreshUserData,
         staleTime: 10 * 60 * 1000, // 10 minutes
         refetchOnWindowFocus: false,
+        retry: false
     });
 }
 

@@ -17,6 +17,10 @@ import toast from "react-hot-toast";
 import useAuthStore from "@/store/user-store";
 import UserAvatarMenu from "./userAvatarMenu";
 import axios from "axios";
+import {
+	useCreateUserAccount,
+	useLoginUser
+} from "@/features/user/queries/user.queries";
 
 export default function AuthModal() {
 	const t = useTranslations("Auth");
@@ -24,15 +28,29 @@ export default function AuthModal() {
 	const [mode, setMode] = useState<"login" | "signup">("login");
 	const [showPassword, setShowPassword] = useState(false);
 
+	const { mutateAsync: createAccount, isPending: isCreatingPending } =
+		useCreateUserAccount();
+	const { mutateAsync: loginUser, isPending: isLoginPending } =
+		useLoginUser();
+
 	// Form State
 	const [formData, setFormData] = useState({
-		username: "",
+		name: "",
 		email: "",
 		password: ""
 	});
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+		if (mode === "signup") {
+			createAccount({
+				name: formData?.name,
+				email: formData?.email,
+				password: formData?.password
+			});
+		} else {
+			loginUser({ email: formData?.email, password: formData?.password });
+		}
 		// Later: Connect to Express backend authentication route
 	};
 	return auth?.isAuthenticated ? (
@@ -117,19 +135,19 @@ export default function AuthModal() {
 					{/* Username/Email Input */}
 					<div>
 						<label className="text-xs font-medium mb-1 block">
-							{t("usernameOrEmail")}
+							{t("name")}
 						</label>
 						<div className="relative">
 							<User className="absolute inset-s-3 top-3 h-4 w-4 text-muted-foreground" />
 							<Input
 								required
 								className="ps-9 h-11 text-sm"
-								placeholder={t("usernamePlaceholder")}
-								value={formData.username}
+								placeholder={t("fullNamePlaceholder")}
+								value={formData.name}
 								onChange={(e) =>
 									setFormData({
 										...formData,
-										username: e.target.value
+										name: e.target.value
 									})
 								}
 							/>
@@ -183,6 +201,7 @@ export default function AuthModal() {
 					<Button
 						type="submit"
 						size="lg"
+						disabled={isCreatingPending || isLoginPending}
 						className="w-full font-medium mt-2"
 					>
 						{mode === "login" ? t("signIn") : t("createAccount")}
