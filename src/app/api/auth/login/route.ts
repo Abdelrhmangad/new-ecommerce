@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     } catch (error: any) {
         console.error('Backend login failed:', error?.response?.data || error.message || error);
         return NextResponse.json(
-            { success: false, message: 'login failed' },
+            { success: false, message: error?.response?.data?.message || 'Invalid Email or Password' },
             { status: error?.response?.status || 500 }
         );
     }

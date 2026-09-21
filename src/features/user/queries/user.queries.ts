@@ -2,6 +2,7 @@
 import api from '@/shared/utils/axios.config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 
 
@@ -30,7 +31,7 @@ export const useCreateUserAccount = () => {
 
 export const loginUser = async (payload: { email: string, password: string }): Promise<any> => {
     try {
-        const response = await axios.post('/api/auth/register', payload);
+        const response = await axios.post('/api/auth/login', payload);
         return response.data;
     } catch (error: any) {
         throw error;
@@ -44,9 +45,12 @@ export const useLoginUser = () => {
         onSuccess: () => {
             // Invalidate the user data query to refetch the updated user data
             queryClient.invalidateQueries({ queryKey: ['User'] });
+            toast.success("Logged in successfully")
         },
         onError: (error: any) => {
-            console.error('Error creating account:', error);
+            const errorMsg = error?.response?.data?.message
+            toast.error(errorMsg)
+            console.error('Error logging in to account:', error?.response);
         }
     });
 }
@@ -137,6 +141,7 @@ export const useUpdateUserData = () => {
         onSuccess: () => {
             // Invalidate the user data query to refetch the updated user data
             queryClient.invalidateQueries({ queryKey: ['User'] });
+            toast.success("User data updated successfully")
         },
         onError: (error: any) => {
             console.error('Error uploading user data:', error);

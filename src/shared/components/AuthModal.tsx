@@ -42,6 +42,7 @@ export default function AuthModal() {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+		console.log("Mode", mode);
 		if (mode === "signup") {
 			createAccount({
 				name: formData?.name,
@@ -49,7 +50,11 @@ export default function AuthModal() {
 				password: formData?.password
 			});
 		} else {
-			loginUser({ email: formData?.email, password: formData?.password });
+			console.log({
+				email: formData?.name,
+				password: formData?.password
+			});
+			loginUser({ email: formData?.name, password: formData?.password });
 		}
 		// Later: Connect to Express backend authentication route
 	};

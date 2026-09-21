@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CartItem } from '@/features/cart/components/cartItem';
 import api from '@/shared/utils/axios.config';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { OrderObjectType } from '../types/orders.types';
 
@@ -23,7 +23,7 @@ export interface CreateOrderPayload {
 }
 
 interface OrderResponse {
-    orderId: string;
+    _id: string;
     status: string;
     createdAt: string;
 }
@@ -40,10 +40,13 @@ const createOrder = async (payload: CreateOrderPayload): Promise<OrderResponse> 
 
 // Custom mutation hook
 export const useCreateOrderMutation = () => {
+    const queryClient = useQueryClient();
     return useMutation<OrderResponse, Error, CreateOrderPayload>({
         mutationFn: createOrder,
         onSuccess: (data) => {
-            toast.success(`Order ${data.orderId} created successfully!`);
+            console.log("ORDER RETURNED data", data)
+            toast.success(`Order ${data._id} created successfully!`);
+            queryClient.invalidateQueries({ queryKey: ['User'] });
         },
         onError: (error: any) => {
             if (error?.response?.data?.message) {
