@@ -23,7 +23,6 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 	};
 	const primaryImage = productImages?.primary || "/images/placeholder.jpg";
 	const secondaryImage = productImages?.secondary || primaryImage;
-
 	return (
 		<div className="group relative flex flex-col rounded-lg border bg-card transition-all hover:shadow-sm">
 			{/* 1. Image Container with Aspect Ratio tailored for clothing (3:4) */}
@@ -89,7 +88,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 
 				{/* Product Name */}
 				<Link
-					href={`/products/${product.id}`}
+					href={`/products/${product.slug}`}
 					className="mt-1 font-medium text-sm line-clamp-1 hover:underline"
 				>
 					{product.name.en}
@@ -114,13 +113,7 @@ export default function ProductCard({ product }: { product: ProductPropType }) {
 						{product.sizes.map((size) => (
 							<button
 								key={size}
-								onClick={() => {
-									setSelectedSize(size);
-									console.log(
-										"HERERE REREER SelectedSize",
-										size
-									);
-								}}
+								onClick={() => setSelectedSize(size)}
 								className={`h-6 w-6 rounded border text-[10px] font-medium transition-colors ${
 									selectedSize === size
 										? "border-primary bg-primary text-primary-foreground"

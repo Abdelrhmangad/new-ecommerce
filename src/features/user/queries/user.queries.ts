@@ -144,7 +144,35 @@ export const useUpdateUserData = () => {
             toast.success("User data updated successfully")
         },
         onError: (error: any) => {
-            console.error('Error uploading user data:', error);
+            const errorMsg = error?.response?.data?.message
+            toast.error(errorMsg)
+        }
+    });
+}
+
+
+
+export const changeUserPassword = async (data: { old_password: string, new_password: string }): Promise<any> => {
+    try {
+        const response = await api.put('/auth/change-password', data);
+        return response.data;
+    } catch (error: any) {
+        throw error;
+    }
+}
+
+export const useChangeUserPassword = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: changeUserPassword,
+        onSuccess: () => {
+            // Invalidate the user data query to refetch the updated user data
+            queryClient.invalidateQueries({ queryKey: ['User'] });
+            // toast.success("User password updated successfully")
+        },
+        onError: (error: any) => {
+            const errorMsg = error?.response?.data?.message
+            toast.error(errorMsg)
         }
     });
 }

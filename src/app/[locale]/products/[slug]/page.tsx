@@ -40,6 +40,7 @@ export default async function Page({
 	const res = await axios.get(
 		`${process.env.NEXT_PUBLIC_API_URL}/products/${slug}`
 	);
+	console.log("res", res);
 	const product: ProductPropType = res.data;
 	return <SingleProductPage product={product} id={product.id} />;
 }

@@ -17,6 +17,7 @@ import { useUserOrders } from "@/features/orders/queries/orders.queries";
 import useAuthStore from "@/store/user-store";
 import { useEffect } from "react";
 import { redirect } from "@/i18n/routing";
+import { useChangeUserPassword } from "@/features/user/queries/user.queries";
 
 export default function ProfilePage() {
 	const t = useTranslations("Profile");
@@ -51,11 +52,16 @@ export default function ProfilePage() {
 		router.push(`/${locale}/cart`);
 	};
 
+	const { mutateAsync: changePassword } = useChangeUserPassword();
 	const handleChangePassword = async (data: {
 		current: string;
 		newPass: string;
 		confirm: string;
 	}) => {
+		changePassword({
+			old_password: data?.current,
+			new_password: data?.newPass
+		});
 		// TODO: POST /api/auth/change-password
 		toast.success(t("password_changed"));
 	};
