@@ -1,0 +1,19 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "cobuilt-token",
+      "description": "cobuilt token",
+      "password": true
+    }
+  ],
+  "servers": {
+    "cobuilt": {
+      "type": "http",
+      "url": "https://cobuilt.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer cbt_a2b7ba75d35e42dea67af0556b32a0ad5afa3239faa74888a9d6d9f47c38f22f"
+      }
+    }
+  }
+}

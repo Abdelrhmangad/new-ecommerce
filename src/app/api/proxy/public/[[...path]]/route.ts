@@ -1,21 +1,32 @@
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Unauthenticated relay — every entry here is reachable by anyone, so keep it
-// to the guest routes the app genuinely calls. See TenForHire-API
-// routes/API/auth-n-users.php and routes/API/FleetBridge/auth.php.
-const ALLOWED_PATHS: string[] = [
-    '/categories/*',
-    '/products/*',
-    '*'
+interface RouteRule {
+    path: string;
+    methods: string[] | '*'; // Can specify an array of methods like ['GET', 'POST'] or '*' for all methods
+}
+
+// Define allowed paths alongside their permitted HTTP methods
+const ALLOWED_ROUTES: RouteRule[] = [
+    {
+        path: '/categories/*',
+        methods: ['GET', 'HEAD'], // Example: Only allow reading categories
+    },
+    {
+        path: '/products/*',
+        methods: ['GET', 'HEAD'], // Example: Only allow reading products
+    },
+    {
+        path: '/orders/*',
+        methods: ['POST'],        // Example: Only allow POST requests for orders
+    },
+    {
+        path: '*',
+        methods: ['GET'],         // Fallback rule for other general GET requests
+    }
 ];
 
 // Only these upstream response headers are safe to replay to the browser.
-// Notably excludes Set-Cookie so the upstream can never set cookies on our origin,
-// and excludes CORS/other headers we don't want blindly forwarded.
-// `content-length` is deliberately absent — axios decompresses the stream but
-// leaves the upstream compressed length on the headers object, so replaying it
-// truncates the response. See the note in ../../[[...path]]/route.ts.
 const FORWARDED_RESPONSE_HEADERS = new Set([
     'content-type',
     'content-disposition',
@@ -25,22 +36,30 @@ const FORWARDED_RESPONSE_HEADERS = new Set([
     'content-encoding',
     'content-language',
     'expires',
-    // Deliberately NOT forwarding Retry-After / X-RateLimit-*: since 16f83b5 the
-    // retry UI derives every countdown from the response *body* (resend_after /
-    // expires_in / retry_after), never from headers — see the note at the top of
-    // shared/components/server-request-retry-limit.tsx.
 ]);
 
-function isPathAllowed(path: string): boolean {
+function isRouteAllowed(path: string, method: string): boolean {
     // Normalize: strip trailing slash (except root) so '/foo' and '/foo/' match the same rule.
     const normalized = path.length > 1 ? path.replace(/\/+$/, '') : path;
+    const upperMethod = method.toUpperCase();
 
-    return ALLOWED_PATHS.some((rule) => {
-        if (rule.endsWith('/*')) {
-            const prefix = rule.slice(0, -2);
-            return normalized === prefix || normalized.startsWith(`${prefix}/`);
+    return ALLOWED_ROUTES.some((rule) => {
+        // 1. Check if the path matches the rule
+        let pathMatches = false;
+        if (rule.path.endsWith('/*')) {
+            const prefix = rule.path.slice(0, -2);
+            pathMatches = normalized === prefix || normalized.startsWith(`${prefix}/`);
+        } else if (rule.path === '*') {
+            pathMatches = true;
+        } else {
+            pathMatches = normalized === rule.path;
         }
-        return normalized === rule;
+
+        if (!pathMatches) return false;
+
+        // 2. Check if the HTTP method is allowed for this rule
+        if (rule.methods === '*') return true;
+        return rule.methods.map((m) => m.toUpperCase()).includes(upperMethod);
     });
 }
 
@@ -59,12 +78,14 @@ async function handler(req: NextRequest) {
     // Extract the path from the request URL
     const url = new URL(req.url);
     const proxyPath = url.pathname.replace('/api/proxy/public', '') || '/';
-    // console.log("proxyPath", proxyPath)
-    if (!isPathAllowed(proxyPath)) {
-        return new NextResponse(null, { status: 403 });
-    }
-    // console.log("isPathAllowed", isPathAllowed(proxyPath))
 
+    // Validate both path and HTTP method
+    if (!isRouteAllowed(proxyPath, req.method)) {
+        return NextResponse.json(
+            { message: `Method ${req.method} is not allowed for this backend path on frontend public middleware` },
+            { status: 403 }
+        );
+    }
 
     const searchParams = url.searchParams.toString();
     const targetUrl = `${process.env.NEXT_PUBLIC_API_URL}${proxyPath}${searchParams ? `?${searchParams}` : ''}`;
@@ -72,8 +93,6 @@ async function handler(req: NextRequest) {
     const requestHeaders = {
         'Content-Type': req.headers.get('content-type') || 'application/json',
         Accept: req.headers.get('accept') || 'application/json',
-        // Master-data labels are localised off this header — see the note in the
-        // authenticated proxy. Rebuilding headers here drops whatever the client set.
         'Accept-Language': req.headers.get('accept-language') || 'en',
     };
 
@@ -93,9 +112,7 @@ async function handler(req: NextRequest) {
             // If body parsing fails, continue with null body
         }
     }
-    // console.log(
-    //     "%c targetUrl %c " + targetUrl,
-    // );
+
     try {
         const backendResponse = await axios({
             method: req.method.toLowerCase(),
@@ -104,25 +121,21 @@ async function handler(req: NextRequest) {
             ...(requestBody !== null ? { data: requestBody } : {}),
             validateStatus: () => true,
             responseType: 'stream',
-            // A hung backend must not hang this request indefinitely.
             timeout: 30000,
         });
 
-        // Forward ALL headers including rate limiting headers
         return new NextResponse(backendResponse.data, {
             status: backendResponse.status,
             statusText: backendResponse.statusText,
             headers: filterResponseHeaders(backendResponse.headers as Record<string, unknown>),
         });
     } catch (error) {
-        // Handle Axios errors returned from the backend server
         if (axios.isAxiosError(error) && error.response) {
             return NextResponse.json(error.response.data, {
                 status: error.response.status,
             });
         }
 
-        // Fallback for network issues or unexpected internal errors
         return NextResponse.json(
             {
                 success: false,

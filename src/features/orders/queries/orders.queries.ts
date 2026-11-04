@@ -7,69 +7,73 @@ import { OrderObjectType } from '../types/orders.types';
 
 // Define the payload types for type safety
 export interface CreateOrderPayload {
-    items: CartItem[];
-    shippingAddress: {
-        fullName: string,
-        phone: string,
-        city: string,
-        governorate: string,
-        street: string,
-        building: string,
-        floor: string,
-        notes: string,
-    };
-    saveAddress: boolean;
-    paymentMethodId: string;
+	items: CartItem[];
+	shippingAddress: {
+		fullName: string;
+		phone: string;
+		city: string;
+		governorate: string;
+		street: string;
+		building: string;
+		floor: string;
+		notes: string;
+	};
+	saveAddress: boolean;
+	paymentMethodId: string;
+    isLoggedIn?: string; // Optional token for guest users
 }
 
 interface OrderResponse {
-    _id: string;
-    status: string;
-    createdAt: string;
+	_id: string;
+	status: string;
+	createdAt: string;
 }
 
 // Function that executes the actual API request
 const createOrder = async (payload: CreateOrderPayload): Promise<OrderResponse> => {
-    try {
-        const response = await api.post('/orders', payload);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+	try {
+        let response = null;
+        if (payload.isLoggedIn) {
+            response = await api.post('/orders', payload);
+        } else {
+            response = await api.post('/public/orders', payload);
+        }
+		return response.data;
+	} catch (error) {
+		throw error;
+	}
 };
 
 // Custom mutation hook
-export const useCreateOrderMutation = () => {
-    const queryClient = useQueryClient();
-    return useMutation<OrderResponse, Error, CreateOrderPayload>({
-        mutationFn: createOrder,
-        onSuccess: (data) => {
-            console.log("ORDER RETURNED data", data)
-            toast.success(`Order ${data._id} created successfully!`);
-            queryClient.invalidateQueries({ queryKey: ['User'] });
-        },
-        onError: (error: any) => {
-            if (error?.response?.data?.message) {
-                toast.error(`Failed to create order: ${error?.response.data.message}`);
-            } else {
-                toast.error('Failed to create order');
-            }
-        },
-    });
+export const useCreateOrderMutation = ({ isLoggedIn }: { isLoggedIn?: string}) => {
+	const queryClient = useQueryClient();
+	return useMutation<OrderResponse, Error, CreateOrderPayload>({
+		mutationFn: (payload) => createOrder(isLoggedIn ? { ...payload, isLoggedIn } : payload),
+		onSuccess: (data) => {
+			console.log('ORDER RETURNED data', data);
+			toast.success(`Order ${data._id} created successfully!`);
+			queryClient.invalidateQueries({ queryKey: ['User'] });
+		},
+		onError: (error: any) => {
+			if (error?.response?.data?.message) {
+				toast.error(`Failed to create order: ${error?.response.data.message}`);
+			} else {
+				toast.error('Failed to create order');
+			}
+		}
+	});
 };
 
-
-
-const getOrders = async (page: number): Promise<{ orders: OrderObjectType[], meta: any }> => {
-    const response = await api.get(`/orders?page=${page}`);
-    return response.data;
+const getOrders = async (page: number): Promise<{ orders: OrderObjectType[]; meta: any }> => {
+	const response = await api.get(`/orders?page=${page}`);
+	return response.data;
 };
 
 export const useUserOrders = ({ page = 1 }: { page: number }) => {
-    return useQuery<{ orders: OrderObjectType[], meta: any }, Error>({
-        queryKey: ['orders', page],
-        queryFn: () => getOrders(page),
-        staleTime: 20 * 60 * 1000, // 20 minutes,
-        retry: false,
-    });
+	return useQuery<{ orders: OrderObjectType[]; meta: any }, Error>({
+		queryKey: ['orders', page],
+		queryFn: () => getOrders(page),
+		staleTime: 20 * 60 * 1000, // 20 minutes,
+		retry: false
+	});
 };
