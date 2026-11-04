@@ -4,14 +4,18 @@ import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CartDrawer } from "../../features/cart/components/cartButton";
 import LocaleSwitcher from "./localeSwitcher";
-import { Link } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import Image from "next/image";
 import AuthModal from "./AuthModal";
 
 export default function Navbar() {
 	const [open, setOpen] = useState(false);
-
+	const pathname = usePathname();
 	const t = useTranslations("Navbar");
+
+	if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
+		return null;
+	}
 
 	const NAV_LINKS = [
 		{ label: t("home"), href: "/" },
