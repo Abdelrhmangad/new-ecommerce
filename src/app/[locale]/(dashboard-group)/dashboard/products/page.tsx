@@ -2,17 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import {
-	Plus,
-	Search,
-	SlidersHorizontal,
-	MoreHorizontal,
-	Edit,
-	Trash2,
-	Package,
-	Eye,
-	Layers
-} from 'lucide-react';
+import { Plus, Search, SlidersHorizontal, MoreHorizontal, Edit, Trash2, Package, Eye, Layers } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -37,6 +27,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
+import { Link } from '@/i18n/routing';
 
 // --- Dummy Data matching your Mongoose Schema ---
 interface Variant {
@@ -395,9 +386,16 @@ export default function ProductsPage() {
 															<Edit className="h-3.5 w-3.5" />
 															<span>Edit Product & Variants</span>
 														</DropdownMenuItem>
-														<DropdownMenuItem className="cursor-pointer gap-2">
-															<Eye className="h-3.5 w-3.5" />
-															<span>View Storefront Preview</span>
+														<DropdownMenuItem className="cursor-pointer">
+															<Link
+																href={`/products/${`lightweight-track-jacket`}`}
+																target="_blank"
+																rel="noopener noreferrer"
+                                                                className='flex items-center gap-2'
+															>
+																<Eye className="h-3.5 w-3.5" />
+																<span>View Storefront Preview</span>
+															</Link>
 														</DropdownMenuItem>
 														<DropdownMenuSeparator />
 														<DropdownMenuItem className="cursor-pointer gap-2 text-destructive focus:bg-destructive/10">
@@ -463,7 +461,7 @@ export default function ProductsPage() {
 									</div>
 								</div>
 
-                                <div className="grid grid-cols-2 gap-4">
+								<div className="grid grid-cols-2 gap-4">
 									<div className="space-y-2">
 										<Label htmlFor="product-name">Product Name (Arabic)</Label>
 										<Input
@@ -521,7 +519,7 @@ export default function ProductsPage() {
 									</div>
 									<Switch
 										checked={selectedProduct.isActive}
-                                        className="cursor-pointer"
+										className="cursor-pointer"
 										onCheckedChange={(checked) =>
 											setSelectedProduct({ ...selectedProduct, isActive: checked })
 										}
