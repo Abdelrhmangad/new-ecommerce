@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Plus, Search, SlidersHorizontal, MoreHorizontal, Edit, Trash2, Package, Eye, Layers } from 'lucide-react';
+import { Plus, Search, SlidersHorizontal, MoreHorizontal, Edit, Trash2, Package, Eye, Layers, ImageIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +28,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Link } from '@/i18n/routing';
+import { ColorImageManagerModal } from '@/features/dashboard/components/ProductImagesHandler';
 
 // --- Dummy Data matching your Mongoose Schema ---
 interface Variant {
@@ -188,6 +189,10 @@ export default function ProductsPage() {
 		setProducts((prev) => prev.map((p) => (p._id === selectedProduct._id ? selectedProduct : p)));
 		setIsEditDialogOpen(false);
 	};
+
+	// Modal states
+	const [imageProductId, setImageProductId] = useState<string | null>(null);
+	const imageProduct = products.find((product) => product._id === imageProductId) ?? null;
 
 	return (
 		<div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
@@ -386,12 +391,19 @@ export default function ProductsPage() {
 															<Edit className="h-3.5 w-3.5" />
 															<span>Edit Product & Variants</span>
 														</DropdownMenuItem>
+														<DropdownMenuItem
+															onClick={() => setImageProductId(product._id)}
+															className="cursor-pointer gap-2"
+														>
+															<ImageIcon className="h-3.5 w-3.5 text-primary" />
+															<span>Manage Color Images</span>
+														</DropdownMenuItem>
 														<DropdownMenuItem className="cursor-pointer">
 															<Link
 																href={`/products/${`lightweight-track-jacket`}`}
 																target="_blank"
 																rel="noopener noreferrer"
-                                                                className='flex items-center gap-2'
+																className="flex items-center gap-2"
 															>
 																<Eye className="h-3.5 w-3.5" />
 																<span>View Storefront Preview</span>
@@ -413,6 +425,29 @@ export default function ProductsPage() {
 					</Table>
 				</CardContent>
 			</Card>
+
+			{imageProduct && (
+				<ColorImageManagerModal
+					key={imageProduct._id}
+					isOpen
+					onClose={() => setImageProductId(null)}
+					colors={imageProduct.colors}
+					onSaveColors={(updatedColors) => {
+						setProducts((previousProducts) =>
+							previousProducts.map((product) =>
+								product._id === imageProduct._id
+									? { ...product, colors: updatedColors }
+									: product
+							)
+						);
+						setSelectedProduct((previousProduct) =>
+							previousProduct?._id === imageProduct._id
+								? { ...previousProduct, colors: updatedColors }
+								: previousProduct
+						);
+					}}
+				/>
+			)}
 
 			{/* Edit Product Modal */}
 			<Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
