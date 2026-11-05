@@ -384,49 +384,74 @@ export default function OrdersPage() {
 														}
 													></DropdownMenuTrigger>
 													<DropdownMenuContent align="end" className="w-52">
-														{/* Wrap your grouped items inside DropdownMenuGroup */}
 														<DropdownMenuGroup>
-															<DropdownMenuLabel className="text-xs font-semibold text-muted-foreground">
-																Change Status
-															</DropdownMenuLabel>
-															<DropdownMenuSeparator />
-															<DropdownMenuItem
-																onClick={() =>
-																	handleStatusChange(order._id, 'processing')
-																}
-																className="cursor-pointer text-xs"
-															>
-																<Clock className="h-3.5 w-3.5 mr-2 text-amber-500" />
-																<span>Mark as Processing</span>
-															</DropdownMenuItem>
-															<DropdownMenuItem
-																onClick={() => handleStatusChange(order._id, 'shipped')}
-																className="cursor-pointer text-xs"
-															>
-																<Truck className="h-3.5 w-3.5 mr-2 text-blue-500" />
-																<span>Mark as Shipped</span>
-															</DropdownMenuItem>
-															<DropdownMenuItem
-																onClick={() =>
-																	handleStatusChange(order._id, 'delivered')
-																}
-																className="cursor-pointer text-xs"
-															>
-																<CheckCircle className="h-3.5 w-3.5 mr-2 text-emerald-500" />
-																<span>Mark as Delivered</span>
-															</DropdownMenuItem>
-															<DropdownMenuItem
-																onClick={() =>
-																	handleStatusChange(order._id, 'cancelled')
-																}
-																className="cursor-pointer text-xs text-destructive focus:text-destructive"
-															>
-																<XCircle className="h-3.5 w-3.5 mr-2" />
-																<span>Cancel Order</span>
-															</DropdownMenuItem>
+															{order.status !== 'cancelled' &&
+																order.status !== 'delivered' && (
+																	<>
+																		<DropdownMenuLabel className="text-xs font-semibold text-muted-foreground">
+																			Change Status
+																		</DropdownMenuLabel>
+																		<DropdownMenuSeparator />
+																	</>
+																)}
+
+															{order.status !== 'processing' &&
+																order.status !== 'cancelled' &&
+																order.status !== 'delivered' && (
+																	<DropdownMenuItem
+																		onClick={() =>
+																			handleStatusChange(order._id, 'processing')
+																		}
+																		className="cursor-pointer text-xs"
+																	>
+																		<Clock className="h-3.5 w-3.5 mr-2 text-amber-500" />
+																		<span>Mark as Processing</span>
+																	</DropdownMenuItem>
+																)}
+
+															{order.status !== 'shipped' &&
+																order.status !== 'cancelled' &&
+																order.status !== 'delivered' && (
+																	<DropdownMenuItem
+																		onClick={() =>
+																			handleStatusChange(order._id, 'shipped')
+																		}
+																		className="cursor-pointer text-xs"
+																	>
+																		<Truck className="h-3.5 w-3.5 mr-2 text-blue-500" />
+																		<span>Mark as Shipped</span>
+																	</DropdownMenuItem>
+																)}
+
+															{order.status !== 'delivered' &&
+																order.status !== 'cancelled' && (
+																	<DropdownMenuItem
+																		onClick={() =>
+																			handleStatusChange(order._id, 'delivered')
+																		}
+																		className="cursor-pointer text-xs"
+																	>
+																		<CheckCircle className="h-3.5 w-3.5 mr-2 text-emerald-500" />
+																		<span>Mark as Delivered</span>
+																	</DropdownMenuItem>
+																)}
+
+															{order.status !== 'cancelled' &&
+																order.status !== 'delivered' && (
+																	<DropdownMenuItem
+																		onClick={() =>
+																			handleStatusChange(order._id, 'cancelled')
+																		}
+																		className="cursor-pointer text-xs text-destructive focus:text-destructive"
+																	>
+																		<XCircle className="h-3.5 w-3.5 mr-2" />
+																		<span>Cancel Order</span>
+																	</DropdownMenuItem>
+																)}
 														</DropdownMenuGroup>
 
-														<DropdownMenuSeparator />
+														{order.status !== 'cancelled' &&
+															order.status !== 'delivered' && <DropdownMenuSeparator />}
 
 														<DropdownMenuGroup>
 															<DropdownMenuItem
